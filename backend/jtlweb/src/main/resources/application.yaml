@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: jtlweb
+  datasource:
+    url: jdbc:postgresql://localhost:5432/jtlweb
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc.batch_size: 2000
+        order_inserts: true
