@@ -1,87 +1,86 @@
-2026-08-02 14:06:29,426 INFO o.a.j.u.JMeterUtils: Setting Locale to en_EN
-2026-08-02 14:06:29,441 INFO o.a.j.JMeter: Loading user properties from: /home/kuri4/Documents/apache-jmeter-5.6.3/bin/user.properties
-2026-08-02 14:06:29,441 INFO o.a.j.JMeter: Loading system properties from: /home/kuri4/Documents/apache-jmeter-5.6.3/bin/system.properties
-2026-08-02 14:06:29,445 INFO o.a.j.JMeter: Copyright (c) 1998-2024 The Apache Software Foundation
-2026-08-02 14:06:29,445 INFO o.a.j.JMeter: Version 5.6.3
-2026-08-02 14:06:29,445 INFO o.a.j.JMeter: java.version=21.0.11
-2026-08-02 14:06:29,445 INFO o.a.j.JMeter: java.vm.name=OpenJDK 64-Bit Server VM
-2026-08-02 14:06:29,445 INFO o.a.j.JMeter: os.name=Linux
-2026-08-02 14:06:29,445 INFO o.a.j.JMeter: os.arch=amd64
-2026-08-02 14:06:29,445 INFO o.a.j.JMeter: os.version=7.0.0-28-generic
-2026-08-02 14:06:29,445 INFO o.a.j.JMeter: file.encoding=UTF-8
-2026-08-02 14:06:29,445 INFO o.a.j.JMeter: java.awt.headless=true
-2026-08-02 14:06:29,445 INFO o.a.j.JMeter: Max memory     =1073741824
-2026-08-02 14:06:29,445 INFO o.a.j.JMeter: Available Processors =16
-2026-08-02 14:06:29,452 INFO o.a.j.JMeter: Default Locale=English (EN)
-2026-08-02 14:06:29,452 INFO o.a.j.JMeter: JMeter  Locale=English (EN)
-2026-08-02 14:06:29,453 INFO o.a.j.JMeter: JMeterHome=/home/kuri4/Documents/apache-jmeter-5.6.3
-2026-08-02 14:06:29,453 INFO o.a.j.JMeter: user.dir  =/home/kuri4/projects/jtl-viewer
-2026-08-02 14:06:29,453 INFO o.a.j.JMeter: PWD       =/home/kuri4/projects/jtl-viewer
-2026-08-02 14:06:29,453 INFO o.a.j.JMeter: IP: 127.0.1.1 Name: KDE-Neon FullName: KDE-Neon
-2026-08-02 14:06:29,462 INFO o.a.j.s.FileServer: Default base='/home/kuri4/projects/jtl-viewer'
-2026-08-02 14:06:29,463 INFO o.a.j.s.FileServer: Set new base='/home/kuri4/projects/jtl-viewer'
-2026-08-02 14:06:29,594 INFO o.a.j.s.SaveService: Testplan (JMX) version: 2.2. Testlog (JTL) version: 2.2
-2026-08-02 14:06:29,616 INFO o.a.j.s.SaveService: Using SaveService properties version 5.0
-2026-08-02 14:06:29,618 INFO o.a.j.s.SaveService: Using SaveService properties file encoding UTF-8
-2026-08-02 14:06:29,621 INFO o.a.j.s.SaveService: Loading file: test_plan.jmx
-2026-08-02 14:06:29,670 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/html is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
-2026-08-02 14:06:29,670 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xhtml+xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
-2026-08-02 14:06:29,670 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
-2026-08-02 14:06:29,670 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
-2026-08-02 14:06:29,670 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/vnd.wap.wml is org.apache.jmeter.protocol.http.parser.RegexpHTMLParser
-2026-08-02 14:06:29,671 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/css is org.apache.jmeter.protocol.http.parser.CssParser
-2026-08-02 14:06:29,688 INFO o.a.j.JMeter: Creating summariser <summary>
-2026-08-02 14:06:29,697 INFO o.a.j.e.StandardJMeterEngine: Running the test!
-2026-08-02 14:06:29,697 INFO o.a.j.s.SampleEvent: List of sample_variables: []
-2026-08-02 14:06:29,697 INFO o.a.j.s.SampleEvent: List of sample_variables: []
-2026-08-02 14:06:29,702 INFO o.a.j.e.u.CompoundVariable: Note: Function class names must contain the string: '.functions.'
-2026-08-02 14:06:29,702 INFO o.a.j.e.u.CompoundVariable: Note: Function class names must not contain the string: '.gui.'
-2026-08-02 14:06:29,749 INFO o.a.j.r.ClassFinder: Will scan jar /home/kuri4/Documents/apache-jmeter-5.6.3/lib/ext/jmeter-plugins-manager-1.12.jar with filter ExtendsClassFilter [parents=[interface org.apache.jmeter.functions.Function], inner=false, contains=null, notContains=null]. Consider exposing JMeter plugins via META-INF/services, and add JMeter-Skip-Class-Scanning=true manifest attribute so JMeter can skip classfile scanning
-2026-08-02 14:06:29,821 INFO o.a.j.r.ClassFinder: Will scan jar /home/kuri4/Documents/apache-jmeter-5.6.3/lib/ext/jmeter-plugins-casutg-3.1.1.jar with filter ExtendsClassFilter [parents=[interface org.apache.jmeter.functions.Function], inner=false, contains=null, notContains=null]. Consider exposing JMeter plugins via META-INF/services, and add JMeter-Skip-Class-Scanning=true manifest attribute so JMeter can skip classfile scanning
-2026-08-02 14:06:29,833 INFO o.a.j.JMeter: Running test (1785668789833)
-2026-08-02 14:06:29,850 INFO o.a.j.e.StandardJMeterEngine: Starting ThreadGroup: 1 : jp@gc - Ultimate Thread Group
-2026-08-02 14:06:29,851 INFO o.a.j.e.StandardJMeterEngine: Starting 4 threads for group jp@gc - Ultimate Thread Group.
-2026-08-02 14:06:29,851 INFO o.a.j.e.StandardJMeterEngine: Thread will continue on error
-2026-08-02 14:06:29,851 INFO k.a.j.t.AbstractSimpleThreadGroup: Starting thread group number 1 threads 4
-2026-08-02 14:06:29,856 INFO k.a.j.t.AbstractSimpleThreadGroup: Started thread group number 1
-2026-08-02 14:06:29,856 INFO o.a.j.e.StandardJMeterEngine: All thread groups have been started
-2026-08-02 14:06:29,857 INFO o.a.j.s.SampleResult: Note: Sample TimeStamps are START times
-2026-08-02 14:06:29,858 INFO o.a.j.s.SampleResult: sampleresult.default.encoding is set to UTF-8
-2026-08-02 14:06:29,858 INFO o.a.j.s.SampleResult: sampleresult.useNanoTime=true
-2026-08-02 14:06:29,858 INFO o.a.j.s.SampleResult: sampleresult.nanoThreadSleep=5000
-2026-08-02 14:06:29,859 INFO o.a.j.t.JMeterThread: Thread started: jp@gc - Ultimate Thread Group 1-1
-2026-08-02 14:06:29,894 INFO o.a.j.p.h.s.HTTPHCAbstractImpl: Local host = KDE-Neon
-2026-08-02 14:06:29,899 INFO o.a.j.p.h.s.HTTPHC4Impl: HTTP request retry count = 0
-2026-08-02 14:06:30,001 INFO o.a.j.p.h.s.h.LazyLayeredConnectionSocketFactory: Setting up HTTPS TrustAll Socket Factory
-2026-08-02 14:06:30,006 INFO o.a.j.u.JsseSSLManager: Using default SSL protocol: TLS
-2026-08-02 14:06:30,006 INFO o.a.j.u.JsseSSLManager: SSL session context: per-thread
-2026-08-02 14:06:30,086 INFO o.a.j.u.SSLManager: JmeterKeyStore Location:  type JKS
-2026-08-02 14:06:30,089 INFO o.a.j.u.SSLManager: KeyStore created OK
-2026-08-02 14:06:30,089 WARN o.a.j.u.SSLManager: Keystore file not found, loading empty keystore
-2026-08-02 14:06:30,508 INFO o.a.j.r.Summariser: summary +      1 in 00:00:01 =    1.5/s Avg:   555 Min:   555 Max:   555 Err:     0 (0.00%) Active: 1 Started: 1 Finished: 0
-2026-08-02 14:07:00,068 INFO o.a.j.r.Summariser: summary +     30 in 00:00:30 =    1.0/s Avg:   150 Min:    74 Max:   185 Err:     0 (0.00%) Active: 1 Started: 1 Finished: 0
-2026-08-02 14:07:00,069 INFO o.a.j.r.Summariser: summary =     31 in 00:00:30 =    1.0/s Avg:   163 Min:    74 Max:   555 Err:     0 (0.00%)
-2026-08-02 14:07:29,851 INFO o.a.j.t.JMeterThread: Thread started: jp@gc - Ultimate Thread Group 1-2
-2026-08-02 14:07:30,015 INFO o.a.j.r.Summariser: summary +     30 in 00:00:30 =    1.0/s Avg:   188 Min:    74 Max:  1195 Err:     4 (13.33%) Active: 2 Started: 2 Finished: 0
-2026-08-02 14:07:30,015 INFO o.a.j.r.Summariser: summary =     61 in 00:01:00 =    1.0/s Avg:   175 Min:    74 Max:  1195 Err:     4 (6.56%)
-2026-08-02 14:08:00,036 INFO o.a.j.r.Summariser: summary +     60 in 00:00:30 =    2.0/s Avg:   149 Min:    71 Max:   206 Err:     2 (3.33%) Active: 2 Started: 2 Finished: 0
-2026-08-02 14:08:00,036 INFO o.a.j.r.Summariser: summary =    121 in 00:01:30 =    1.3/s Avg:   162 Min:    71 Max:  1195 Err:     6 (4.96%)
-2026-08-02 14:08:29,851 INFO o.a.j.t.JMeterThread: Thread started: jp@gc - Ultimate Thread Group 1-3
-2026-08-02 14:08:30,008 INFO o.a.j.r.Summariser: summary +     60 in 00:00:30 =    2.0/s Avg:   152 Min:    71 Max:   191 Err:     1 (1.67%) Active: 3 Started: 3 Finished: 0
-2026-08-02 14:08:30,008 INFO o.a.j.r.Summariser: summary =    181 in 00:02:00 =    1.5/s Avg:   159 Min:    71 Max:  1195 Err:     7 (3.87%)
-2026-08-02 14:09:00,032 INFO o.a.j.r.Summariser: summary +     90 in 00:00:30 =    3.0/s Avg:   152 Min:    73 Max:   329 Err:     3 (3.33%) Active: 3 Started: 3 Finished: 0
-2026-08-02 14:09:00,033 INFO o.a.j.r.Summariser: summary =    271 in 00:02:30 =    1.8/s Avg:   156 Min:    71 Max:  1195 Err:    10 (3.69%)
-2026-08-02 14:09:29,851 INFO o.a.j.t.JMeterThread: Thread started: jp@gc - Ultimate Thread Group 1-4
-2026-08-02 14:09:30,028 INFO o.a.j.r.Summariser: summary +     90 in 00:00:30 =    3.0/s Avg:   153 Min:    74 Max:   191 Err:     1 (1.11%) Active: 4 Started: 4 Finished: 0
-2026-08-02 14:09:30,028 INFO o.a.j.r.Summariser: summary =    361 in 00:03:00 =    2.0/s Avg:   156 Min:    71 Max:  1195 Err:    11 (3.05%)
-2026-08-02 14:10:00,031 INFO o.a.j.r.Summariser: summary +    120 in 00:00:30 =    4.0/s Avg:   154 Min:    73 Max:   439 Err:     7 (5.83%) Active: 4 Started: 4 Finished: 0
-2026-08-02 14:10:00,032 INFO o.a.j.r.Summariser: summary =    481 in 00:03:30 =    2.3/s Avg:   155 Min:    71 Max:  1195 Err:    18 (3.74%)
-2026-08-02 14:10:29,050 INFO o.a.j.t.JMeterThread: Thread finished: jp@gc - Ultimate Thread Group 1-4
-2026-08-02 14:10:29,050 INFO o.a.j.t.JMeterThread: Thread finished: jp@gc - Ultimate Thread Group 1-2
-2026-08-02 14:10:29,267 INFO o.a.j.t.JMeterThread: Thread finished: jp@gc - Ultimate Thread Group 1-1
-2026-08-02 14:10:30,029 INFO o.a.j.r.Summariser: summary +    120 in 00:00:30 =    4.0/s Avg:   154 Min:    73 Max:   200 Err:     7 (5.83%) Active: 1 Started: 4 Finished: 3
-2026-08-02 14:10:30,029 INFO o.a.j.r.Summariser: summary =    601 in 00:04:00 =    2.5/s Avg:   155 Min:    71 Max:  1195 Err:    25 (4.16%)
-2026-08-02 14:10:30,029 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: jp@gc - Ultimate Thread Group 1-3
-2026-08-02 14:10:30,030 INFO o.a.j.t.JMeterThread: Thread finished: jp@gc - Ultimate Thread Group 1-3
-2026-08-02 14:10:30,030 INFO o.a.j.e.StandardJMeterEngine: Notifying test listeners of end of test
-2026-08-02 14:10:30,031 INFO o.a.j.r.Summariser: summary =    601 in 00:04:00 =    2.5/s Avg:   155 Min:    71 Max:  1195 Err:    25 (4.16%)
+2026-08-04 21:22:24,016 INFO o.a.j.u.JMeterUtils: Setting Locale to en_EN
+2026-08-04 21:22:24,027 INFO o.a.j.JMeter: Loading user properties from: /home/kuri4/Documents/apache-jmeter-5.6.3/bin/user.properties
+2026-08-04 21:22:24,028 INFO o.a.j.JMeter: Loading system properties from: /home/kuri4/Documents/apache-jmeter-5.6.3/bin/system.properties
+2026-08-04 21:22:24,031 INFO o.a.j.JMeter: Copyright (c) 1998-2024 The Apache Software Foundation
+2026-08-04 21:22:24,031 INFO o.a.j.JMeter: Version 5.6.3
+2026-08-04 21:22:24,031 INFO o.a.j.JMeter: java.version=21.0.11
+2026-08-04 21:22:24,031 INFO o.a.j.JMeter: java.vm.name=OpenJDK 64-Bit Server VM
+2026-08-04 21:22:24,031 INFO o.a.j.JMeter: os.name=Linux
+2026-08-04 21:22:24,031 INFO o.a.j.JMeter: os.arch=amd64
+2026-08-04 21:22:24,031 INFO o.a.j.JMeter: os.version=7.0.0-28-generic
+2026-08-04 21:22:24,031 INFO o.a.j.JMeter: file.encoding=UTF-8
+2026-08-04 21:22:24,031 INFO o.a.j.JMeter: java.awt.headless=true
+2026-08-04 21:22:24,031 INFO o.a.j.JMeter: Max memory     =1073741824
+2026-08-04 21:22:24,031 INFO o.a.j.JMeter: Available Processors =16
+2026-08-04 21:22:24,038 INFO o.a.j.JMeter: Default Locale=English (EN)
+2026-08-04 21:22:24,038 INFO o.a.j.JMeter: JMeter  Locale=English (EN)
+2026-08-04 21:22:24,038 INFO o.a.j.JMeter: JMeterHome=/home/kuri4/Documents/apache-jmeter-5.6.3
+2026-08-04 21:22:24,038 INFO o.a.j.JMeter: user.dir  =/home/kuri4/projects/jtl-viewer/jmeter
+2026-08-04 21:22:24,038 INFO o.a.j.JMeter: PWD       =/home/kuri4/projects/jtl-viewer/jmeter
+2026-08-04 21:22:24,038 INFO o.a.j.JMeter: IP: 127.0.1.1 Name: KDE-Neon FullName: KDE-Neon
+2026-08-04 21:22:24,046 INFO o.a.j.s.FileServer: Default base='/home/kuri4/projects/jtl-viewer/jmeter'
+2026-08-04 21:22:24,047 INFO o.a.j.s.FileServer: Set new base='/home/kuri4/projects/jtl-viewer/jmeter'
+2026-08-04 21:22:24,161 INFO o.a.j.s.SaveService: Testplan (JMX) version: 2.2. Testlog (JTL) version: 2.2
+2026-08-04 21:22:24,181 INFO o.a.j.s.SaveService: Using SaveService properties version 5.0
+2026-08-04 21:22:24,184 INFO o.a.j.s.SaveService: Using SaveService properties file encoding UTF-8
+2026-08-04 21:22:24,186 INFO o.a.j.s.SaveService: Loading file: test_plan.jmx
+2026-08-04 21:22:24,229 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/html is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2026-08-04 21:22:24,229 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xhtml+xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2026-08-04 21:22:24,229 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2026-08-04 21:22:24,229 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2026-08-04 21:22:24,229 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/vnd.wap.wml is org.apache.jmeter.protocol.http.parser.RegexpHTMLParser
+2026-08-04 21:22:24,229 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/css is org.apache.jmeter.protocol.http.parser.CssParser
+2026-08-04 21:22:24,245 INFO o.a.j.JMeter: Creating summariser <summary>
+2026-08-04 21:22:24,253 INFO o.a.j.e.StandardJMeterEngine: Running the test!
+2026-08-04 21:22:24,254 INFO o.a.j.s.SampleEvent: List of sample_variables: []
+2026-08-04 21:22:24,254 INFO o.a.j.s.SampleEvent: List of sample_variables: []
+2026-08-04 21:22:24,257 INFO o.a.j.e.u.CompoundVariable: Note: Function class names must contain the string: '.functions.'
+2026-08-04 21:22:24,257 INFO o.a.j.e.u.CompoundVariable: Note: Function class names must not contain the string: '.gui.'
+2026-08-04 21:22:24,294 INFO o.a.j.r.ClassFinder: Will scan jar /home/kuri4/Documents/apache-jmeter-5.6.3/lib/ext/jmeter-plugins-manager-1.12.jar with filter ExtendsClassFilter [parents=[interface org.apache.jmeter.functions.Function], inner=false, contains=null, notContains=null]. Consider exposing JMeter plugins via META-INF/services, and add JMeter-Skip-Class-Scanning=true manifest attribute so JMeter can skip classfile scanning
+2026-08-04 21:22:24,350 INFO o.a.j.r.ClassFinder: Will scan jar /home/kuri4/Documents/apache-jmeter-5.6.3/lib/ext/jmeter-plugins-casutg-3.1.1.jar with filter ExtendsClassFilter [parents=[interface org.apache.jmeter.functions.Function], inner=false, contains=null, notContains=null]. Consider exposing JMeter plugins via META-INF/services, and add JMeter-Skip-Class-Scanning=true manifest attribute so JMeter can skip classfile scanning
+2026-08-04 21:22:24,362 INFO o.a.j.JMeter: Running test (1785867744362)
+2026-08-04 21:22:24,380 INFO o.a.j.e.StandardJMeterEngine: Starting ThreadGroup: 1 : jp@gc - Ultimate Thread Group
+2026-08-04 21:22:24,380 INFO o.a.j.e.StandardJMeterEngine: Starting 4 threads for group jp@gc - Ultimate Thread Group.
+2026-08-04 21:22:24,380 INFO o.a.j.e.StandardJMeterEngine: Thread will continue on error
+2026-08-04 21:22:24,381 INFO k.a.j.t.AbstractSimpleThreadGroup: Starting thread group number 1 threads 4
+2026-08-04 21:22:24,385 INFO k.a.j.t.AbstractSimpleThreadGroup: Started thread group number 1
+2026-08-04 21:22:24,385 INFO o.a.j.e.StandardJMeterEngine: All thread groups have been started
+2026-08-04 21:22:24,385 INFO o.a.j.s.SampleResult: Note: Sample TimeStamps are START times
+2026-08-04 21:22:24,385 INFO o.a.j.s.SampleResult: sampleresult.default.encoding is set to UTF-8
+2026-08-04 21:22:24,385 INFO o.a.j.s.SampleResult: sampleresult.useNanoTime=true
+2026-08-04 21:22:24,385 INFO o.a.j.s.SampleResult: sampleresult.nanoThreadSleep=5000
+2026-08-04 21:22:24,386 INFO o.a.j.t.JMeterThread: Thread started: jp@gc - Ultimate Thread Group 1-1
+2026-08-04 21:22:24,413 INFO o.a.j.p.h.s.HTTPHCAbstractImpl: Local host = KDE-Neon
+2026-08-04 21:22:24,416 INFO o.a.j.p.h.s.HTTPHC4Impl: HTTP request retry count = 0
+2026-08-04 21:22:24,474 INFO o.a.j.p.h.s.h.LazyLayeredConnectionSocketFactory: Setting up HTTPS TrustAll Socket Factory
+2026-08-04 21:22:24,477 INFO o.a.j.u.JsseSSLManager: Using default SSL protocol: TLS
+2026-08-04 21:22:24,477 INFO o.a.j.u.JsseSSLManager: SSL session context: per-thread
+2026-08-04 21:22:24,554 INFO o.a.j.u.SSLManager: JmeterKeyStore Location:  type JKS
+2026-08-04 21:22:24,556 INFO o.a.j.u.SSLManager: KeyStore created OK
+2026-08-04 21:22:24,556 WARN o.a.j.u.SSLManager: Keystore file not found, loading empty keystore
+2026-08-04 21:22:30,592 INFO o.a.j.r.Summariser: summary +      7 in 00:00:06 =    1.1/s Avg:   222 Min:    80 Max:   515 Err:     0 (0.00%) Active: 1 Started: 1 Finished: 0
+2026-08-04 21:23:00,566 INFO o.a.j.r.Summariser: summary +     30 in 00:00:30 =    1.0/s Avg:   164 Min:    80 Max:   344 Err:     6 (20.00%) Active: 1 Started: 1 Finished: 0
+2026-08-04 21:23:00,567 INFO o.a.j.r.Summariser: summary =     37 in 00:00:36 =    1.0/s Avg:   175 Min:    80 Max:   515 Err:     6 (16.22%)
+2026-08-04 21:23:24,381 INFO o.a.j.t.JMeterThread: Thread started: jp@gc - Ultimate Thread Group 1-2
+2026-08-04 21:23:30,563 INFO o.a.j.r.Summariser: summary +     36 in 00:00:30 =    1.2/s Avg:   151 Min:    76 Max:   191 Err:     4 (11.11%) Active: 2 Started: 2 Finished: 0
+2026-08-04 21:23:30,564 INFO o.a.j.r.Summariser: summary =     73 in 00:01:06 =    1.1/s Avg:   163 Min:    76 Max:   515 Err:    10 (13.70%)
+2026-08-04 21:24:00,563 INFO o.a.j.r.Summariser: summary +     60 in 00:00:30 =    2.0/s Avg:   156 Min:    74 Max:   193 Err:     4 (6.67%) Active: 2 Started: 2 Finished: 0
+2026-08-04 21:24:00,564 INFO o.a.j.r.Summariser: summary =    133 in 00:01:36 =    1.4/s Avg:   160 Min:    74 Max:   515 Err:    14 (10.53%)
+2026-08-04 21:24:24,382 INFO o.a.j.t.JMeterThread: Thread started: jp@gc - Ultimate Thread Group 1-3
+2026-08-04 21:24:30,569 INFO o.a.j.r.Summariser: summary +     66 in 00:00:30 =    2.2/s Avg:   153 Min:    74 Max:   203 Err:     9 (13.64%) Active: 3 Started: 3 Finished: 0
+2026-08-04 21:24:30,569 INFO o.a.j.r.Summariser: summary =    199 in 00:02:06 =    1.6/s Avg:   157 Min:    74 Max:   515 Err:    23 (11.56%)
+2026-08-04 21:25:00,555 INFO o.a.j.r.Summariser: summary +     90 in 00:00:30 =    3.0/s Avg:   157 Min:    72 Max:   198 Err:    10 (11.11%) Active: 3 Started: 3 Finished: 0
+2026-08-04 21:25:00,556 INFO o.a.j.r.Summariser: summary =    289 in 00:02:36 =    1.9/s Avg:   157 Min:    72 Max:   515 Err:    33 (11.42%)
+2026-08-04 21:25:24,381 INFO o.a.j.t.JMeterThread: Thread started: jp@gc - Ultimate Thread Group 1-4
+2026-08-04 21:25:30,570 INFO o.a.j.r.Summariser: summary +     94 in 00:00:30 =    3.1/s Avg:   156 Min:    74 Max:   219 Err:     9 (9.57%) Active: 4 Started: 4 Finished: 0
+2026-08-04 21:25:30,570 INFO o.a.j.r.Summariser: summary =    383 in 00:03:06 =    2.1/s Avg:   157 Min:    72 Max:   515 Err:    42 (10.97%)
+2026-08-04 21:26:00,545 INFO o.a.j.r.Summariser: summary +    120 in 00:00:30 =    4.0/s Avg:   187 Min:    74 Max:  3378 Err:    18 (15.00%) Active: 4 Started: 4 Finished: 0
+2026-08-04 21:26:00,545 INFO o.a.j.r.Summariser: summary =    503 in 00:03:36 =    2.3/s Avg:   164 Min:    72 Max:  3378 Err:    60 (11.93%)
+2026-08-04 21:26:23,568 INFO o.a.j.t.JMeterThread: Thread finished: jp@gc - Ultimate Thread Group 1-3
+2026-08-04 21:26:23,593 INFO o.a.j.t.JMeterThread: Thread finished: jp@gc - Ultimate Thread Group 1-1
+2026-08-04 21:26:23,840 INFO o.a.j.t.JMeterThread: Thread finished: jp@gc - Ultimate Thread Group 1-4
+2026-08-04 21:26:24,545 INFO o.a.j.t.JMeterThread: Stopping because end time detected by thread: jp@gc - Ultimate Thread Group 1-2
+2026-08-04 21:26:24,545 INFO o.a.j.t.JMeterThread: Thread finished: jp@gc - Ultimate Thread Group 1-2
+2026-08-04 21:26:24,546 INFO o.a.j.e.StandardJMeterEngine: Notifying test listeners of end of test
+2026-08-04 21:26:24,547 INFO o.a.j.r.Summariser: summary +     96 in 00:00:24 =    4.0/s Avg:   155 Min:    74 Max:   200 Err:    12 (12.50%) Active: 0 Started: 4 Finished: 4
+2026-08-04 21:26:24,547 INFO o.a.j.r.Summariser: summary =    599 in 00:04:00 =    2.5/s Avg:   163 Min:    72 Max:  3378 Err:    72 (12.02%)

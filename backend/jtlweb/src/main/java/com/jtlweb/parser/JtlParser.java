@@ -1,5 +1,6 @@
 package com.jtlweb.parser;
 
+import com.jtlweb.exception.JtlParseException;
 import com.jtlweb.model.JtlSample;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;

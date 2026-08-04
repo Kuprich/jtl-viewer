@@ -1,6 +1,7 @@
 package com.jtlweb.controller;
 
-import com.jtlweb.parser.JtlParseException;
+import com.jtlweb.exception.RunNotFoundException;
+import com.jtlweb.exception.JtlParseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -36,5 +37,10 @@ public class ApiExceptionHandler {
     public ResponseEntity<Map<String, String>> handleGeneric(Exception e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(Map.of("error", "Internal server error"));
+    }
+
+    @ExceptionHandler(RunNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleNotFound(RunNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", e.getMessage()));
     }
 }

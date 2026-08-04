@@ -1,6 +1,7 @@
 package com.jtlweb.service;
 
 import com.jtlweb.dto.RunSummary;
+import com.jtlweb.exception.RunNotFoundException;
 import com.jtlweb.model.JtlRun;
 import com.jtlweb.repository.JtlRunRepository;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,12 @@ public class RunService {
         return runRepository.findAllByOrderByUploadedAtDesc().stream()
                 .map(RunService::toSummary)
                 .toList();
+    }
+
+    public RunSummary getById(long id) {
+        return runRepository.findById(id)
+                .map(RunService::toSummary)
+                .orElseThrow(() -> new RunNotFoundException(id));
     }
 
     private static RunSummary toSummary(JtlRun r) {
