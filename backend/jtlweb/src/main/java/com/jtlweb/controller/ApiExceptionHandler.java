@@ -2,6 +2,7 @@ package com.jtlweb.controller;
 
 import com.jtlweb.exception.RunNotFoundException;
 import com.jtlweb.exception.JtlParseException;
+import com.jtlweb.exception.InvalidGroupByException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -42,5 +43,11 @@ public class ApiExceptionHandler {
     @ExceptionHandler(RunNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleNotFound(RunNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", e.getMessage()));
+    }
+
+    // Unknown / invalid groupBy value for /stats -> 400.
+    @ExceptionHandler(InvalidGroupByException.class)
+    public ResponseEntity<Map<String, String>> handleInvalidGroupBy(InvalidGroupByException e) {
+        return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
     }
 }
