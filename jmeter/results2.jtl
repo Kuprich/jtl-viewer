@@ -1,0 +1,749 @@
+timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,URL,Latency,IdleTime,Connect
+1785867744454,515,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11406,127,1,1,https://fakestoreapi.com/products,507,0,273
+1785867745406,81,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1490,130,1,1,https://fakestoreapi.com/products/10,80,0,0
+1785867746405,189,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1700,124,1,1,https://fakestoreapi.com/carts,188,0,0
+1785867747406,186,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,901,126,1,1,https://fakestoreapi.com/carts/6,185,0,0
+1785867744386,971,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15497,507,1,1,null,960,2234,273
+1785867748408,320,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11407,127,1,1,https://fakestoreapi.com/products,318,0,87
+1785867749406,80,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1126,129,1,1,https://fakestoreapi.com/products/1,80,0,0
+1785867750406,184,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1700,124,1,1,https://fakestoreapi.com/carts,184,0,0
+1785867751406,181,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,false,"Test failed: text expected to contain /""id""/",770,126,1,1,https://fakestoreapi.com/carts/9,181,0,0
+1785867747592,765,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-1,,false,,15003,506,1,1,null,763,3230,87
+1785867752406,170,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11418,127,1,1,https://fakestoreapi.com/products,169,0,87
+1785867753406,80,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1327,130,1,1,https://fakestoreapi.com/products/16,80,0,0
+1785867754406,187,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1702,124,1,1,https://fakestoreapi.com/carts,187,0,0
+1785867755406,184,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,false,"Test failed: text expected to contain /""id""/",766,127,1,1,https://fakestoreapi.com/carts/10,184,0,0
+1785867751588,621,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-1,,false,,15213,508,1,1,null,620,3382,87
+1785867756406,170,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11406,127,1,1,https://fakestoreapi.com/products,169,0,84
+1785867757406,80,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1327,130,1,1,https://fakestoreapi.com/products/16,80,0,0
+1785867758406,188,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1696,124,1,1,https://fakestoreapi.com/carts,188,0,0
+1785867759406,189,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,927,126,1,1,https://fakestoreapi.com/carts/2,189,0,0
+1785867755591,627,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15356,507,1,1,null,626,3377,84
+1785867760406,186,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11404,127,1,1,https://fakestoreapi.com/products,185,0,93
+1785867761406,86,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1329,129,1,1,https://fakestoreapi.com/products/2,86,0,0
+1785867762405,188,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1708,124,1,1,https://fakestoreapi.com/carts,188,0,0
+1785867763405,190,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,false,"Test failed: text expected to contain /""id""/",762,127,1,1,https://fakestoreapi.com/carts/10,190,0,0
+1785867759595,650,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-1,,false,,15203,507,1,1,null,649,3350,93
+1785867764406,171,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11415,127,1,1,https://fakestoreapi.com/products,169,0,85
+1785867765405,81,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1181,129,1,1,https://fakestoreapi.com/products/4,81,0,0
+1785867766406,184,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1710,124,1,1,https://fakestoreapi.com/carts,184,0,0
+1785867767406,189,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,867,126,1,1,https://fakestoreapi.com/carts/7,189,0,0
+1785867763595,625,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15173,506,1,1,null,623,3376,85
+1785867768406,166,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11412,127,1,1,https://fakestoreapi.com/products,165,0,83
+1785867769405,85,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1296,129,1,1,https://fakestoreapi.com/products/9,85,0,0
+1785867770406,189,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1702,124,1,1,https://fakestoreapi.com/carts,189,0,0
+1785867771405,191,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,869,126,1,1,https://fakestoreapi.com/carts/7,191,0,0
+1785867767596,631,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15279,506,1,1,null,630,3369,83
+1785867772406,177,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11405,127,1,1,https://fakestoreapi.com/products,176,0,89
+1785867773405,81,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1376,130,1,1,https://fakestoreapi.com/products/14,81,0,0
+1785867774405,188,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1702,124,1,1,https://fakestoreapi.com/carts,188,0,0
+1785867775406,198,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,false,"Test failed: text expected to contain /""id""/",764,126,1,1,https://fakestoreapi.com/carts/9,198,0,0
+1785867771596,644,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-1,,false,,15247,507,1,1,null,643,3364,89
+1785867776406,344,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11412,127,1,1,https://fakestoreapi.com/products,343,0,107
+1785867777405,84,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,false,Response was null,718,130,1,1,https://fakestoreapi.com/products/24,84,0,0
+1785867778406,189,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1706,124,1,1,https://fakestoreapi.com/carts,189,0,0
+1785867779406,188,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,false,"Test failed: text expected to contain /""id""/",764,126,1,1,https://fakestoreapi.com/carts/8,188,0,0
+1785867775604,805,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 2",jp@gc - Ultimate Thread Group 1-1,,false,,14600,507,1,1,null,804,3185,107
+1785867780405,160,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11406,127,1,1,https://fakestoreapi.com/products,159,0,79
+1785867781405,76,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,false,Response was null,724,130,1,1,https://fakestoreapi.com/products/23,76,0,0
+1785867782404,185,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1698,124,1,1,https://fakestoreapi.com/carts,185,0,0
+1785867783405,179,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,901,126,1,1,https://fakestoreapi.com/carts/5,179,0,0
+1785867779593,600,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-1,,false,,14729,507,1,1,null,599,3392,79
+1785867784405,172,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11422,127,1,1,https://fakestoreapi.com/products,171,0,86
+1785867785406,79,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1774,130,1,1,https://fakestoreapi.com/products/15,79,0,0
+1785867786405,190,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1708,124,1,1,https://fakestoreapi.com/carts,189,0,0
+1785867787405,185,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,871,126,1,1,https://fakestoreapi.com/carts/7,185,0,0
+1785867783585,626,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15775,507,1,1,null,624,3378,86
+1785867788406,171,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11407,127,1,1,https://fakestoreapi.com/products,170,0,86
+1785867789406,76,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1165,130,1,1,https://fakestoreapi.com/products/18,76,0,0
+1785867790405,183,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1702,124,1,1,https://fakestoreapi.com/carts,183,0,0
+1785867791406,181,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,899,126,1,1,https://fakestoreapi.com/carts/5,180,0,0
+1785867787590,611,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15173,507,1,1,null,609,3386,86
+1785867792406,178,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11413,127,1,1,https://fakestoreapi.com/products,178,0,85
+1785867793406,85,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1382,130,1,1,https://fakestoreapi.com/products/14,85,0,0
+1785867794405,183,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1696,124,1,1,https://fakestoreapi.com/carts,183,0,0
+1785867795405,191,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,868,126,1,1,https://fakestoreapi.com/carts/4,190,0,0
+1785867791587,637,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15359,507,1,1,null,636,3372,85
+1785867796406,162,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11402,127,1,1,https://fakestoreapi.com/products,161,0,81
+1785867797405,78,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1337,129,1,1,https://fakestoreapi.com/products/2,78,0,0
+1785867798405,187,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1702,124,1,1,https://fakestoreapi.com/carts,187,0,0
+1785867799406,181,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,925,126,1,1,https://fakestoreapi.com/carts/2,181,0,0
+1785867795596,608,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15366,506,1,1,null,607,3383,81
+1785867800405,167,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11404,127,1,1,https://fakestoreapi.com/products,167,0,83
+1785867801405,76,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,false,Response was null,720,130,1,1,https://fakestoreapi.com/products/24,76,0,0
+1785867802405,182,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1702,124,1,1,https://fakestoreapi.com/carts,182,0,0
+1785867803406,187,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,false,"Test failed: text expected to contain /""id""/",764,126,1,1,https://fakestoreapi.com/carts/8,187,0,0
+1785867799588,612,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 2",jp@gc - Ultimate Thread Group 1-1,,false,,14590,507,1,1,null,612,3393,83
+1785867804382,167,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11410,127,2,2,https://fakestoreapi.com/products,166,0,85
+1785867804406,165,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11406,127,2,2,https://fakestoreapi.com/products,165,0,81
+1785867805381,81,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,false,Response was null,720,130,2,2,https://fakestoreapi.com/products/23,81,0,0
+1785867805406,77,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1267,129,2,2,https://fakestoreapi.com/products/3,77,0,0
+1785867806381,185,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1698,124,2,2,https://fakestoreapi.com/carts,185,0,0
+1785867806406,182,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1700,124,2,2,https://fakestoreapi.com/carts,182,0,0
+1785867807382,182,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,903,126,2,2,https://fakestoreapi.com/carts/5,182,0,0
+1785867804381,615,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-2,,false,,14731,507,2,2,null,614,2568,85
+1785867807406,183,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,922,126,2,2,https://fakestoreapi.com/carts/1,183,0,0
+1785867803593,607,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15295,506,2,2,null,607,3389,81
+1785867808381,177,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11412,127,2,2,https://fakestoreapi.com/products,176,0,91
+1785867808405,170,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11402,127,2,2,https://fakestoreapi.com/products,170,0,87
+1785867809382,83,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1372,130,2,2,https://fakestoreapi.com/products/14,83,0,0
+1785867809406,76,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1269,129,2,2,https://fakestoreapi.com/products/3,76,0,0
+1785867810382,181,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1698,124,2,2,https://fakestoreapi.com/carts,181,0,0
+1785867810406,181,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1698,124,2,2,https://fakestoreapi.com/carts,180,0,0
+1785867811381,182,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,899,126,2,2,https://fakestoreapi.com/carts/5,182,0,0
+1785867807565,623,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-2,,true,,15381,507,2,2,null,622,3376,91
+1785867811405,180,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,871,126,2,2,https://fakestoreapi.com/carts/7,180,0,0
+1785867807590,607,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15240,506,2,2,null,606,3388,87
+1785867812381,167,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11414,127,2,2,https://fakestoreapi.com/products,166,0,83
+1785867812405,170,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11412,127,2,2,https://fakestoreapi.com/products,170,0,87
+1785867813381,80,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1325,130,2,2,https://fakestoreapi.com/products/19,80,0,0
+1785867813405,83,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,false,Response was null,722,130,2,2,https://fakestoreapi.com/products/24,83,0,0
+1785867814381,184,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1712,124,2,2,https://fakestoreapi.com/carts,184,0,0
+1785867814405,192,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1698,124,2,2,https://fakestoreapi.com/carts,192,0,0
+1785867815382,185,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,926,126,2,2,https://fakestoreapi.com/carts/1,185,0,0
+1785867811564,616,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-2,,true,,15377,507,2,2,null,615,3387,83
+1785867815406,188,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,false,"Test failed: text expected to contain /""id""/",762,126,2,2,https://fakestoreapi.com/carts/9,187,0,0
+1785867811586,633,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 2",jp@gc - Ultimate Thread Group 1-1,,false,,14594,507,2,2,null,632,3375,87
+1785867816382,161,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11414,127,2,2,https://fakestoreapi.com/products,161,0,78
+1785867816406,165,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11408,127,2,2,https://fakestoreapi.com/products,164,0,82
+1785867817382,86,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1187,129,2,2,https://fakestoreapi.com/products/4,86,0,0
+1785867817406,79,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1218,129,2,2,https://fakestoreapi.com/products/5,79,0,0
+1785867818381,183,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1696,124,2,2,https://fakestoreapi.com/carts,183,0,0
+1785867818406,181,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1700,124,2,2,https://fakestoreapi.com/carts,181,0,0
+1785867819381,182,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,933,126,2,2,https://fakestoreapi.com/carts/2,182,0,0
+1785867815567,612,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-2,,true,,15230,506,2,2,null,612,3384,78
+1785867819405,184,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,870,126,2,2,https://fakestoreapi.com/carts/4,184,0,0
+1785867815594,609,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15196,506,2,2,null,608,3386,82
+1785867820381,164,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11407,127,2,2,https://fakestoreapi.com/products,163,0,78
+1785867820406,162,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11404,127,2,2,https://fakestoreapi.com/products,161,0,82
+1785867821381,77,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1132,129,2,2,https://fakestoreapi.com/products/1,77,0,0
+1785867821405,74,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1401,130,2,2,https://fakestoreapi.com/products/17,74,0,0
+1785867822382,187,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1698,124,2,2,https://fakestoreapi.com/carts,187,0,0
+1785867822405,182,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1706,124,2,2,https://fakestoreapi.com/carts,182,0,0
+1785867823382,181,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,893,126,2,2,https://fakestoreapi.com/carts/5,181,0,0
+1785867819563,609,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-2,,true,,15130,506,2,2,null,608,3391,78
+1785867823405,181,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,905,126,2,2,https://fakestoreapi.com/carts/5,181,0,0
+1785867819590,599,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15416,507,2,2,null,598,3397,82
+1785867824382,165,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11409,127,2,2,https://fakestoreapi.com/products,164,0,79
+1785867824406,175,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11412,127,2,2,https://fakestoreapi.com/products,174,0,83
+1785867825381,78,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1776,130,2,2,https://fakestoreapi.com/products/15,78,0,0
+1785867825406,78,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1329,130,2,2,https://fakestoreapi.com/products/19,78,0,0
+1785867826381,185,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1700,124,2,2,https://fakestoreapi.com/carts,185,0,0
+1785867826406,189,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1704,124,2,2,https://fakestoreapi.com/carts,189,0,0
+1785867827381,185,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,903,126,2,2,https://fakestoreapi.com/carts/6,185,0,0
+1785867823563,613,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-2,,true,,15788,507,2,2,null,612,3390,79
+1785867827405,187,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,false,"Test failed: text expected to contain /""id""/",766,127,2,2,https://fakestoreapi.com/carts/10,187,0,0
+1785867823586,629,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-1,,false,,15211,508,2,2,null,628,3377,83
+1785867828382,167,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11412,127,2,2,https://fakestoreapi.com/products,167,0,85
+1785867828406,162,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11416,127,2,2,https://fakestoreapi.com/products,161,0,80
+1785867829381,88,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1333,130,2,2,https://fakestoreapi.com/products/19,88,0,0
+1785867829405,79,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1177,129,2,2,https://fakestoreapi.com/products/6,79,0,0
+1785867830381,186,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1706,124,2,2,https://fakestoreapi.com/carts,186,0,0
+1785867830406,184,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1708,124,2,2,https://fakestoreapi.com/carts,184,0,0
+1785867831381,185,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,899,126,2,2,https://fakestoreapi.com/carts/6,185,0,0
+1785867827566,626,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-2,,true,,15350,507,2,2,null,626,3375,85
+1785867831406,184,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,927,126,2,2,https://fakestoreapi.com/carts/2,184,0,0
+1785867827592,609,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15228,506,2,2,null,608,3389,80
+1785867832381,168,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11404,127,2,2,https://fakestoreapi.com/products,168,0,85
+1785867832406,173,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11411,127,2,2,https://fakestoreapi.com/products,173,0,85
+1785867833382,79,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1163,130,2,2,https://fakestoreapi.com/products/18,79,0,0
+1785867833406,89,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1134,129,2,2,https://fakestoreapi.com/products/7,89,0,0
+1785867834381,191,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1704,124,2,2,https://fakestoreapi.com/carts,191,0,0
+1785867834405,188,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1702,124,2,2,https://fakestoreapi.com/carts,188,0,0
+1785867835381,183,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,903,126,2,2,https://fakestoreapi.com/carts/6,183,0,0
+1785867831567,621,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-2,,true,,15174,507,2,2,null,621,3377,85
+1785867835406,193,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,897,126,2,2,https://fakestoreapi.com/carts/6,193,0,0
+1785867831590,643,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15144,506,2,2,null,643,3367,85
+1785867836381,163,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11410,127,2,2,https://fakestoreapi.com/products,162,0,83
+1785867836405,166,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11407,127,2,2,https://fakestoreapi.com/products,166,0,80
+1785867837381,82,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1333,130,2,2,https://fakestoreapi.com/products/19,82,0,0
+1785867837405,78,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1156,130,2,2,https://fakestoreapi.com/products/12,78,0,0
+1785867838382,182,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1704,124,2,2,https://fakestoreapi.com/carts,182,0,0
+1785867838406,186,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1698,124,2,2,https://fakestoreapi.com/carts,186,0,0
+1785867839381,183,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,false,"Test failed: text expected to contain /""id""/",764,126,2,2,https://fakestoreapi.com/carts/9,183,0,0
+1785867835565,610,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-2,,false,,15211,507,2,2,null,609,3389,83
+1785867839406,186,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,865,126,2,2,https://fakestoreapi.com/carts/7,186,0,0
+1785867835600,616,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15126,507,2,2,null,616,3376,80
+1785867840381,181,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11408,127,2,2,https://fakestoreapi.com/products,181,0,95
+1785867840405,182,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11405,127,2,2,https://fakestoreapi.com/products,181,0,95
+1785867841380,82,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,false,Response was null,720,130,2,2,https://fakestoreapi.com/products/21,82,0,0
+1785867841404,85,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1169,129,2,2,https://fakestoreapi.com/products/6,85,0,0
+1785867842381,185,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1708,124,2,2,https://fakestoreapi.com/carts,185,0,0
+1785867842405,181,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1698,124,2,2,https://fakestoreapi.com/carts,181,0,0
+1785867843381,184,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,895,126,2,2,https://fakestoreapi.com/carts/3,183,0,0
+1785867839563,632,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-2,,false,,14731,507,2,2,null,631,3370,95
+1785867843405,182,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,899,126,2,2,https://fakestoreapi.com/carts/3,182,0,0
+1785867839591,630,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15171,506,2,2,null,629,3366,95
+1785867844381,165,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11414,127,2,2,https://fakestoreapi.com/products,165,0,82
+1785867844404,165,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11409,127,2,2,https://fakestoreapi.com/products,164,0,80
+1785867845381,79,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1486,130,2,2,https://fakestoreapi.com/products/10,79,0,0
+1785867845404,74,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1156,130,2,2,https://fakestoreapi.com/products/12,74,0,0
+1785867846380,184,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1708,124,2,2,https://fakestoreapi.com/carts,184,0,0
+1785867846404,183,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1702,124,2,2,https://fakestoreapi.com/carts,183,0,0
+1785867847381,192,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,false,"Test failed: text expected to contain /""id""/",766,127,2,2,https://fakestoreapi.com/carts/10,192,0,0
+1785867843565,620,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-2,,false,,15374,508,2,2,null,620,3388,82
+1785867847404,182,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,871,126,2,2,https://fakestoreapi.com/carts/7,182,0,0
+1785867843587,604,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15138,507,2,2,null,603,3395,80
+1785867848381,185,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11409,127,2,2,https://fakestoreapi.com/products,184,0,92
+1785867848405,163,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11408,127,2,2,https://fakestoreapi.com/products,163,0,83
+1785867849380,91,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1205,130,2,2,https://fakestoreapi.com/products/20,91,0,0
+1785867849405,78,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1323,130,2,2,https://fakestoreapi.com/products/16,78,0,0
+1785867850382,196,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1706,124,2,2,https://fakestoreapi.com/carts,196,0,0
+1785867850406,183,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1700,124,2,2,https://fakestoreapi.com/carts,183,0,0
+1785867851382,194,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,false,"Test failed: text expected to contain /""id""/",764,126,2,2,https://fakestoreapi.com/carts/8,193,0,0
+1785867847573,666,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-2,,false,,15084,507,2,2,null,664,3336,92
+1785867851406,189,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,897,126,2,2,https://fakestoreapi.com/carts/3,189,0,0
+1785867847586,613,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15328,507,2,2,null,613,3395,83
+1785867852382,166,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11410,127,2,2,https://fakestoreapi.com/products,166,0,85
+1785867852405,160,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11408,127,2,2,https://fakestoreapi.com/products,159,0,80
+1785867853381,80,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1269,129,2,2,https://fakestoreapi.com/products/3,80,0,0
+1785867853405,82,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1294,129,2,2,https://fakestoreapi.com/products/9,82,0,0
+1785867854381,187,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1706,124,2,2,https://fakestoreapi.com/carts,187,0,0
+1785867854405,186,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1700,124,2,2,https://fakestoreapi.com/carts,186,0,0
+1785867855381,185,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,901,126,2,2,https://fakestoreapi.com/carts/5,185,0,0
+1785867851576,618,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-2,,true,,15286,506,2,2,null,618,3373,85
+1785867855405,184,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,901,126,2,2,https://fakestoreapi.com/carts/3,184,0,0
+1785867851595,612,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15303,506,2,2,null,611,3382,80
+1785867856381,165,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11406,127,2,2,https://fakestoreapi.com/products,164,0,83
+1785867856405,161,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11408,127,2,2,https://fakestoreapi.com/products,160,0,80
+1785867857381,78,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1473,130,2,2,https://fakestoreapi.com/products/11,78,0,0
+1785867857405,81,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1329,130,2,2,https://fakestoreapi.com/products/19,81,0,0
+1785867858381,187,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1700,124,2,2,https://fakestoreapi.com/carts,187,0,0
+1785867858405,187,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1700,124,2,2,https://fakestoreapi.com/carts,187,0,0
+1785867859381,180,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,false,"Test failed: text expected to contain /""id""/",766,127,2,2,https://fakestoreapi.com/carts/10,180,0,0
+1785867855567,610,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-2,,false,,15345,508,2,2,null,609,3384,83
+1785867859405,184,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,927,126,2,2,https://fakestoreapi.com/carts/2,184,0,0
+1785867855589,613,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15364,507,2,2,null,612,3387,80
+1785867860382,167,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11406,127,2,2,https://fakestoreapi.com/products,166,0,84
+1785867860406,153,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11412,127,2,2,https://fakestoreapi.com/products,152,0,75
+1785867861381,78,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,false,Response was null,724,130,2,2,https://fakestoreapi.com/products/21,78,0,0
+1785867861405,75,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,false,Response was null,718,130,2,2,https://fakestoreapi.com/products/22,75,0,0
+1785867862382,182,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1700,124,2,2,https://fakestoreapi.com/carts,182,0,0
+1785867862406,187,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1704,124,2,2,https://fakestoreapi.com/carts,187,0,0
+1785867863381,181,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,false,"Test failed: text expected to contain /""id""/",772,127,2,2,https://fakestoreapi.com/carts/10,181,0,0
+1785867859562,608,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 2",jp@gc - Ultimate Thread Group 1-2,,false,,14602,508,2,2,null,607,3393,84
+1785867863406,177,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,931,126,2,2,https://fakestoreapi.com/carts/2,177,0,0
+1785867859589,592,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-1,,false,,14765,507,2,2,null,591,3402,75
+1785867864381,173,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11408,127,3,3,https://fakestoreapi.com/products,172,0,86
+1785867864383,203,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,11410,127,3,3,https://fakestoreapi.com/products,202,0,84
+1785867864406,182,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11404,127,3,3,https://fakestoreapi.com/products,181,0,88
+1785867865382,80,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1304,129,3,3,https://fakestoreapi.com/products/9,80,0,0
+1785867865382,80,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,false,Response was null,720,130,3,3,https://fakestoreapi.com/products/21,80,0,0
+1785867865405,82,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1206,130,3,3,https://fakestoreapi.com/products/20,82,0,0
+1785867866382,185,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1704,124,3,3,https://fakestoreapi.com/carts,185,0,0
+1785867866382,202,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1709,124,3,3,https://fakestoreapi.com/carts,202,0,0
+1785867866405,185,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1702,124,3,3,https://fakestoreapi.com/carts,185,0,0
+1785867867382,181,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-3,text,false,"Test failed: text expected to contain /""id""/",764,127,3,3,https://fakestoreapi.com/carts/10,181,0,0
+1785867864382,649,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-3,,false,,15182,507,3,3,null,648,2533,84
+1785867867382,182,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,921,126,3,3,https://fakestoreapi.com/carts/2,182,0,0
+1785867863563,637,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-2,,false,,14758,507,3,3,null,636,3364,86
+1785867867406,185,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,903,126,3,3,https://fakestoreapi.com/carts/6,185,0,0
+1785867863583,634,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15215,507,3,3,null,633,3374,88
+1785867868382,171,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11414,127,3,3,https://fakestoreapi.com/products,170,0,85
+1785867868406,163,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11412,127,3,3,https://fakestoreapi.com/products,163,0,82
+1785867868382,203,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,11402,127,3,3,https://fakestoreapi.com/products,202,0,88
+1785867869381,80,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1339,129,3,3,https://fakestoreapi.com/products/2,80,0,0
+1785867869382,81,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1273,129,3,3,https://fakestoreapi.com/products/3,81,0,0
+1785867869406,79,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1778,130,3,3,https://fakestoreapi.com/products/15,79,0,0
+1785867870383,186,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1696,124,3,3,https://fakestoreapi.com/carts,186,0,0
+1785867870381,189,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1700,124,3,3,https://fakestoreapi.com/carts,189,0,0
+1785867870405,190,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1694,124,3,3,https://fakestoreapi.com/carts,190,0,0
+1785867871381,185,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,893,126,3,3,https://fakestoreapi.com/carts/6,185,0,0
+1785867867564,625,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-2,,true,,15346,506,3,3,null,624,3377,85
+1785867871382,188,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,929,126,3,3,https://fakestoreapi.com/carts/2,188,0,0
+1785867867564,658,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-3,,true,,15300,506,3,3,null,657,3348,88
+1785867871405,184,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,872,126,3,3,https://fakestoreapi.com/carts/4,184,0,0
+1785867867591,616,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15756,507,3,3,null,616,3383,82
+1785867872382,177,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,11406,127,3,3,https://fakestoreapi.com/products,177,0,94
+1785867872382,178,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11406,127,3,3,https://fakestoreapi.com/products,177,0,94
+1785867872405,161,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11401,127,3,3,https://fakestoreapi.com/products,160,0,76
+1785867873383,78,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1376,130,3,3,https://fakestoreapi.com/products/14,78,0,0
+1785867873382,87,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,false,Response was null,725,130,3,3,https://fakestoreapi.com/products/25,87,0,0
+1785867873406,79,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1177,129,3,3,https://fakestoreapi.com/products/4,79,0,0
+1785867874382,181,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1706,124,3,3,https://fakestoreapi.com/carts,181,0,0
+1785867874381,185,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1698,124,3,3,https://fakestoreapi.com/carts,185,0,0
+1785867874405,182,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1706,124,3,3,https://fakestoreapi.com/carts,182,0,0
+1785867875382,184,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,871,126,3,3,https://fakestoreapi.com/carts/7,184,0,0
+1785867871570,620,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-3,,true,,15359,507,3,3,null,620,3376,94
+1785867875381,189,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,926,126,3,3,https://fakestoreapi.com/carts/1,189,0,0
+1785867871566,639,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-2,,false,,14755,507,3,3,null,638,3365,94
+1785867875406,181,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,false,"Test failed: text expected to contain /""id""/",760,126,3,3,https://fakestoreapi.com/carts/9,181,0,0
+1785867871590,603,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-1,,false,,15044,506,3,3,null,602,3394,76
+1785867876383,163,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,11410,127,3,3,https://fakestoreapi.com/products,162,0,78
+1785867876405,171,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11412,127,3,3,https://fakestoreapi.com/products,171,0,83
+1785867876382,198,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11411,127,3,3,https://fakestoreapi.com/products,198,0,84
+1785867877382,78,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1300,129,3,3,https://fakestoreapi.com/products/9,77,0,0
+1785867877382,79,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1778,130,3,3,https://fakestoreapi.com/products/15,79,0,0
+1785867877406,80,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1198,130,3,3,https://fakestoreapi.com/products/20,80,0,0
+1785867878381,183,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1698,124,3,3,https://fakestoreapi.com/carts,183,0,0
+1785867878382,183,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1708,124,3,3,https://fakestoreapi.com/carts,183,0,0
+1785867878405,187,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1700,124,3,3,https://fakestoreapi.com/carts,187,0,0
+1785867879382,181,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,895,126,3,3,https://fakestoreapi.com/carts/5,181,0,0
+1785867875570,641,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-2,,true,,15782,507,3,3,null,641,3352,84
+1785867879382,184,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,895,126,3,3,https://fakestoreapi.com/carts/3,184,0,0
+1785867875566,608,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-3,,true,,15313,506,3,3,null,606,3392,78
+1785867879405,185,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,false,"Test failed: text expected to contain /""id""/",758,126,3,3,https://fakestoreapi.com/carts/8,185,0,0
+1785867875587,623,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-1,,false,,15068,507,3,3,null,623,3380,83
+1785867880382,156,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11404,127,3,3,https://fakestoreapi.com/products,155,0,78
+1785867880383,167,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,11412,127,3,3,https://fakestoreapi.com/products,167,0,81
+1785867880405,179,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11412,127,3,3,https://fakestoreapi.com/products,179,0,73
+1785867881381,73,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1304,129,3,3,https://fakestoreapi.com/products/9,73,0,0
+1785867881382,81,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1179,129,3,3,https://fakestoreapi.com/products/4,81,0,0
+1785867881405,74,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1200,130,3,3,https://fakestoreapi.com/products/20,74,0,0
+1785867882381,182,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1708,124,3,3,https://fakestoreapi.com/carts,181,0,0
+1785867882382,185,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1708,124,3,3,https://fakestoreapi.com/carts,185,0,0
+1785867882406,181,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1700,124,3,3,https://fakestoreapi.com/carts,181,0,0
+1785867883381,181,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,false,"Test failed: text expected to contain /""id""/",766,126,3,3,https://fakestoreapi.com/carts/8,181,0,0
+1785867879563,592,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-2,,false,,15182,506,3,3,null,590,3407,78
+1785867883382,182,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,926,126,3,3,https://fakestoreapi.com/carts/1,182,0,0
+1785867879566,615,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-3,,true,,15225,506,3,3,null,615,3383,81
+1785867883405,185,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,899,126,3,3,https://fakestoreapi.com/carts/3,185,0,0
+1785867879590,619,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15211,507,3,3,null,619,3382,73
+1785867884382,171,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,11405,127,3,3,https://fakestoreapi.com/products,170,0,80
+1785867884382,175,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11413,127,3,3,https://fakestoreapi.com/products,174,0,85
+1785867884405,188,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11410,127,3,3,https://fakestoreapi.com/products,187,0,85
+1785867885382,78,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1132,129,3,3,https://fakestoreapi.com/products/1,78,0,0
+1785867885381,82,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1150,130,3,3,https://fakestoreapi.com/products/12,82,0,0
+1785867885405,83,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,false,Response was null,720,130,3,3,https://fakestoreapi.com/products/25,83,0,0
+1785867886383,183,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1702,124,3,3,https://fakestoreapi.com/carts,183,0,0
+1785867886382,189,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1698,124,3,3,https://fakestoreapi.com/carts,189,0,0
+1785867886405,188,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1702,124,3,3,https://fakestoreapi.com/carts,188,0,0
+1785867887382,184,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-3,text,false,"Test failed: text expected to contain /""id""/",768,127,3,3,https://fakestoreapi.com/carts/10,184,0,0
+1785867883564,616,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-3,,false,,15007,507,3,3,null,615,3387,80
+1785867887381,187,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,false,"Test failed: text expected to contain /""id""/",764,127,3,3,https://fakestoreapi.com/carts/10,187,0,0
+1785867883562,633,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-2,,false,,15025,508,3,3,null,632,3373,85
+1785867887405,187,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,899,126,3,3,https://fakestoreapi.com/carts/5,187,0,0
+1785867883591,646,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-1,,false,,14731,507,3,3,null,645,3355,85
+1785867888382,165,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,11402,127,3,3,https://fakestoreapi.com/products,165,0,85
+1785867888381,175,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11407,127,3,3,https://fakestoreapi.com/products,174,0,87
+1785867888406,184,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11413,127,3,3,https://fakestoreapi.com/products,184,0,87
+1785867889385,76,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1131,129,3,3,https://fakestoreapi.com/products/7,76,0,0
+1785867889382,81,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,false,Response was null,720,130,3,3,https://fakestoreapi.com/products/21,81,0,0
+1785867889406,87,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1479,130,3,3,https://fakestoreapi.com/products/11,87,0,0
+1785867890383,181,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1702,124,3,3,https://fakestoreapi.com/carts,181,0,0
+1785867890382,184,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1704,124,3,3,https://fakestoreapi.com/carts,183,0,0
+1785867890406,190,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1702,124,3,3,https://fakestoreapi.com/carts,190,0,0
+1785867891383,181,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,921,126,3,3,https://fakestoreapi.com/carts/2,181,0,0
+1785867887567,603,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-3,,true,,15156,506,3,3,null,603,3394,85
+1785867891381,194,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,874,126,3,3,https://fakestoreapi.com/carts/4,194,0,0
+1785867887569,634,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-2,,false,,14705,507,3,3,null,632,3372,87
+1785867891406,188,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,893,126,3,3,https://fakestoreapi.com/carts/3,188,0,0
+1785867887592,649,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15487,507,3,3,null,649,3353,87
+1785867892383,162,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,11411,127,3,3,https://fakestoreapi.com/products,161,0,77
+1785867892382,167,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11406,127,3,3,https://fakestoreapi.com/products,166,0,83
+1785867892406,173,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11408,127,3,3,https://fakestoreapi.com/products,172,0,74
+1785867893383,72,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1294,129,3,3,https://fakestoreapi.com/products/9,72,0,0
+1785867893381,98,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1326,130,3,3,https://fakestoreapi.com/products/16,98,0,0
+1785867893405,74,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1382,130,3,3,https://fakestoreapi.com/products/14,74,0,0
+1785867894382,184,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1700,124,3,3,https://fakestoreapi.com/carts,184,0,0
+1785867894382,188,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1698,124,3,3,https://fakestoreapi.com/carts,188,0,0
+1785867894406,179,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1702,124,3,3,https://fakestoreapi.com/carts,179,0,0
+1785867895382,178,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,877,126,3,3,https://fakestoreapi.com/carts/7,178,0,0
+1785867891564,596,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-3,,true,,15282,506,3,3,null,595,3401,77
+1785867895382,183,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,924,126,3,3,https://fakestoreapi.com/carts/1,183,0,0
+1785867891575,636,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-2,,true,,15354,507,3,3,null,635,3355,83
+1785867895405,179,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,871,126,3,3,https://fakestoreapi.com/carts/7,179,0,0
+1785867891595,605,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15363,507,3,3,null,604,3384,74
+1785867896381,164,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11410,127,3,3,https://fakestoreapi.com/products,163,0,82
+1785867896405,156,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11416,127,3,3,https://fakestoreapi.com/products,155,0,79
+1785867896382,196,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,11412,127,3,3,https://fakestoreapi.com/products,195,0,80
+1785867897383,77,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1423,130,3,3,https://fakestoreapi.com/products/13,77,0,0
+1785867897381,79,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,false,Response was null,716,130,3,3,https://fakestoreapi.com/products/25,79,0,0
+1785867897405,77,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1158,130,3,3,https://fakestoreapi.com/products/12,77,0,0
+1785867898382,183,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1700,124,3,3,https://fakestoreapi.com/carts,183,0,0
+1785867898382,185,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1704,124,3,3,https://fakestoreapi.com/carts,185,0,0
+1785867898405,189,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1708,124,3,3,https://fakestoreapi.com/carts,189,0,0
+1785867899381,183,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,924,126,3,3,https://fakestoreapi.com/carts/1,183,0,0
+1785867895566,611,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-2,,false,,14754,507,3,3,null,610,3387,82
+1785867899382,185,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,895,126,3,3,https://fakestoreapi.com/carts/6,185,0,0
+1785867895561,641,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-3,,true,,15430,507,3,3,null,640,3365,80
+1785867899406,179,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,false,"Test failed: text expected to contain /""id""/",770,126,3,3,https://fakestoreapi.com/carts/9,179,0,0
+1785867895584,601,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-1,,false,,15052,507,3,3,null,600,3400,79
+1785867900383,172,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,11411,127,3,3,https://fakestoreapi.com/products,171,0,82
+1785867900406,154,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11408,127,3,3,https://fakestoreapi.com/products,153,0,77
+1785867900382,207,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11413,127,3,3,https://fakestoreapi.com/products,207,0,84
+1785867901382,78,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-3,text,false,Response was null,718,130,3,3,https://fakestoreapi.com/products/24,78,0,0
+1785867901382,84,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1163,130,3,3,https://fakestoreapi.com/products/18,84,0,0
+1785867901405,76,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1488,130,3,3,https://fakestoreapi.com/products/10,75,0,0
+1785867902383,183,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1704,124,3,3,https://fakestoreapi.com/carts,183,0,0
+1785867902381,191,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1702,124,3,3,https://fakestoreapi.com/carts,191,0,0
+1785867902405,183,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1708,124,3,3,https://fakestoreapi.com/carts,182,0,0
+1785867903382,185,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,923,126,3,3,https://fakestoreapi.com/carts/2,185,0,0
+1785867899564,667,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-2,,true,,15201,507,3,3,null,667,3336,84
+1785867903383,188,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,905,126,3,3,https://fakestoreapi.com/carts/3,187,0,0
+1785867899567,621,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-3,,false,,14738,507,3,3,null,619,3383,82
+1785867903405,182,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,897,126,3,3,https://fakestoreapi.com/carts/6,182,0,0
+1785867899585,595,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15501,507,3,3,null,592,3407,77
+1785867904382,176,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,11406,127,3,3,https://fakestoreapi.com/products,176,0,89
+1785867904405,171,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11408,127,3,3,https://fakestoreapi.com/products,171,0,84
+1785867904382,210,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11406,127,3,3,https://fakestoreapi.com/products,209,0,96
+1785867905382,78,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1317,130,3,3,https://fakestoreapi.com/products/16,78,0,0
+1785867905383,81,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1401,130,3,3,https://fakestoreapi.com/products/17,81,0,0
+1785867905405,85,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,false,Response was null,712,130,3,3,https://fakestoreapi.com/products/24,85,0,0
+1785867906381,189,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1706,124,3,3,https://fakestoreapi.com/carts,189,0,0
+1785867906382,191,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1702,124,3,3,https://fakestoreapi.com/carts,191,0,0
+1785867906405,189,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1708,124,3,3,https://fakestoreapi.com/carts,189,0,0
+1785867907381,186,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,895,126,3,3,https://fakestoreapi.com/carts/5,186,0,0
+1785867907382,185,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,901,126,3,3,https://fakestoreapi.com/carts/6,185,0,0
+1785867903571,633,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-3,,true,,15410,507,3,3,null,633,3363,89
+1785867903567,663,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-2,,true,,15324,507,3,3,null,662,3337,96
+1785867907405,188,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,869,126,3,3,https://fakestoreapi.com/carts/7,188,0,0
+1785867903587,633,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-1,,false,,14697,507,3,3,null,633,3373,84
+1785867908382,166,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11402,127,3,3,https://fakestoreapi.com/products,165,0,82
+1785867908406,161,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11404,127,3,3,https://fakestoreapi.com/products,161,0,80
+1785867908382,219,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,11417,127,3,3,https://fakestoreapi.com/products,218,0,109
+1785867909381,83,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1471,130,3,3,https://fakestoreapi.com/products/11,83,0,0
+1785867909382,89,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1222,129,3,3,https://fakestoreapi.com/products/5,89,0,0
+1785867909406,81,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,false,Response was null,718,130,3,3,https://fakestoreapi.com/products/23,81,0,0
+1785867910381,181,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1702,124,3,3,https://fakestoreapi.com/carts,181,0,0
+1785867910381,190,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1698,124,3,3,https://fakestoreapi.com/carts,190,0,0
+1785867910404,187,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1706,124,3,3,https://fakestoreapi.com/carts,187,0,0
+1785867911381,188,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,907,126,3,3,https://fakestoreapi.com/carts/5,188,0,0
+1785867907567,686,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-3,,true,,15244,506,3,3,null,685,3318,109
+1785867911381,190,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,false,"Test failed: text expected to contain /""id""/",764,126,3,3,https://fakestoreapi.com/carts/9,190,0,0
+1785867907567,620,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-2,,false,,15339,507,3,3,null,619,3385,82
+1785867911404,186,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,866,126,3,3,https://fakestoreapi.com/carts/4,186,0,0
+1785867907593,615,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-1,,false,,14694,507,3,3,null,615,3383,80
+1785867912381,167,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,11412,127,3,3,https://fakestoreapi.com/products,167,0,83
+1785867912404,161,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11412,127,3,3,https://fakestoreapi.com/products,160,0,80
+1785867912381,190,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11421,127,3,3,https://fakestoreapi.com/products,190,0,95
+1785867913381,83,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1319,130,3,3,https://fakestoreapi.com/products/19,83,0,0
+1785867913381,85,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,false,Response was null,718,130,3,3,https://fakestoreapi.com/products/22,85,0,0
+1785867913404,76,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1133,129,3,3,https://fakestoreapi.com/products/7,76,0,0
+1785867914380,192,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1704,124,3,3,https://fakestoreapi.com/carts,192,0,0
+1785867914381,191,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1696,124,3,3,https://fakestoreapi.com/carts,191,0,0
+1785867914404,186,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1708,124,3,3,https://fakestoreapi.com/carts,186,0,0
+1785867915382,184,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,901,126,3,3,https://fakestoreapi.com/carts/6,184,0,0
+1785867911570,625,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-3,,true,,15328,507,3,3,null,625,3370,83
+1785867915381,192,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,929,126,3,3,https://fakestoreapi.com/carts/2,192,0,0
+1785867911571,659,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-2,,false,,14772,507,3,3,null,659,3342,95
+1785867915405,189,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,false,"Test failed: text expected to contain /""id""/",770,126,3,3,https://fakestoreapi.com/carts/8,189,0,0
+1785867911590,612,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-1,,false,,15023,506,3,3,null,611,3391,80
+1785867916381,164,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11409,127,3,3,https://fakestoreapi.com/products,163,0,81
+1785867916383,168,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,11404,127,3,3,https://fakestoreapi.com/products,167,0,83
+1785867916405,170,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11412,127,3,3,https://fakestoreapi.com/products,169,0,86
+1785867917381,74,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1331,130,3,3,https://fakestoreapi.com/products/16,74,0,0
+1785867917382,78,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1300,129,3,3,https://fakestoreapi.com/products/9,78,0,0
+1785867917405,80,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1376,130,3,3,https://fakestoreapi.com/products/14,80,0,0
+1785867918382,180,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1698,124,3,3,https://fakestoreapi.com/carts,180,0,0
+1785867918382,189,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1702,124,3,3,https://fakestoreapi.com/carts,189,0,0
+1785867918405,199,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1698,124,3,3,https://fakestoreapi.com/carts,199,0,0
+1785867919382,178,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,901,126,3,3,https://fakestoreapi.com/carts/3,178,0,0
+1785867915573,596,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-2,,true,,15339,507,3,3,null,595,3391,81
+1785867919382,185,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,930,126,3,3,https://fakestoreapi.com/carts/1,185,0,0
+1785867915566,620,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-3,,true,,15336,506,3,3,null,619,3381,83
+1785867919405,184,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,866,126,3,3,https://fakestoreapi.com/carts/4,184,0,0
+1785867915594,633,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15352,507,3,3,null,632,3362,86
+1785867920382,165,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,11406,127,3,3,https://fakestoreapi.com/products,164,0,85
+1785867920382,194,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11412,127,3,3,https://fakestoreapi.com/products,194,0,87
+1785867920405,174,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11408,127,3,3,https://fakestoreapi.com/products,173,0,87
+1785867921382,77,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1329,129,3,3,https://fakestoreapi.com/products/2,77,0,0
+1785867921382,77,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1073,129,3,3,https://fakestoreapi.com/products/8,77,0,0
+1785867921405,79,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1204,130,3,3,https://fakestoreapi.com/products/20,79,0,0
+1785867922383,182,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1698,124,3,3,https://fakestoreapi.com/carts,182,0,0
+1785867922382,183,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1696,124,3,3,https://fakestoreapi.com/carts,183,0,0
+1785867922405,183,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1700,124,3,3,https://fakestoreapi.com/carts,183,0,0
+1785867923382,180,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,false,"Test failed: text expected to contain /""id""/",772,126,3,3,https://fakestoreapi.com/carts/9,180,0,0
+1785867919560,634,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-2,,false,,15209,506,3,3,null,634,3368,87
+1785867923382,182,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,897,126,3,3,https://fakestoreapi.com/carts/6,182,0,0
+1785867919567,606,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-3,,true,,15074,506,3,3,null,605,3391,85
+1785867923406,196,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,937,126,3,3,https://fakestoreapi.com/carts/2,196,0,0
+1785867919589,632,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15249,507,3,3,null,631,3382,87
+1785867924383,173,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,11402,127,4,4,https://fakestoreapi.com/products,172,0,84
+1785867924382,176,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,11406,127,4,4,https://fakestoreapi.com/products,175,0,90
+1785867924382,207,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11406,127,4,4,https://fakestoreapi.com/products,206,0,85
+1785867924405,187,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11410,127,4,4,https://fakestoreapi.com/products,186,0,85
+1785867925382,80,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1298,129,4,4,https://fakestoreapi.com/products/9,80,0,0
+1785867925381,82,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,1778,130,4,4,https://fakestoreapi.com/products/15,82,0,0
+1785867925381,84,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1302,129,4,4,https://fakestoreapi.com/products/9,84,0,0
+1785867925405,80,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1273,129,4,4,https://fakestoreapi.com/products/3,80,0,0
+1785867926381,186,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1708,124,4,4,https://fakestoreapi.com/carts,186,0,0
+1785867926383,186,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1704,124,4,4,https://fakestoreapi.com/carts,186,0,0
+1785867926381,191,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,1706,124,4,4,https://fakestoreapi.com/carts,191,0,0
+1785867926405,188,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1700,124,4,4,https://fakestoreapi.com/carts,188,0,0
+1785867927382,186,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,899,126,4,4,https://fakestoreapi.com/carts/6,186,0,0
+1785867923562,663,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-2,,true,,15315,506,4,4,null,662,3344,85
+1785867927381,188,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,867,126,4,4,https://fakestoreapi.com/carts/7,188,0,0
+1785867924381,637,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-4,,true,,15757,507,4,4,null,636,2551,90
+1785867927382,193,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,869,126,4,4,https://fakestoreapi.com/carts/7,193,0,0
+1785867923564,632,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-3,,true,,15273,506,4,4,null,631,3379,84
+1785867927405,184,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,871,126,4,4,https://fakestoreapi.com/carts/7,184,0,0
+1785867923603,639,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15254,506,4,4,null,638,3347,85
+1785867928381,157,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11402,127,4,4,https://fakestoreapi.com/products,156,0,77
+1785867928383,168,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,11408,127,4,4,https://fakestoreapi.com/products,167,0,84
+1785867928406,179,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11412,127,4,4,https://fakestoreapi.com/products,178,0,90
+1785867929381,77,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,false,Response was null,718,130,4,4,https://fakestoreapi.com/products/21,77,0,0
+1785867929382,80,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-3,text,false,Response was null,716,130,4,4,https://fakestoreapi.com/products/25,80,0,0
+1785867929405,82,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1139,129,4,4,https://fakestoreapi.com/products/7,82,0,0
+1785867930382,187,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1696,124,4,4,https://fakestoreapi.com/carts,187,0,0
+1785867930383,188,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1698,124,4,4,https://fakestoreapi.com/carts,188,0,0
+1785867930405,187,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1698,124,4,4,https://fakestoreapi.com/carts,187,0,0
+1785867931382,179,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,false,"Test failed: text expected to contain /""id""/",768,126,4,4,https://fakestoreapi.com/carts/9,179,0,0
+1785867927569,600,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 2",jp@gc - Ultimate Thread Group 1-2,,false,,14584,507,4,4,null,599,3392,77
+1785867931382,184,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,874,126,4,4,https://fakestoreapi.com/carts/4,184,0,0
+1785867927575,620,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-3,,false,,14696,507,4,4,null,619,3371,84
+1785867931405,191,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,895,126,4,4,https://fakestoreapi.com/carts/5,191,0,0
+1785867927590,639,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15144,506,4,4,null,638,3367,90
+1785867928382,3378,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,11415,127,4,4,https://fakestoreapi.com/products,3378,0,82
+1785867931761,243,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-4,text,false,Response was null,724,130,4,4,https://fakestoreapi.com/products/22,243,0,0
+1785867932382,162,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11411,127,4,4,https://fakestoreapi.com/products,161,0,78
+1785867932405,168,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11406,127,4,4,https://fakestoreapi.com/products,167,0,84
+1785867932383,192,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,11406,127,4,4,https://fakestoreapi.com/products,191,0,89
+1785867932761,336,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,1705,124,4,4,https://fakestoreapi.com/carts,336,0,0
+1785867933381,74,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,false,Response was null,722,130,4,4,https://fakestoreapi.com/products/22,74,0,0
+1785867933382,79,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1772,130,4,4,https://fakestoreapi.com/products/15,79,0,0
+1785867933406,82,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,false,Response was null,720,130,4,4,https://fakestoreapi.com/products/24,82,0,0
+1785867933760,245,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-4,text,false,"Test failed: text expected to contain /""id""/",763,126,4,4,https://fakestoreapi.com/carts/8,245,0,0
+1785867927569,4202,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 2",jp@gc - Ultimate Thread Group 1-4,,false,,14607,507,4,4,null,4202,2235,82
+1785867934382,184,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1700,124,4,4,https://fakestoreapi.com/carts,183,0,0
+1785867934382,187,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1698,124,4,4,https://fakestoreapi.com/carts,187,0,0
+1785867934406,192,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1702,124,4,4,https://fakestoreapi.com/carts,192,0,0
+1785867934760,188,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,11414,127,4,4,https://fakestoreapi.com/products,187,0,98
+1785867935381,179,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,928,126,4,4,https://fakestoreapi.com/carts/1,179,0,0
+1785867931561,602,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-2,,false,,14759,507,4,4,null,601,3398,78
+1785867935382,186,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-3,text,false,"Test failed: text expected to contain /""id""/",762,127,4,4,https://fakestoreapi.com/carts/10,186,0,0
+1785867931566,641,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-3,,false,,15640,508,4,4,null,639,3361,89
+1785867935405,185,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,895,126,4,4,https://fakestoreapi.com/carts/5,185,0,0
+1785867931596,627,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-1,,false,,14723,507,4,4,null,626,3367,84
+1785867935760,86,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,1161,130,4,4,https://fakestoreapi.com/products/18,86,0,0
+1785867936382,159,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,11412,127,4,4,https://fakestoreapi.com/products,158,0,82
+1785867936381,168,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11404,127,4,4,https://fakestoreapi.com/products,167,0,82
+1785867936405,159,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11404,127,4,4,https://fakestoreapi.com/products,158,0,77
+1785867936760,197,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,1698,124,4,4,https://fakestoreapi.com/carts,197,0,0
+1785867937382,78,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1165,130,4,4,https://fakestoreapi.com/products/18,78,0,0
+1785867937381,81,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,false,Response was null,726,130,4,4,https://fakestoreapi.com/products/23,81,0,0
+1785867937405,77,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1126,129,4,4,https://fakestoreapi.com/products/1,77,0,0
+1785867937760,189,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,865,126,4,4,https://fakestoreapi.com/carts/7,189,0,0
+1785867934006,660,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-4,,true,,15138,507,4,4,null,659,3283,98
+1785867938382,182,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1706,124,4,4,https://fakestoreapi.com/carts,182,0,0
+1785867938381,186,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1704,124,4,4,https://fakestoreapi.com/carts,186,0,0
+1785867938406,183,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1702,124,4,4,https://fakestoreapi.com/carts,183,0,0
+1785867938761,162,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,11406,127,4,4,https://fakestoreapi.com/products,162,0,80
+1785867939382,186,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,897,126,4,4,https://fakestoreapi.com/carts/5,186,0,0
+1785867935561,621,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-2,,false,,14731,507,4,4,null,620,3386,82
+1785867939382,189,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-3,text,false,"Test failed: text expected to contain /""id""/",766,126,4,4,https://fakestoreapi.com/carts/9,189,0,0
+1785867935568,608,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-3,,false,,15049,507,4,4,null,607,3395,82
+1785867939406,179,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,868,126,4,4,https://fakestoreapi.com/carts/4,179,0,0
+1785867935590,598,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15100,506,4,4,null,597,3398,77
+1785867939761,79,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,1165,129,4,4,https://fakestoreapi.com/products/6,79,0,0
+1785867940382,166,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11410,127,4,4,https://fakestoreapi.com/products,165,0,82
+1785867940382,174,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,11406,127,4,4,https://fakestoreapi.com/products,173,0,87
+1785867940405,160,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11410,127,4,4,https://fakestoreapi.com/products,159,0,81
+1785867940761,182,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,1706,124,4,4,https://fakestoreapi.com/carts,182,0,0
+1785867941381,84,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1382,130,4,4,https://fakestoreapi.com/products/14,84,0,0
+1785867941382,86,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1267,129,4,4,https://fakestoreapi.com/products/3,86,0,0
+1785867941405,79,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1475,130,4,4,https://fakestoreapi.com/products/11,79,0,0
+1785867941761,183,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,901,126,4,4,https://fakestoreapi.com/carts/3,183,0,0
+1785867937949,606,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-4,,true,,15178,506,4,4,null,606,3389,80
+1785867942382,192,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1702,124,4,4,https://fakestoreapi.com/carts,191,0,0
+1785867942382,193,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1700,124,4,4,https://fakestoreapi.com/carts,193,0,0
+1785867942406,188,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1698,124,4,4,https://fakestoreapi.com/carts,188,0,0
+1785867942761,169,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,11408,127,4,4,https://fakestoreapi.com/products,168,0,82
+1785867943382,192,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,870,126,4,4,https://fakestoreapi.com/carts/4,192,0,0
+1785867939571,645,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-3,,true,,15243,506,4,4,null,644,3359,87
+1785867943381,195,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,868,126,4,4,https://fakestoreapi.com/carts/4,195,0,0
+1785867939568,637,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-2,,true,,15362,507,4,4,null,635,3371,82
+1785867943406,182,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,891,126,4,4,https://fakestoreapi.com/carts/5,182,0,0
+1785867939586,609,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15474,507,4,4,null,608,3393,81
+1785867943760,80,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-4,text,false,Response was null,728,130,4,4,https://fakestoreapi.com/products/24,80,0,0
+1785867944382,165,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11406,127,4,4,https://fakestoreapi.com/products,164,0,82
+1785867944406,179,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11409,127,4,4,https://fakestoreapi.com/products,179,0,80
+1785867944382,205,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,11408,127,4,4,https://fakestoreapi.com/products,167,0,84
+1785867944760,186,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,1702,124,4,4,https://fakestoreapi.com/carts,186,0,0
+1785867945382,80,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1376,130,4,4,https://fakestoreapi.com/products/14,80,0,0
+1785867945383,98,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1152,130,4,4,https://fakestoreapi.com/products/12,98,0,0
+1785867945405,79,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1127,129,4,4,https://fakestoreapi.com/products/7,79,0,0
+1785867945761,183,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,901,126,4,4,https://fakestoreapi.com/carts/6,183,0,0
+1785867941944,618,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-4,,false,,14739,507,4,4,null,617,3382,82
+1785867946382,185,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1710,124,4,4,https://fakestoreapi.com/carts,185,0,0
+1785867946382,186,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1704,124,4,4,https://fakestoreapi.com/carts,186,0,0
+1785867946406,189,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1706,124,4,4,https://fakestoreapi.com/carts,189,0,0
+1785867946761,157,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,11402,127,4,4,https://fakestoreapi.com/products,156,0,78
+1785867947382,185,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,871,126,4,4,https://fakestoreapi.com/carts/7,185,0,0
+1785867943575,673,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-3,,true,,15141,507,4,4,null,635,3320,84
+1785867947382,191,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,false,"Test failed: text expected to contain /""id""/",772,127,4,4,https://fakestoreapi.com/carts/10,191,0,0
+1785867943577,622,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-2,,false,,15258,508,4,4,null,621,3374,82
+1785867947406,190,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,870,126,4,4,https://fakestoreapi.com/carts/4,190,0,0
+1785867943589,637,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15112,506,4,4,null,637,3371,80
+1785867947760,78,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,1214,129,4,4,https://fakestoreapi.com/products/5,78,0,0
+1785867948381,163,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11409,127,4,4,https://fakestoreapi.com/products,162,0,78
+1785867948405,162,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11410,127,4,4,https://fakestoreapi.com/products,161,0,81
+1785867948382,197,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,11415,127,4,4,https://fakestoreapi.com/products,196,0,82
+1785867948760,185,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,1704,124,4,4,https://fakestoreapi.com/carts,185,0,0
+1785867949381,79,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1425,130,4,4,https://fakestoreapi.com/products/13,79,0,0
+1785867949382,83,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-3,text,false,Response was null,716,130,4,4,https://fakestoreapi.com/products/23,83,0,0
+1785867949405,81,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1265,129,4,4,https://fakestoreapi.com/products/3,81,0,0
+1785867949761,183,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,895,126,4,4,https://fakestoreapi.com/carts/5,183,0,0
+1785867945945,603,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-4,,true,,15215,506,4,4,null,602,3397,78
+1785867950381,188,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1700,124,4,4,https://fakestoreapi.com/carts,188,0,0
+1785867950382,201,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1703,124,4,4,https://fakestoreapi.com/carts,201,0,0
+1785867950406,187,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1704,124,4,4,https://fakestoreapi.com/carts,187,0,0
+1785867950760,170,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,11408,127,4,4,https://fakestoreapi.com/products,169,0,86
+1785867951383,185,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,927,126,4,4,https://fakestoreapi.com/carts/2,185,0,0
+1785867947568,666,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-3,,false,,14761,507,4,4,null,665,3335,82
+1785867951382,187,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,924,126,4,4,https://fakestoreapi.com/carts/1,187,0,0
+1785867947573,617,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-2,,true,,15458,507,4,4,null,616,3379,78
+1785867951406,182,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,903,126,4,4,https://fakestoreapi.com/carts/6,182,0,0
+1785867947597,612,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15282,506,4,4,null,611,3380,81
+1785867951760,83,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,1486,130,4,4,https://fakestoreapi.com/products/10,83,0,0
+1785867952382,164,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,11412,127,4,4,https://fakestoreapi.com/products,163,0,80
+1785867952405,165,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11404,127,4,4,https://fakestoreapi.com/products,164,0,83
+1785867952382,196,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11406,127,4,4,https://fakestoreapi.com/products,196,0,80
+1785867952761,187,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,1702,124,4,4,https://fakestoreapi.com/carts,187,0,0
+1785867953382,78,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-3,text,false,Response was null,720,130,4,4,https://fakestoreapi.com/products/21,78,0,0
+1785867953381,83,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1200,130,4,4,https://fakestoreapi.com/products/20,83,0,0
+1785867953405,79,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,false,Response was null,722,130,4,4,https://fakestoreapi.com/products/25,79,0,0
+1785867953761,185,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,897,126,4,4,https://fakestoreapi.com/carts/5,185,0,0
+1785867949945,625,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-4,,true,,15493,507,4,4,null,624,3376,86
+1785867954383,187,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1704,124,4,4,https://fakestoreapi.com/carts,187,0,0
+1785867954381,190,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1696,124,4,4,https://fakestoreapi.com/carts,190,0,0
+1785867954405,183,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1704,124,4,4,https://fakestoreapi.com/carts,183,0,0
+1785867954761,160,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,11406,127,4,4,https://fakestoreapi.com/products,160,0,77
+1785867955383,182,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-3,text,false,"Test failed: text expected to contain /""id""/",764,126,4,4,https://fakestoreapi.com/carts/9,182,0,0
+1785867951569,611,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 2",jp@gc - Ultimate Thread Group 1-3,,false,,14600,507,4,4,null,610,3385,80
+1785867955382,185,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,877,126,4,4,https://fakestoreapi.com/carts/7,185,0,0
+1785867951569,654,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-2,,true,,15179,507,4,4,null,654,3344,80
+1785867955406,189,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,927,126,4,4,https://fakestoreapi.com/carts/2,189,0,0
+1785867951589,616,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-1,,false,,14757,507,4,4,null,615,3390,83
+1785867955761,79,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-4,text,false,Response was null,720,130,4,4,https://fakestoreapi.com/products/23,79,0,0
+1785867956382,161,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11406,127,4,4,https://fakestoreapi.com/products,160,0,79
+1785867956382,198,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,11409,127,4,4,https://fakestoreapi.com/products,197,0,80
+1785867956406,174,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11406,127,4,4,https://fakestoreapi.com/products,173,0,85
+1785867956760,181,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,1700,124,4,4,https://fakestoreapi.com/carts,180,0,0
+1785867957382,80,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1129,129,4,4,https://fakestoreapi.com/products/7,80,0,0
+1785867957381,81,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1171,129,4,4,https://fakestoreapi.com/products/4,81,0,0
+1785867957405,80,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,false,Response was null,718,130,4,4,https://fakestoreapi.com/products/21,80,0,0
+1785867957760,182,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,893,126,4,4,https://fakestoreapi.com/carts/3,182,0,0
+1785867953946,602,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-4,,false,,14719,507,4,4,null,601,3394,77
+1785867958381,185,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1698,124,4,4,https://fakestoreapi.com/carts,185,0,0
+1785867958382,184,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1704,124,4,4,https://fakestoreapi.com/carts,184,0,0
+1785867958405,185,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1710,124,4,4,https://fakestoreapi.com/carts,185,0,0
+1785867958760,181,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,11406,127,4,4,https://fakestoreapi.com/products,181,0,92
+1785867959381,183,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,false,"Test failed: text expected to contain /""id""/",760,126,4,4,https://fakestoreapi.com/carts/9,183,0,0
+1785867955567,610,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-2,,false,,15035,506,4,4,null,609,3387,79
+1785867959383,184,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,875,126,4,4,https://fakestoreapi.com/carts/7,184,0,0
+1785867955565,646,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-3,,true,,15117,506,4,4,null,645,3356,80
+1785867959405,184,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,false,"Test failed: text expected to contain /""id""/",770,126,4,4,https://fakestoreapi.com/carts/9,184,0,0
+1785867955595,623,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 2",jp@gc - Ultimate Thread Group 1-1,,false,,14604,507,4,4,null,622,3371,85
+1785867959761,82,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,1782,130,4,4,https://fakestoreapi.com/products/15,82,0,0
+1785867960383,162,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,11406,127,4,4,https://fakestoreapi.com/products,161,0,76
+1785867960382,167,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11411,127,4,4,https://fakestoreapi.com/products,166,0,81
+1785867960405,160,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11404,127,4,4,https://fakestoreapi.com/products,159,0,79
+1785867960760,196,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,1710,124,4,4,https://fakestoreapi.com/carts,195,0,0
+1785867961383,80,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-3,text,false,Response was null,720,130,4,4,https://fakestoreapi.com/products/24,80,0,0
+1785867961382,82,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1409,130,4,4,https://fakestoreapi.com/products/17,82,0,0
+1785867961405,77,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,false,Response was null,722,130,4,4,https://fakestoreapi.com/products/23,77,0,0
+1785867961760,193,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-4,text,false,"Test failed: text expected to contain /""id""/",766,126,4,4,https://fakestoreapi.com/carts/8,193,0,0
+1785867957942,652,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-4,,false,,15664,507,4,4,null,651,3359,92
+1785867962383,181,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1700,124,4,4,https://fakestoreapi.com/carts,181,0,0
+1785867962381,191,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1706,124,4,4,https://fakestoreapi.com/carts,191,0,0
+1785867962405,183,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1704,124,4,4,https://fakestoreapi.com/carts,183,0,0
+1785867962761,183,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,11417,127,4,4,https://fakestoreapi.com/products,182,0,88
+1785867963382,190,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,925,126,4,4,https://fakestoreapi.com/carts/2,190,0,0
+1785867959567,613,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-3,,false,,14751,507,4,4,null,612,3392,76
+1785867963381,200,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,906,126,4,4,https://fakestoreapi.com/carts/5,200,0,0
+1785867959564,640,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-2,,true,,15432,507,4,4,null,639,3378,81
+1785867963406,182,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,895,126,4,4,https://fakestoreapi.com/carts/3,182,0,0
+1785867959589,602,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-1,,false,,14725,507,4,4,null,601,3397,79
+1785867963760,83,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,1300,129,4,4,https://fakestoreapi.com/products/9,83,0,0
+1785867964381,157,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11406,127,4,4,https://fakestoreapi.com/products,156,0,80
+1785867964383,165,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,11408,127,4,4,https://fakestoreapi.com/products,164,0,81
+1785867964405,166,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11412,127,4,4,https://fakestoreapi.com/products,166,0,83
+1785867964761,199,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,1704,124,4,4,https://fakestoreapi.com/carts,199,0,0
+1785867965381,74,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,false,Response was null,728,130,4,4,https://fakestoreapi.com/products/24,74,0,0
+1785867965382,80,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1490,130,4,4,https://fakestoreapi.com/products/10,80,0,0
+1785867965405,80,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1343,129,4,4,https://fakestoreapi.com/products/2,80,0,0
+1785867965760,185,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-4,text,false,"Test failed: text expected to contain /""id""/",770,127,4,4,https://fakestoreapi.com/carts/10,185,0,0
+1785867961953,650,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-4,,false,,15191,507,4,4,null,649,3342,88
+1785867966382,182,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1694,124,4,4,https://fakestoreapi.com/carts,182,0,0
+1785867966382,186,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1706,124,4,4,https://fakestoreapi.com/carts,186,0,0
+1785867966405,186,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1700,124,4,4,https://fakestoreapi.com/carts,186,0,0
+1785867966761,180,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,11413,127,4,4,https://fakestoreapi.com/products,180,0,91
+1785867967382,179,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,897,126,4,4,https://fakestoreapi.com/carts/5,179,0,0
+1785867963582,592,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-2,,false,,14725,507,4,4,null,591,3387,80
+1785867967383,196,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,925,126,4,4,https://fakestoreapi.com/carts/2,196,0,0
+1785867963572,627,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-3,,true,,15529,507,4,4,null,626,3380,81
+1785867967405,189,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,867,126,4,4,https://fakestoreapi.com/carts/7,189,0,0
+1785867963588,621,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15322,506,4,4,null,621,3385,83
+1785867967761,77,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,1776,130,4,4,https://fakestoreapi.com/products/15,77,0,0
+1785867968381,165,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11416,127,4,4,https://fakestoreapi.com/products,164,0,82
+1785867968405,174,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11406,127,4,4,https://fakestoreapi.com/products,173,0,78
+1785867968383,199,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,11408,127,4,4,https://fakestoreapi.com/products,198,0,86
+1785867968761,187,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,1698,124,4,4,https://fakestoreapi.com/carts,187,0,0
+1785867969381,80,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1327,130,4,4,https://fakestoreapi.com/products/19,80,0,0
+1785867969382,82,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1173,129,4,4,https://fakestoreapi.com/products/4,82,0,0
+1785867969405,77,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1161,129,4,4,https://fakestoreapi.com/products/6,77,0,0
+1785867969760,186,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,919,126,4,4,https://fakestoreapi.com/carts/2,186,0,0
+1785867965945,630,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-4,,true,,15806,507,4,4,null,630,3372,91
+1785867970381,183,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1704,124,4,4,https://fakestoreapi.com/carts,183,0,0
+1785867970381,188,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1698,124,4,4,https://fakestoreapi.com/carts,188,0,0
+1785867970404,187,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1710,124,4,4,https://fakestoreapi.com/carts,187,0,0
+1785867970760,163,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,11414,127,4,4,https://fakestoreapi.com/products,163,0,82
+1785867971380,186,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,901,126,4,4,https://fakestoreapi.com/carts/6,186,0,0
+1785867967561,614,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-2,,true,,15348,507,4,4,null,613,3392,82
+1785867971381,188,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,872,126,4,4,https://fakestoreapi.com/carts/4,187,0,0
+1785867967579,657,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-3,,true,,15151,506,4,4,null,655,3334,86
+1785867971404,183,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,897,126,4,4,https://fakestoreapi.com/carts/3,183,0,0
+1785867967594,621,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15174,506,4,4,null,620,3373,78
+1785867971760,80,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,1333,129,4,4,https://fakestoreapi.com/products/2,80,0,0
+1785867972381,158,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11406,127,4,4,https://fakestoreapi.com/products,157,0,76
+1785867972381,179,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,11411,127,4,4,https://fakestoreapi.com/products,178,0,86
+1785867972404,169,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11402,127,4,4,https://fakestoreapi.com/products,168,0,77
+1785867972759,186,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,1702,124,4,4,https://fakestoreapi.com/carts,186,0,0
+1785867973380,79,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1772,130,4,4,https://fakestoreapi.com/products/15,79,0,0
+1785867973381,81,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-3,text,false,Response was null,716,130,4,4,https://fakestoreapi.com/products/22,81,0,0
+1785867973404,76,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1337,129,4,4,https://fakestoreapi.com/products/2,76,0,0
+1785867973759,196,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,923,126,4,4,https://fakestoreapi.com/carts/2,196,0,0
+1785867969946,625,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-4,,true,,15372,506,4,4,null,625,3384,82
+1785867974380,181,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1698,124,4,4,https://fakestoreapi.com/carts,181,0,0
+1785867974382,192,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1702,124,4,4,https://fakestoreapi.com/carts,192,0,0
+1785867974404,183,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1704,124,4,4,https://fakestoreapi.com/carts,183,0,0
+1785867974760,160,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,11404,127,4,4,https://fakestoreapi.com/products,160,0,79
+1785867975381,183,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,866,126,4,4,https://fakestoreapi.com/carts/4,183,0,0
+1785867971566,601,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-2,,true,,15742,507,4,4,null,600,3397,76
+1785867975381,200,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,897,126,4,4,https://fakestoreapi.com/carts/5,200,0,0
+1785867971569,652,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-3,,false,,14726,507,4,4,null,651,3360,86
+1785867975405,183,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,false,"Test failed: text expected to contain /""id""/",764,127,4,4,https://fakestoreapi.com/carts/10,183,0,0
+1785867971587,611,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-1,,false,,15207,507,4,4,null,610,3390,77
+1785867975760,79,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,1778,130,4,4,https://fakestoreapi.com/products/15,79,0,0
+1785867976381,159,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11404,127,4,4,https://fakestoreapi.com/products,159,0,78
+1785867976382,168,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,11408,127,4,4,https://fakestoreapi.com/products,167,0,85
+1785867976405,179,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11404,127,4,4,https://fakestoreapi.com/products,178,0,80
+1785867976759,184,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,1706,124,4,4,https://fakestoreapi.com/carts,184,0,0
+1785867977381,78,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1271,129,4,4,https://fakestoreapi.com/products/3,78,0,0
+1785867977381,81,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-3,text,false,Response was null,716,130,4,4,https://fakestoreapi.com/products/22,81,0,0
+1785867977404,79,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1124,129,4,4,https://fakestoreapi.com/products/1,79,0,0
+1785867977759,183,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,897,126,4,4,https://fakestoreapi.com/carts/6,183,0,0
+1785867973955,606,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-4,,true,,15785,507,4,4,null,606,3381,79
+1785867978380,183,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1704,124,4,4,https://fakestoreapi.com/carts,183,0,0
+1785867978381,187,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1704,124,4,4,https://fakestoreapi.com/carts,187,0,0
+1785867978405,183,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1698,124,4,4,https://fakestoreapi.com/carts,183,0,0
+1785867978759,168,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,11409,127,4,4,https://fakestoreapi.com/products,167,0,82
+1785867979380,188,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,false,"Test failed: text expected to contain /""id""/",778,127,4,4,https://fakestoreapi.com/carts/10,188,0,0
+1785867975564,608,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-2,,false,,15157,507,4,4,null,608,3396,78
+1785867979381,190,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,868,126,4,4,https://fakestoreapi.com/carts/4,190,0,0
+1785867975581,626,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-3,,false,,14696,507,4,4,null,625,3364,85
+1785867979404,185,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,869,126,4,4,https://fakestoreapi.com/carts/7,185,0,0
+1785867975588,626,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15095,506,4,4,null,625,3375,80
+1785867979760,78,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-4,text,false,Response was null,718,130,4,4,https://fakestoreapi.com/products/22,78,0,0
+1785867980382,157,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11406,127,4,4,https://fakestoreapi.com/products,157,0,79
+1785867980382,195,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,11406,127,4,4,https://fakestoreapi.com/products,194,0,80
+1785867980406,171,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,11408,127,4,4,https://fakestoreapi.com/products,169,0,83
+1785867980760,183,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,1710,124,4,4,https://fakestoreapi.com/carts,183,0,0
+1785867981382,78,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1395,130,4,4,https://fakestoreapi.com/products/17,78,0,0
+1785867981382,80,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1376,130,4,4,https://fakestoreapi.com/products/14,80,0,0
+1785867981405,82,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1486,130,4,4,https://fakestoreapi.com/products/10,82,0,0
+1785867981760,185,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,901,126,4,4,https://fakestoreapi.com/carts/3,185,0,0
+1785867977942,614,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-4,,false,,14738,507,4,4,null,613,3388,82
+1785867982381,184,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,1698,124,4,4,https://fakestoreapi.com/carts,184,0,0
+1785867982382,184,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-3,text,true,,1700,124,4,4,https://fakestoreapi.com/carts,184,0,0
+1785867982405,185,UC03_Get_carts,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,1696,124,4,4,https://fakestoreapi.com/carts,185,0,0
+1785867982760,164,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,11406,127,4,4,https://fakestoreapi.com/products,163,0,81
+1785867983382,186,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-2,text,false,"Test failed: text expected to contain /""id""/",764,127,4,4,https://fakestoreapi.com/carts/10,186,0,0
+1785867983383,185,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-3,text,false,"Test failed: text expected to contain /""id""/",766,127,4,4,https://fakestoreapi.com/carts/10,185,0,0
+1785867979569,605,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-2,,false,,15263,508,4,4,null,605,3394,79
+1785867979572,644,Transaction Controller,,"Number of samples in transaction : 4, number of failing samples : 1",jp@gc - Ultimate Thread Group 1-3,,false,,15248,508,4,4,null,643,3352,80
+1785867983405,188,UC04_Get_cart,200,OK,jp@gc - Ultimate Thread Group 1-1,text,true,,922,126,3,3,https://fakestoreapi.com/carts/1,188,0,0
+1785867979590,626,Transaction Controller,200,"Number of samples in transaction : 4, number of failing samples : 0",jp@gc - Ultimate Thread Group 1-1,,true,,15512,507,3,3,null,624,3377,83
+1785867983761,78,UC02_Get_product,200,OK,jp@gc - Ultimate Thread Group 1-4,text,true,,1321,130,2,2,https://fakestoreapi.com/products/16,78,0,0
+1785867984382,163,UC01_Get_products,200,OK,jp@gc - Ultimate Thread Group 1-2,text,true,,11410,127,1,1,https://fakestoreapi.com/products,162,0,82
