@@ -71,16 +71,83 @@ public interface JtlSampleRepository extends JpaRepository<JtlSample, Long> {
 
     interface GroupStatRow {
         String getGrp();
+
         long getCalls();
+
         long getErrors();
+
         long getMinElapsed();
+
         long getMaxElapsed();
+
         double getAvgElapsed();
+
         double getP50();
+
         double getP90();
+
         double getP95();
+
         double getP99();
+
         long getDurationMs();
+
         long getTotalBytes();
+    }
+
+    @Query(value = """
+            SELECT (time_stamp / :bucketMs)                         AS bucket,
+                   COUNT(*)                                         AS calls,
+                   COUNT(*) FILTER (WHERE NOT success)              AS errors,
+                   MIN(elapsed)                                     AS minElapsed,
+                   MAX(elapsed)                                     AS maxElapsed,
+                   AVG(elapsed)                                     AS avgElapsed,
+                   PERCENTILE_CONT(0.5)  WITHIN GROUP (ORDER BY elapsed) AS p50,
+                   PERCENTILE_CONT(0.9)  WITHIN GROUP (ORDER BY elapsed) AS p90,
+                   PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY elapsed) AS p95,
+                   PERCENTILE_CONT(0.99) WITHIN GROUP (ORDER BY elapsed) AS p99,
+                   SUM(bytes)                                       AS totalBytes
+            FROM jtl_sample
+            WHERE run_id = :runId
+              AND (:label IS NULL OR label = :label)
+            GROUP BY bucket
+            ORDER BY bucket
+            """, nativeQuery = true)
+    List<TimeSeriesRow> findTimeSeries(@Param("runId") long runId,
+                                       @Param("bucketMs") long bucketMs,
+                                       @Param("label") String label);
+
+    @Query(value = "SELECT MIN(time_stamp) AS minTs, MAX(time_stamp) AS maxTs " +
+            "FROM jtl_sample WHERE run_id = :runId", nativeQuery = true)
+    TimeRange findTimeRange(@Param("runId") long runId);
+
+    interface TimeSeriesRow {
+        long getBucket();
+
+        long getCalls();
+
+        long getErrors();
+
+        long getMinElapsed();
+
+        long getMaxElapsed();
+
+        double getAvgElapsed();
+
+        double getP50();
+
+        double getP90();
+
+        double getP95();
+
+        double getP99();
+
+        long getTotalBytes();
+    }
+
+    interface TimeRange {
+        Long getMinTs();
+
+        Long getMaxTs();
     }
 }

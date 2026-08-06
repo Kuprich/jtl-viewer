@@ -1,5 +1,6 @@
 package com.jtlweb.controller;
 
+import com.jtlweb.exception.InvalidBucketMsException;
 import com.jtlweb.exception.RunNotFoundException;
 import com.jtlweb.exception.JtlParseException;
 import com.jtlweb.exception.InvalidGroupByException;
@@ -48,6 +49,12 @@ public class ApiExceptionHandler {
     // Unknown / invalid groupBy value for /stats -> 400.
     @ExceptionHandler(InvalidGroupByException.class)
     public ResponseEntity<Map<String, String>> handleInvalidGroupBy(InvalidGroupByException e) {
+        return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+    }
+
+    // bucketMs <= 0 for /timeseries -> 400.
+    @ExceptionHandler(InvalidBucketMsException.class)
+    public ResponseEntity<Map<String, String>> handleInvalidBucketMs(InvalidBucketMsException e) {
         return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
     }
 }
