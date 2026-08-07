@@ -1,0 +1,46 @@
+:root {
+  --el-color-primary: #4fc3f7;
+  --el-color-primary-light-3: #6fd4f9;
+  --el-color-primary-light-5: #99e2fb;
+  --el-color-primary-light-7: #c2eefc;
+  --el-color-primary-light-8: #d6f3fd;
+  --el-color-primary-light-9: #ebf9fe;
+  --el-color-primary-dark-2: #3f9cc6;
+
+  --mono: ui-monospace, "JetBrains Mono", "Fira Code", Menlo, Consolas, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: #1a1b1e;
+  color: #e4e6ea;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3a3d42;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4a4e55;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
