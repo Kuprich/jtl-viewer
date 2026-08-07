@@ -82,6 +82,12 @@ function rowClass(data: { row: StatDto }) {
 function onRowClick(row: StatDto) {
   selectedGroup.value = row.group
 }
+
+const NO_CODE = '(none)'
+
+function groupDisplay(group: string): string {
+  return group === NO_CODE ? 'без кода' : group
+}
 </script>
 
 <template>
@@ -124,7 +130,18 @@ function onRowClick(row: StatDto) {
           :row-class-name="rowClass"
           @row-click="onRowClick"
         >
-          <el-table-column prop="group" label="Группа" fixed="left" min-width="200" show-overflow-tooltip />
+          <el-table-column prop="group" label="Группа" fixed="left" min-width="200" show-overflow-tooltip>
+            <template #default="{ row }">
+              <el-tooltip
+                v-if="row.group === NO_CODE"
+                :content="'Сэмплы без responseCode — обычно Transaction Controller, агрегирующий вложенные запросы. Детали — во вкладке «Сценарий»'"
+                placement="top"
+              >
+                <span class="no-code">{{ groupDisplay(row.group) }}</span>
+              </el-tooltip>
+              <template v-else>{{ groupDisplay(row.group) }}</template>
+            </template>
+          </el-table-column>
           <el-table-column prop="calls" label="Запросы" sortable align="right" width="90">
             <template #default="{ row }">{{ formatNumber(row.calls) }}</template>
           </el-table-column>
@@ -241,6 +258,11 @@ function onRowClick(row: StatDto) {
 .cell-danger {
   color: #f56c6c;
   font-weight: 600;
+}
+
+.no-code {
+  cursor: help;
+  border-bottom: 1px dashed #8b919a;
 }
 
 :deep(.row-danger td.el-table__cell) {
