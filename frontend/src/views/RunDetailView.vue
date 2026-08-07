@@ -107,7 +107,6 @@ function onRowClick(row: StatDto) {
             <span>Группировка и статистика</span>
             <el-radio-group v-model="groupBy" size="small">
               <el-radio-button value="label">Сценарий</el-radio-button>
-              <el-radio-button value="threadName">Поток</el-radio-button>
               <el-radio-button value="responseCode">Код ответа</el-radio-button>
             </el-radio-group>
           </div>

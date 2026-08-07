@@ -56,7 +56,7 @@ npm install vue-router
 - `src/types.ts` — типы, зеркалящие DTO бэка:
   - `RunSummary { id, fileName, uploadedAt, rows, errors }`
   - `Envelope<T> { items, total }`
-  - `GroupBy = 'label' | 'threadName' | 'responseCode'`
+  - `GroupBy = 'label' | 'responseCode'`
   - `StatDto` (group, calls, errors, errorRate, min, max, avg, p50, p90, p95, p99, throughput, totalBytes, avgBytes)
   - `TimeSeriesPoint` (bucket, calls, errors, min, max, avg, p50, p90, p95, p99, throughput, totalBytes)
 - `src/api.ts` — `fetch`-обёртка + методы:
@@ -87,7 +87,7 @@ npm install vue-router
 `src/views/RunDetailView.vue`:
 - `getRun(id)` + `getStats(id, groupBy)`.
 - KPI-карточки (`el-card`): запросы, ошибки, error rate, длительность.
-- Переключатель `groupBy` (`el-radio-group`): label / threadName / responseCode.
+- Переключатель `groupBy` (`el-radio-group`): label / responseCode.
 - `el-table` со `sortable`-колонками, подсветка строк с ошибками.
 
 **Проверка:** переключение группировки обновляет таблицу; сортировка по колонкам работает.

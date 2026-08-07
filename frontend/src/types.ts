@@ -11,7 +11,7 @@ export interface Envelope<T> {
   total: number
 }
 
-export type GroupBy = 'label' | 'threadName' | 'responseCode'
+export type GroupBy = 'label' | 'responseCode'
 
 export interface StatDto {
   group: string
