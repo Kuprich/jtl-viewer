@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import TimeChart from '../components/TimeChart.vue'
 import { getRun, getStats, getTimeseries } from '../api'
 import type { GroupBy, RunSummary, StatDto, TimeSeriesPoint } from '../types'
 import { formatBytes, formatDateTime, formatDuration, formatMs, formatNumber, formatPercent } from '../utils/format'
@@ -8,6 +9,10 @@ import { formatBytes, formatDateTime, formatDuration, formatMs, formatNumber, fo
 const route = useRoute()
 const run = ref<RunSummary | null>(null)
 const series = ref<TimeSeriesPoint[]>([])
+const chartSeries = ref<TimeSeriesPoint[]>([])
+const chartLoading = ref(false)
+const chartError = ref('')
+const scenario = ref('')
 const stats = ref<StatDto[]>([])
 const loading = ref(false)
 const error = ref('')
@@ -30,6 +35,20 @@ async function loadStats() {
   }
 }
 
+async function loadChartSeries() {
+  chartLoading.value = true
+  chartError.value = ''
+  try {
+    chartSeries.value = scenario.value
+      ? await getTimeseries(id.value, { label: scenario.value })
+      : series.value
+  } catch (e) {
+    chartError.value = e instanceof Error ? e.message : String(e)
+  } finally {
+    chartLoading.value = false
+  }
+}
+
 watch(
   id,
   async (value) => {
@@ -37,7 +56,9 @@ watch(
     error.value = ''
     run.value = null
     series.value = []
+    chartSeries.value = []
     selectedGroup.value = null
+    scenario.value = ''
     try {
       const [runData, seriesData] = await Promise.all([getRun(value), getTimeseries(value)])
       run.value = runData
@@ -48,11 +69,23 @@ watch(
       loading.value = false
     }
     await loadStats()
+    await loadChartSeries()
   },
   { immediate: true },
 )
 
-watch(groupBy, loadStats)
+watch(groupBy, (v) => {
+  if (v !== 'label') scenario.value = ''
+  loadStats()
+})
+
+watch(scenario, () => {
+  if (run.value) loadChartSeries()
+})
+
+const showScenario = computed(() => groupBy.value === 'label')
+
+const scenarioLabels = computed(() => (showScenario.value ? stats.value.map((s) => s.group) : []))
 
 const errorRate = computed(() => {
   if (!run.value || run.value.rows === 0) return 0
@@ -81,6 +114,7 @@ function rowClass(data: { row: StatDto }) {
 
 function onRowClick(row: StatDto) {
   selectedGroup.value = row.group
+  if (groupBy.value === 'label') scenario.value = row.group
 }
 
 const NO_CODE = '(none)'
@@ -187,7 +221,16 @@ function groupDisplay(group: string): string {
 
       <el-card class="zone" shadow="never">
         <template #header>Временной ряд</template>
-        <p class="muted">Наполняется на Шаге 7</p>
+        <el-alert v-if="chartError" type="error" :title="chartError" show-icon :closable="false" />
+        <TimeChart
+          v-else
+          v-loading="chartLoading"
+          :series="chartSeries"
+          :labels="scenarioLabels"
+          :show-scenario="showScenario"
+          :scenario="scenario"
+          @update:scenario="scenario = $event"
+        />
       </el-card>
     </template>
   </div>
