@@ -1,6 +1,7 @@
 package com.jtlweb.controller;
 
 import com.jtlweb.dto.Envelope;
+import com.jtlweb.dto.RunDetail;
 import com.jtlweb.dto.RunSummary;
 import com.jtlweb.service.RunService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +28,7 @@ public class RunController {
     }
 
     @GetMapping("/{id}")
-    public RunSummary get(@PathVariable long id) {
+    public RunDetail get(@PathVariable long id) {
         return runService.getById(id);
     }
 }

@@ -1,4 +1,4 @@
-import type { Envelope, GroupBy, RunSummary, StatDto, TimeSeriesPoint } from './types'
+import type { Envelope, GroupBy, RunDetail, RunSummary, StatDto, TimeSeriesPoint } from './types'
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   const res = await fetch(`/api${path}`, options)
@@ -13,8 +13,8 @@ export function getRuns(): Promise<Envelope<RunSummary>> {
   return request<Envelope<RunSummary>>('/runs')
 }
 
-export function getRun(id: number): Promise<RunSummary> {
-  return request<RunSummary>(`/runs/${id}`)
+export function getRun(id: number): Promise<RunDetail> {
+  return request<RunDetail>(`/runs/${id}`)
 }
 
 export function getLabels(id: number): Promise<string[]> {

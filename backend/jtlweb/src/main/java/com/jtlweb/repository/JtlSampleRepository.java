@@ -139,6 +139,10 @@ public interface JtlSampleRepository extends JpaRepository<JtlSample, Long> {
     TimeRange findTimeRange(@Param("runId") long runId,
                             @Param("labels") List<String> labels);
 
+    @Query(value = "SELECT MIN(time_stamp) AS minTs, MAX(time_stamp) AS maxTs " +
+            "FROM jtl_sample WHERE run_id = :runId", nativeQuery = true)
+    TimeRange findTimeRangeAll(@Param("runId") long runId);
+
     interface TimeSeriesRow {
         long getBucket();
 

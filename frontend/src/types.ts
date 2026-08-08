@@ -6,6 +6,12 @@ export interface RunSummary {
   errors: number
 }
 
+export interface RunDetail extends RunSummary {
+  startTime: number | null
+  endTime: number | null
+  durationMs: number | null
+}
+
 export interface Envelope<T> {
   items: T[]
   total: number

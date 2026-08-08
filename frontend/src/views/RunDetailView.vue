@@ -1,26 +1,22 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import TimeChart from '../components/TimeChart.vue'
+import RpsErrorsChart from '../components/RpsErrorsChart.vue'
 import OpsFilter from '../components/OpsFilter.vue'
 import { getLabels, getRun, getStats, getTimeseries } from '../api'
-import type { GroupBy, RunSummary, StatDto, TimeSeriesPoint } from '../types'
+import type { GroupBy, RunDetail, StatDto, TimeSeriesPoint } from '../types'
 import { formatBytes, formatDateTime, formatDuration, formatMs, formatNumber, formatPercent } from '../utils/format'
 
 const route = useRoute()
-const run = ref<RunSummary | null>(null)
+const run = ref<RunDetail | null>(null)
 const series = ref<TimeSeriesPoint[]>([])
-const scenarioSeries = ref<TimeSeriesPoint[]>([])
-const chartLoading = ref(false)
 const chartError = ref('')
-const scenario = ref('')
 const stats = ref<StatDto[]>([])
 const loading = ref(false)
 const error = ref('')
 const statsLoading = ref(false)
 const statsError = ref('')
 const groupBy = ref('label')
-const selectedGroup = ref<string | null>(null)
 const availableOps = ref<string[]>([])
 const selectedOps = ref<string[]>([])
 
@@ -41,6 +37,7 @@ async function loadStats() {
 }
 
 async function loadSeries() {
+  chartError.value = ''
   try {
     series.value = selectedOps.value.length
       ? await getTimeseries(id.value, { labels: selectedOps.value })
@@ -51,27 +48,6 @@ async function loadSeries() {
   }
 }
 
-async function loadScenarioSeries() {
-  if (!scenario.value) {
-    scenarioSeries.value = []
-    return
-  }
-  chartLoading.value = true
-  chartError.value = ''
-  try {
-    scenarioSeries.value = await getTimeseries(id.value, {
-      label: scenario.value,
-      labels: selectedOps.value,
-    })
-  } catch (e) {
-    chartError.value = e instanceof Error ? e.message : String(e)
-  } finally {
-    chartLoading.value = false
-  }
-}
-
-const chartSeries = computed(() => (scenario.value ? scenarioSeries.value : series.value))
-
 watch(
   id,
   async (value) => {
@@ -79,10 +55,8 @@ watch(
     error.value = ''
     run.value = null
     series.value = []
-    scenarioSeries.value = []
+    chartError.value = ''
     stats.value = []
-    selectedGroup.value = null
-    scenario.value = ''
     availableOps.value = []
     selectedOps.value = []
     try {
@@ -103,21 +77,11 @@ watch(selectedOps, () => {
   if (!run.value) return
   loadStats()
   loadSeries()
-  if (scenario.value) loadScenarioSeries()
 })
 
-watch(groupBy, (v) => {
-  if (v !== 'label') scenario.value = ''
+watch(groupBy, () => {
   loadStats()
 })
-
-watch(scenario, () => {
-  if (run.value) loadScenarioSeries()
-})
-
-const showScenario = computed(() => groupBy.value === 'label')
-
-const scenarioLabels = computed(() => (showScenario.value ? stats.value.map((s) => s.group) : []))
 
 const callsTotal = computed(() => stats.value.reduce((sum, s) => sum + s.calls, 0))
 const errorsTotal = computed(() => stats.value.reduce((sum, s) => sum + s.errors, 0))
@@ -136,17 +100,22 @@ const kpis = computed(() => [
   { label: 'Длительность', value: duration.value ? formatDuration(duration.value) : '—', danger: false },
 ])
 
+const testRange = computed(() => {
+  const r = run.value
+  if (!r || r.startTime == null || r.endTime == null || r.durationMs == null) return null
+  return {
+    start: formatDateTime(r.startTime),
+    end: formatDateTime(r.endTime),
+    duration: formatDuration(r.durationMs),
+  }
+})
+
 function formatRps(value: number): string {
   return value.toFixed(2).replace('.', ',')
 }
 
 function rowClass(data: { row: StatDto }) {
   return data.row.errors > 0 ? 'row-danger' : ''
-}
-
-function onRowClick(row: StatDto) {
-  selectedGroup.value = row.group
-  if (groupBy.value === 'label') scenario.value = row.group
 }
 
 const NO_CODE = '(none)'
@@ -165,7 +134,9 @@ const noCodeMeta = computed(() =>
     <template v-else>
       <div class="detail-header">
         <h2>{{ run?.fileName ?? 'Загрузка…' }}</h2>
-        <span v-if="run" class="meta">{{ formatDateTime(run.uploadedAt) }}</span>
+        <span v-if="testRange" class="meta">
+          Тест: {{ testRange.start }} – {{ testRange.end }} ({{ testRange.duration }})
+        </span>
       </div>
 
       <el-card v-if="run" class="zone" shadow="never">
@@ -202,7 +173,6 @@ const noCodeMeta = computed(() =>
           max-height="480"
           highlight-current-row
           :row-class-name="rowClass"
-          @row-click="onRowClick"
         >
           <el-table-column prop="group" label="Группа" fixed="left" min-width="200" show-overflow-tooltip>
             <template #default="{ row }">
@@ -269,15 +239,7 @@ const noCodeMeta = computed(() =>
       <el-card class="zone" shadow="never">
         <template #header>Временной ряд</template>
         <el-alert v-if="chartError" type="error" :title="chartError" show-icon :closable="false" />
-        <TimeChart
-          v-else
-          v-loading="chartLoading"
-          :series="chartSeries"
-          :labels="scenarioLabels"
-          :show-scenario="showScenario"
-          :scenario="scenario"
-          @update:scenario="scenario = $event"
-        />
+        <RpsErrorsChart v-else :series="series" />
       </el-card>
     </template>
   </div>

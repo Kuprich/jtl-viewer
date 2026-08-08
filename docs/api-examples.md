@@ -61,7 +61,7 @@ curl http://localhost:8080/api/runs
 curl http://localhost:8080/api/runs/1
 ```
 
-Ответ 200:
+Ответ 200 (помимо общих полей — временной интервал теста в мс Unix-epoch; `null`, если сэмплов нет):
 
 ```json
 {
@@ -69,7 +69,10 @@ curl http://localhost:8080/api/runs/1
   "fileName": "results.jtl",
   "uploadedAt": "2026-08-02T17:59:30.264550527Z",
   "rows": 1502,
-  "errors": 50
+  "errors": 50,
+  "startTime": 1785667680000,
+  "endTime": 1785667800000,
+  "durationMs": 120000
 }
 ```
 

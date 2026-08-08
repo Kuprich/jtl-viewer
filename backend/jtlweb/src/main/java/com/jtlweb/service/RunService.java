@@ -1,9 +1,11 @@
 package com.jtlweb.service;
 
+import com.jtlweb.dto.RunDetail;
 import com.jtlweb.dto.RunSummary;
 import com.jtlweb.exception.RunNotFoundException;
 import com.jtlweb.model.JtlRun;
 import com.jtlweb.repository.JtlRunRepository;
+import com.jtlweb.repository.JtlSampleRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,9 +14,11 @@ import java.util.List;
 public class RunService {
 
     private final JtlRunRepository runRepository;
+    private final JtlSampleRepository sampleRepository;
 
-    public RunService(JtlRunRepository runRepository) {
+    public RunService(JtlRunRepository runRepository, JtlSampleRepository sampleRepository) {
         this.runRepository = runRepository;
+        this.sampleRepository = sampleRepository;
     }
 
     public List<RunSummary> listAll() {
@@ -23,10 +27,17 @@ public class RunService {
                 .toList();
     }
 
-    public RunSummary getById(long id) {
-        return runRepository.findById(id)
-                .map(RunService::toSummary)
+    public RunDetail getById(long id) {
+        JtlRun run = runRepository.findById(id)
                 .orElseThrow(() -> new RunNotFoundException(id));
+
+        JtlSampleRepository.TimeRange range = sampleRepository.findTimeRangeAll(id);
+        Long startTime = range.getMinTs();
+        Long endTime = range.getMaxTs();
+        Long durationMs = (startTime != null && endTime != null) ? endTime - startTime : null;
+
+        return new RunDetail(run.getId(), run.getFileName(), run.getUploadedAt(),
+                run.getRows(), run.getErrors(), startTime, endTime, durationMs);
     }
 
     private static RunSummary toSummary(JtlRun r) {

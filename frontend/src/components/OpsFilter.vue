@@ -298,6 +298,17 @@ function moveKey(from: 'left' | 'right', key: string) {
   margin-left: 0;
 }
 
+.buttons :deep(.el-button:not(.is-disabled)) {
+  --el-button-border-color: #4fc3f7;
+  --el-button-text-color: #4fc3f7;
+}
+
+.buttons :deep(.el-button:not(.is-disabled):hover) {
+  --el-button-hover-border-color: #7fd4fa;
+  --el-button-hover-text-color: #7fd4fa;
+  --el-button-hover-bg-color: rgba(79, 195, 247, 0.12);
+}
+
 .dragging {
   user-select: none;
 }

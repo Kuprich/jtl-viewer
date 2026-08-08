@@ -21,8 +21,8 @@ export function formatPercent(value: number): string {
   return `${value.toFixed(1).replace('.', ',')}%`
 }
 
-export function formatDateTime(iso: string): string {
-  const d = new Date(iso)
+export function formatDateTime(v: string | number): string {
+  const d = new Date(v)
   const pad = (n: number) => String(n).padStart(2, '0')
   return `${pad(d.getDate())}.${pad(d.getMonth() + 1)}.${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`
 }
