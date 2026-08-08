@@ -2,6 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import RpsErrorsChart from '../components/RpsErrorsChart.vue'
+import OpsPercentilesChart, { type Percentile } from '../components/OpsPercentilesChart.vue'
 import OpsFilter from '../components/OpsFilter.vue'
 import { getLabels, getRun, getStats, getTimeseries } from '../api'
 import type { GroupBy, RunDetail, StatDto, TimeSeriesPoint } from '../types'
@@ -19,6 +20,10 @@ const statsError = ref('')
 const groupBy = ref('label')
 const availableOps = ref<string[]>([])
 const selectedOps = ref<string[]>([])
+const percentile = ref<Percentile>('p95')
+const opSeries = ref<{ label: string; points: TimeSeriesPoint[] }[]>([])
+const opsLoading = ref(false)
+const opsError = ref('')
 
 const id = computed(() => Number(route.params.id))
 
@@ -48,6 +53,31 @@ async function loadSeries() {
   }
 }
 
+async function loadOpsSeries() {
+  opsError.value = ''
+  opsLoading.value = true
+  try {
+    const ops = selectedOps.value
+    if (!ops.length) {
+      opSeries.value = []
+      return
+    }
+    const results = await Promise.allSettled(
+      ops.map((op) => getTimeseries(id.value, { label: op, labels: selectedOps.value })),
+    )
+    const loaded: { label: string; points: TimeSeriesPoint[] }[] = []
+    const failed: string[] = []
+    results.forEach((r, i) => {
+      if (r.status === 'fulfilled') loaded.push({ label: ops[i], points: r.value })
+      else failed.push(ops[i])
+    })
+    opSeries.value = loaded
+    if (failed.length) opsError.value = `Не удалось загрузить операции: ${failed.join(', ')}`
+  } finally {
+    opsLoading.value = false
+  }
+}
+
 watch(
   id,
   async (value) => {
@@ -57,6 +87,8 @@ watch(
     series.value = []
     chartError.value = ''
     stats.value = []
+    opSeries.value = []
+    opsError.value = ''
     availableOps.value = []
     selectedOps.value = []
     try {
@@ -77,11 +109,14 @@ watch(selectedOps, () => {
   if (!run.value) return
   loadStats()
   loadSeries()
+  loadOpsSeries()
 })
 
 watch(groupBy, () => {
   loadStats()
 })
+
+const seriesBuckets = computed(() => series.value.map((p) => p.bucket))
 
 const callsTotal = computed(() => stats.value.reduce((sum, s) => sum + s.calls, 0))
 const errorsTotal = computed(() => stats.value.reduce((sum, s) => sum + s.errors, 0))
@@ -240,6 +275,25 @@ const noCodeMeta = computed(() =>
         <template #header>Временной ряд</template>
         <el-alert v-if="chartError" type="error" :title="chartError" show-icon :closable="false" />
         <RpsErrorsChart v-else :series="series" />
+      </el-card>
+
+      <el-card class="zone" shadow="never">
+        <template #header>
+          <div class="zone-header">
+            <span>Время отклика по операциям</span>
+            <el-select v-model="percentile" size="small" style="width: 110px">
+              <el-option v-for="p in ['p50', 'p90', 'p95', 'p99'] as const" :key="p" :label="p" :value="p" />
+            </el-select>
+          </div>
+        </template>
+        <el-alert v-if="opsError" type="error" :title="opsError" show-icon :closable="false" />
+        <OpsPercentilesChart
+          v-else
+          v-loading="opsLoading"
+          :axis="seriesBuckets"
+          :series="opSeries"
+          :percentile="percentile"
+        />
       </el-card>
     </template>
   </div>
