@@ -28,7 +28,6 @@ const rateMode = ref(false)
 
 const BUCKET_OPTIONS = [
   { label: 'Авто', ms: -1 },
-  { label: '1s', ms: 1_000 },
   { label: '5s', ms: 5_000 },
   { label: '15s', ms: 15_000 },
   { label: '30s', ms: 30_000 },
@@ -53,6 +52,8 @@ function isBucketDisabled(ms: number): boolean {
   const n = filteredSpan.value / ms
   return n <= 10 || n > 2000
 }
+
+const visibleBuckets = computed(() => BUCKET_OPTIONS.filter((o) => !isBucketDisabled(o.ms)))
 
 const id = computed(() => Number(route.params.id))
 
@@ -320,21 +321,12 @@ const noCodeMeta = computed(() =>
           <div class="zone-header">
             <span>Интервал агрегации</span>
             <el-radio-group v-model="bucketMs" size="small">
-              <el-radio-button
-                v-for="opt in BUCKET_OPTIONS"
-                :key="opt.label"
-                :value="opt.ms"
-                :disabled="isBucketDisabled(opt.ms)"
-              >
+              <el-radio-button v-for="opt in visibleBuckets" :key="opt.label" :value="opt.ms">
                 {{ opt.label }}
               </el-radio-button>
             </el-radio-group>
           </div>
         </template>
-        <p class="muted">
-          Общий шаг агрегации для всех временных графиков. Недоступные интервалы отключены — нужно больше 10 точек и не
-          более 2000.
-        </p>
       </el-card>
 
       <el-card class="zone" shadow="never">

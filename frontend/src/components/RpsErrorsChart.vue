@@ -17,9 +17,11 @@ const data = computed(() => {
   const secPerBucket = bucketMs > 0 ? bucketMs / 1000 : 0
   return {
     labels: points.map((p) => new Date(p.bucket).toLocaleTimeString('ru-RU')),
-    rps: points.map((p) => p.throughput),
-    err: points.map((p) => (secPerBucket > 0 ? Math.round((p.errors / secPerBucket) * 100) / 100 : 0)),
-    errRate: points.map((p) => (p.calls > 0 ? (p.errors / p.calls) * 100 : 0)),
+    rps: points.map((p) => (p.calls > 0 ? p.throughput : null)),
+    err: points.map((p) =>
+      p.calls > 0 ? (secPerBucket > 0 ? Math.round((p.errors / secPerBucket) * 100) / 100 : 0) : null,
+    ),
+    errRate: points.map((p) => (p.calls > 0 ? (p.errors / p.calls) * 100 : null)),
   }
 })
 
@@ -36,7 +38,8 @@ function buildDatasets() {
     borderColor: '#f56c6c',
     backgroundColor: 'rgba(245, 108, 108, 0.1)',
     borderWidth: 2,
-    pointRadius: 0,
+    pointRadius: 2,
+    pointHoverRadius: 6,
     pointHitRadius: 8,
     tension: 0.25,
     fill: false,
@@ -49,7 +52,8 @@ function buildDatasets() {
       borderColor: '#4fc3f7',
       backgroundColor: 'rgba(79, 195, 247, 0.1)',
       borderWidth: 2,
-      pointRadius: 0,
+      pointRadius: 2,
+      pointHoverRadius: 6,
       pointHitRadius: 8,
       tension: 0.25,
       fill: false,
@@ -100,6 +104,7 @@ onMounted(() => {
           padding: 10,
           callbacks: {
             label: (ctx) => {
+              if (ctx.parsed.y == null) return ''
               const v = ctx.parsed.y ?? 0
               const suffix = ctx.dataset.label === 'Errors %' ? '%' : ''
               return `${ctx.dataset.label}: ${formatValue(v)}${suffix}`

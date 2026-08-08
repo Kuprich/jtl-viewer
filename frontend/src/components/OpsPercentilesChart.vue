@@ -36,12 +36,13 @@ const datasets = computed(() =>
       label: s.label,
       data: props.axis.map((b) => {
         const point = byBucket.get(b)
-        return point ? point[props.percentile] : null
+        return point && point.calls > 0 ? point[props.percentile] : null
       }),
       borderColor: PALETTE[i % PALETTE.length],
       backgroundColor: 'transparent',
       borderWidth: 2,
-      pointRadius: 0,
+      pointRadius: 2,
+      pointHoverRadius: 6,
       pointHitRadius: 8,
       tension: 0.25,
       spanGaps: false,
