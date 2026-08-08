@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import { CaretBottom } from '@element-plus/icons-vue'
 import RpsErrorsChart from '../components/RpsErrorsChart.vue'
 import OpsPercentilesChart, { type Percentile } from '../components/OpsPercentilesChart.vue'
 import OpsFilter from '../components/OpsFilter.vue'
@@ -25,6 +26,7 @@ const opSeries = ref<{ label: string; points: TimeSeriesPoint[] }[]>([])
 const opsLoading = ref(false)
 const opsError = ref('')
 const rateMode = ref(false)
+const settingsOpen = ref(true)
 
 const BUCKET_OPTIONS = [
   { label: 'Авто', ms: -1 },
@@ -219,9 +221,29 @@ const noCodeMeta = computed(() =>
         </span>
       </div>
 
-      <el-card v-if="run" class="zone" shadow="never">
-        <template #header>Фильтр операций</template>
-        <OpsFilter :available="availableOps" v-model="selectedOps" />
+      <el-card
+        v-if="run"
+        class="zone"
+        :class="{ 'settings-collapsed': !settingsOpen }"
+        shadow="never"
+      >
+        <template #header>
+          <div class="settings-header" @click="settingsOpen = !settingsOpen">
+            <span>Настройки</span>
+            <el-icon class="settings-chevron" :class="{ open: settingsOpen }"><CaretBottom /></el-icon>
+          </div>
+        </template>
+        <div v-show="settingsOpen">
+          <OpsFilter :available="availableOps" v-model="selectedOps" />
+          <div class="settings-section">
+            <div class="settings-label">Интервал агрегации</div>
+            <el-radio-group v-model="bucketMs" size="small">
+              <el-radio-button v-for="opt in visibleBuckets" :key="opt.label" :value="opt.ms">
+                {{ opt.label }}
+              </el-radio-button>
+            </el-radio-group>
+          </div>
+        </div>
       </el-card>
 
       <div v-loading="loading" class="kpis">
@@ -314,19 +336,6 @@ const noCodeMeta = computed(() =>
             <template #default="{ row }">{{ formatBytes(row.avgBytes) }}</template>
           </el-table-column>
         </el-table>
-      </el-card>
-
-      <el-card class="zone" shadow="never">
-        <template #header>
-          <div class="zone-header">
-            <span>Интервал агрегации</span>
-            <el-radio-group v-model="bucketMs" size="small">
-              <el-radio-button v-for="opt in visibleBuckets" :key="opt.label" :value="opt.ms">
-                {{ opt.label }}
-              </el-radio-button>
-            </el-radio-group>
-          </div>
-        </template>
       </el-card>
 
       <el-card class="zone" shadow="never">
@@ -425,6 +434,45 @@ const noCodeMeta = computed(() =>
   color: #8b919a;
   margin: 0;
   font-size: 13px;
+}
+
+.settings-section {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #2a2c31;
+}
+
+.settings-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.settings-chevron {
+  color: #8b919a;
+  font-size: 12px;
+  transition: transform 0.2s;
+}
+
+.settings-chevron.open {
+  transform: rotate(180deg);
+}
+
+.settings-collapsed :deep(.el-card__body) {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.settings-collapsed :deep(.el-card__header) {
+  border-bottom: none;
+}
+
+.settings-label {
+  font-size: 12px;
+  color: #8b919a;
+  margin-bottom: 8px;
 }
 
 .cell-danger {
