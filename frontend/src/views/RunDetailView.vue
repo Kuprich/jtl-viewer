@@ -26,6 +26,34 @@ const opsLoading = ref(false)
 const opsError = ref('')
 const rateMode = ref(false)
 
+const BUCKET_OPTIONS = [
+  { label: 'Авто', ms: -1 },
+  { label: '1s', ms: 1_000 },
+  { label: '5s', ms: 5_000 },
+  { label: '15s', ms: 15_000 },
+  { label: '30s', ms: 30_000 },
+  { label: '1m', ms: 60_000 },
+  { label: '5m', ms: 300_000 },
+  { label: '10m', ms: 600_000 },
+]
+const bucketMs = ref(-1)
+
+const currentBucket = computed(() => (bucketMs.value > 0 ? bucketMs.value : undefined))
+
+const filteredSpan = computed(() => {
+  const pts = series.value
+  if (pts.length < 2) return 0
+  const step = pts[1].bucket - pts[0].bucket
+  return pts[pts.length - 1].bucket - pts[0].bucket + step
+})
+
+function isBucketDisabled(ms: number): boolean {
+  if (ms <= 0) return false
+  if (filteredSpan.value <= 0) return true
+  const n = filteredSpan.value / ms
+  return n <= 10 || n > 2000
+}
+
 const id = computed(() => Number(route.params.id))
 
 async function loadStats() {
@@ -46,7 +74,7 @@ async function loadSeries() {
   chartError.value = ''
   try {
     series.value = selectedOps.value.length
-      ? await getTimeseries(id.value, { labels: selectedOps.value })
+      ? await getTimeseries(id.value, { bucketMs: currentBucket.value, labels: selectedOps.value })
       : []
   } catch (e) {
     series.value = []
@@ -64,7 +92,9 @@ async function loadOpsSeries() {
       return
     }
     const results = await Promise.allSettled(
-      ops.map((op) => getTimeseries(id.value, { label: op, labels: selectedOps.value })),
+      ops.map((op) =>
+        getTimeseries(id.value, { bucketMs: currentBucket.value, label: op, labels: selectedOps.value }),
+      ),
     )
     const loaded: { label: string; points: TimeSeriesPoint[] }[] = []
     const failed: string[] = []
@@ -92,6 +122,7 @@ watch(
     opsError.value = ''
     availableOps.value = []
     selectedOps.value = []
+    bucketMs.value = -1
     try {
       const [runData, ops] = await Promise.all([getRun(value), getLabels(value)])
       run.value = runData
@@ -111,6 +142,18 @@ watch(selectedOps, () => {
   loadStats()
   loadSeries()
   loadOpsSeries()
+})
+
+watch(bucketMs, () => {
+  if (!run.value) return
+  loadSeries()
+  loadOpsSeries()
+})
+
+watch(filteredSpan, () => {
+  if (bucketMs.value > 0 && isBucketDisabled(bucketMs.value)) {
+    bucketMs.value = -1
+  }
 })
 
 watch(groupBy, () => {
@@ -270,6 +313,28 @@ const noCodeMeta = computed(() =>
             <template #default="{ row }">{{ formatBytes(row.avgBytes) }}</template>
           </el-table-column>
         </el-table>
+      </el-card>
+
+      <el-card class="zone" shadow="never">
+        <template #header>
+          <div class="zone-header">
+            <span>Интервал агрегации</span>
+            <el-radio-group v-model="bucketMs" size="small">
+              <el-radio-button
+                v-for="opt in BUCKET_OPTIONS"
+                :key="opt.label"
+                :value="opt.ms"
+                :disabled="isBucketDisabled(opt.ms)"
+              >
+                {{ opt.label }}
+              </el-radio-button>
+            </el-radio-group>
+          </div>
+        </template>
+        <p class="muted">
+          Общий шаг агрегации для всех временных графиков. Недоступные интервалы отключены — нужно больше 10 точек и не
+          более 2000.
+        </p>
       </el-card>
 
       <el-card class="zone" shadow="never">
