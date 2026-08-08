@@ -223,7 +223,7 @@ const noCodeMeta = computed(() =>
 
       <el-card
         v-if="run"
-        class="zone"
+        class="zone settings-card"
         :class="{ 'settings-collapsed': !settingsOpen }"
         shadow="never"
       >
@@ -233,17 +233,21 @@ const noCodeMeta = computed(() =>
             <el-icon class="settings-chevron" :class="{ open: settingsOpen }"><CaretBottom /></el-icon>
           </div>
         </template>
-        <div v-show="settingsOpen">
-          <OpsFilter :available="availableOps" v-model="selectedOps" />
-          <div class="settings-section">
-            <div class="settings-label">Интервал агрегации</div>
-            <el-radio-group v-model="bucketMs" size="small">
-              <el-radio-button v-for="opt in visibleBuckets" :key="opt.label" :value="opt.ms">
-                {{ opt.label }}
-              </el-radio-button>
-            </el-radio-group>
+        <Transition name="collapse">
+          <div v-show="settingsOpen" class="collapse-body">
+            <div class="collapse-inner">
+              <OpsFilter :available="availableOps" v-model="selectedOps" />
+              <div class="settings-section">
+                <div class="settings-label">Интервал агрегации</div>
+                <el-radio-group v-model="bucketMs" size="small">
+                  <el-radio-button v-for="opt in visibleBuckets" :key="opt.label" :value="opt.ms">
+                    {{ opt.label }}
+                  </el-radio-button>
+                </el-radio-group>
+              </div>
+            </div>
           </div>
-        </div>
+        </Transition>
       </el-card>
 
       <div v-loading="loading" class="kpis">
@@ -460,6 +464,10 @@ const noCodeMeta = computed(() =>
   transform: rotate(180deg);
 }
 
+.settings-card :deep(.el-card__body) {
+  transition: padding 0.25s ease;
+}
+
 .settings-collapsed :deep(.el-card__body) {
   padding-top: 0;
   padding-bottom: 0;
@@ -467,6 +475,22 @@ const noCodeMeta = computed(() =>
 
 .settings-collapsed :deep(.el-card__header) {
   border-bottom: none;
+}
+
+.collapse-body {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 0.25s ease;
+}
+
+.collapse-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.collapse-enter-from,
+.collapse-leave-to {
+  grid-template-rows: 0fr;
 }
 
 .settings-label {
