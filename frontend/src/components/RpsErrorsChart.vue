@@ -5,6 +5,7 @@ import type { TimeSeriesPoint } from '../types'
 
 const props = defineProps<{
   series: TimeSeriesPoint[]
+  rateMode: boolean
 }>()
 
 const canvas = ref<HTMLCanvasElement | null>(null)
@@ -18,18 +19,53 @@ const data = computed(() => {
     labels: points.map((p) => new Date(p.bucket).toLocaleTimeString('ru-RU')),
     rps: points.map((p) => p.throughput),
     err: points.map((p) => (secPerBucket > 0 ? Math.round((p.errors / secPerBucket) * 100) / 100 : 0)),
+    errRate: points.map((p) => (p.calls > 0 ? (p.errors / p.calls) * 100 : 0)),
   }
 })
+
+const errLabel = computed(() => (props.rateMode ? 'Errors %' : 'Errors/sec'))
 
 function formatValue(v: number): string {
   return v.toFixed(2)
 }
 
+function buildDatasets() {
+  const errDs = {
+    label: errLabel.value,
+    data: props.rateMode ? data.value.errRate : data.value.err,
+    borderColor: '#f56c6c',
+    backgroundColor: 'rgba(245, 108, 108, 0.1)',
+    borderWidth: 2,
+    pointRadius: 0,
+    pointHitRadius: 8,
+    tension: 0.25,
+    fill: false,
+  }
+  if (props.rateMode) return [errDs]
+  return [
+    {
+      label: 'RPS',
+      data: data.value.rps,
+      borderColor: '#4fc3f7',
+      backgroundColor: 'rgba(79, 195, 247, 0.1)',
+      borderWidth: 2,
+      pointRadius: 0,
+      pointHitRadius: 8,
+      tension: 0.25,
+      fill: false,
+    },
+    errDs,
+  ]
+}
+
+const yMax = computed(() => (props.rateMode ? 100 : undefined))
+
 function render() {
   if (!chart) return
   chart.data.labels = data.value.labels
-  chart.data.datasets[0].data = data.value.rps
-  chart.data.datasets[1].data = data.value.err
+  chart.data.datasets = buildDatasets() as never
+  const y = chart.options.scales?.y
+  if (y) y.max = yMax.value
   chart.update()
 }
 
@@ -39,31 +75,7 @@ onMounted(() => {
     type: 'line',
     data: {
       labels: data.value.labels,
-      datasets: [
-        {
-          label: 'RPS',
-          data: data.value.rps,
-          borderColor: '#4fc3f7',
-          backgroundColor: 'rgba(79, 195, 247, 0.1)',
-          borderWidth: 2,
-          pointRadius: 0,
-          pointHitRadius: 8,
-          tension: 0.25,
-          fill: false,
-          yAxisID: 'y',
-        },
-        {
-          label: 'Errors/sec',
-          data: data.value.err,
-          borderColor: '#f56c6c',
-          backgroundColor: 'rgba(245, 108, 108, 0.1)',
-          borderWidth: 2,
-          pointRadius: 0,
-          pointHitRadius: 8,
-          tension: 0.25,
-          fill: false,
-        },
-      ],
+      datasets: buildDatasets() as never,
     },
     options: {
       responsive: true,
@@ -87,7 +99,11 @@ onMounted(() => {
           borderWidth: 1,
           padding: 10,
           callbacks: {
-            label: (ctx) => `${ctx.dataset.label}: ${formatValue(ctx.parsed.y ?? 0)}`,
+            label: (ctx) => {
+              const v = ctx.parsed.y ?? 0
+              const suffix = ctx.dataset.label === 'Errors %' ? '%' : ''
+              return `${ctx.dataset.label}: ${formatValue(v)}${suffix}`
+            },
           },
         },
       },
@@ -109,7 +125,7 @@ onMounted(() => {
   render()
 })
 
-watch(() => props.series, render)
+watch([() => props.series, () => props.rateMode], render)
 
 onBeforeUnmount(() => {
   chart?.destroy()

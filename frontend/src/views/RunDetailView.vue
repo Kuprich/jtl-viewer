@@ -24,6 +24,7 @@ const percentile = ref<Percentile>('p95')
 const opSeries = ref<{ label: string; points: TimeSeriesPoint[] }[]>([])
 const opsLoading = ref(false)
 const opsError = ref('')
+const rateMode = ref(false)
 
 const id = computed(() => Number(route.params.id))
 
@@ -236,7 +237,7 @@ const noCodeMeta = computed(() =>
               <span :class="{ 'cell-danger': row.errors > 0 }">{{ formatNumber(row.errors) }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="errorRate" label="Error %" sortable align="right" width="90">
+          <el-table-column prop="errorRate" label="Errors %" sortable align="right" width="90">
             <template #default="{ row }">
               <span :class="{ 'cell-danger': row.errors > 0 }">{{ formatPercent(row.errorRate) }}</span>
             </template>
@@ -272,9 +273,17 @@ const noCodeMeta = computed(() =>
       </el-card>
 
       <el-card class="zone" shadow="never">
-        <template #header>Временной ряд</template>
+        <template #header>
+          <div class="zone-header">
+            <span>Временной ряд</span>
+            <el-radio-group v-model="rateMode" size="small">
+              <el-radio-button :value="false">Errors/sec</el-radio-button>
+              <el-radio-button :value="true">Errors %</el-radio-button>
+            </el-radio-group>
+          </div>
+        </template>
         <el-alert v-if="chartError" type="error" :title="chartError" show-icon :closable="false" />
-        <RpsErrorsChart v-else :series="series" />
+        <RpsErrorsChart v-else :series="series" :rate-mode="rateMode" />
       </el-card>
 
       <el-card class="zone" shadow="never">
