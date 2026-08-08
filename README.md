@@ -9,7 +9,7 @@
 - `POST /api/runs` — загрузка JTL-файла (multipart `file`). Парсит файл, сохраняет строки в БД и возвращает общую статистику прогона: `{ id, fileName, uploadedAt, rows, errors }`.
 - `GET /api/runs` — список прогонов (от новых к старым).
 - `GET /api/runs/{id}` — информация о прогоне.
-- `GET /api/runs/{id}/stats` — статистика по группам (`groupBy=label|responseCode`): счётчики, ошибки, перцентили, RPS, объём ответов.
+- `GET /api/runs/{id}/stats` — статистика по группам (`groupBy=label|responseCode|errorMessage`): счётчики, ошибки, перцентили, RPS, объём ответов.
 
 Примеры запросов и ответов: [docs/api-examples.md](docs/api-examples.md).
 

@@ -119,9 +119,11 @@ function onRowClick(row: StatDto) {
 
 const NO_CODE = '(none)'
 
-function groupDisplay(group: string): string {
-  return group === NO_CODE ? 'без кода' : group
-}
+const noCodeMeta = computed(() =>
+  groupBy.value === 'errorMessage'
+    ? { label: 'без текста' }
+    : { label: 'без кода' },
+)
 </script>
 
 <template>
@@ -148,6 +150,7 @@ function groupDisplay(group: string): string {
             <el-radio-group v-model="groupBy" size="small">
               <el-radio-button value="label">Сценарий</el-radio-button>
               <el-radio-button value="responseCode">Код ответа</el-radio-button>
+              <el-radio-button value="errorMessage">Ошибки</el-radio-button>
             </el-radio-group>
           </div>
         </template>
@@ -166,14 +169,21 @@ function groupDisplay(group: string): string {
         >
           <el-table-column prop="group" label="Группа" fixed="left" min-width="200" show-overflow-tooltip>
             <template #default="{ row }">
-              <el-tooltip
-                v-if="row.group === NO_CODE"
-                :content="'Сэмплы без responseCode — обычно Transaction Controller, агрегирующий вложенные запросы. Детали — во вкладке «Сценарий»'"
-                placement="top"
-              >
-                <span class="no-code">{{ groupDisplay(row.group) }}</span>
+              <el-tooltip v-if="row.group === NO_CODE" placement="top">
+                <span class="no-code">{{ noCodeMeta.label }}</span>
+                <template #content>
+                  <div v-if="groupBy === 'errorMessage'" class="no-code-tip">
+                    Сэмплы без текста ошибки — обычно успешные запросы<br />
+                    или ошибки без сообщения.
+                  </div>
+                  <div v-else class="no-code-tip">
+                    Сэмплы без responseCode — обычно Transaction Controller,<br />
+                    агрегирующий вложенные запросы.<br />
+                    Детали — во вкладке «Сценарий».
+                  </div>
+                </template>
               </el-tooltip>
-              <template v-else>{{ groupDisplay(row.group) }}</template>
+              <template v-else>{{ row.group }}</template>
             </template>
           </el-table-column>
           <el-table-column prop="calls" label="Запросы" sortable align="right" width="90">
@@ -238,7 +248,7 @@ function groupDisplay(group: string): string {
 
 <style scoped>
 .detail {
-  max-width: 1400px;
+  width: 100%;
 }
 
 .detail-header {
@@ -306,6 +316,11 @@ function groupDisplay(group: string): string {
 .no-code {
   cursor: help;
   border-bottom: 1px dashed #8b919a;
+}
+
+:global(.no-code-tip) {
+  max-width: 280px;
+  line-height: 1.5;
 }
 
 :deep(.row-danger td.el-table__cell) {

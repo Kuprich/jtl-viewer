@@ -14,7 +14,7 @@ import java.util.Set;
 @Service
 public class StatsService {
 
-    private static final Set<String> VALID_GROUP_BY = Set.of("label", "responseCode");
+    private static final Set<String> VALID_GROUP_BY = Set.of("label", "responseCode", "errorMessage");
 
     private final JtlRunRepository runRepository;
     private final JtlSampleRepository sampleRepository;
@@ -34,6 +34,7 @@ public class StatsService {
 
         List<GroupStatRow> rows = switch (groupBy) {
             case "responseCode" -> sampleRepository.findStatsByResponseCode(runId);
+            case "errorMessage" -> sampleRepository.findStatsByErrorMessage(runId);
             default             -> sampleRepository.findStatsByLabel(runId);
         };
         return rows.stream().map(StatsService::toStat).toList();

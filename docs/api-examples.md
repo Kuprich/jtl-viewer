@@ -81,7 +81,7 @@ curl http://localhost:8080/api/runs/1
 
 ## GET /api/runs/{id}/stats — статистика по группам
 
-`groupBy`: `label` (по умолчанию), `responseCode`.
+`groupBy`: `label` (по умолчанию), `responseCode`, `errorMessage`.
 
 ```bash
 curl http://localhost:8080/api/runs/1/stats

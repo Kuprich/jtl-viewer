@@ -49,6 +49,26 @@ public interface JtlSampleRepository extends JpaRepository<JtlSample, Long> {
             """, nativeQuery = true)
     List<GroupStatRow> findStatsByResponseCode(@Param("runId") long runId);
 
+    @Query(value = """
+            SELECT COALESCE(failure_message, '(none)')                AS grp,
+                   COUNT(*)                                         AS calls,
+                   COUNT(*) FILTER (WHERE NOT success)              AS errors,
+                   MIN(elapsed)                                 AS minElapsed,
+                   MAX(elapsed)                                 AS maxElapsed,
+                   AVG(elapsed)                                 AS avgElapsed,
+                   PERCENTILE_CONT(0.5)  WITHIN GROUP (ORDER BY elapsed) AS p50,
+                   PERCENTILE_CONT(0.9)  WITHIN GROUP (ORDER BY elapsed) AS p90,
+                   PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY elapsed) AS p95,
+                   PERCENTILE_CONT(0.99) WITHIN GROUP (ORDER BY elapsed) AS p99,
+                   MAX(time_stamp) - MIN(time_stamp)            AS durationMs,
+                   SUM(bytes)                                   AS totalBytes
+            FROM jtl_sample
+            WHERE run_id = :runId
+            GROUP BY failure_message
+            ORDER BY calls DESC
+            """, nativeQuery = true)
+    List<GroupStatRow> findStatsByErrorMessage(@Param("runId") long runId);
+
     interface GroupStatRow {
         String getGrp();
 
