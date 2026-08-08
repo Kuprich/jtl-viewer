@@ -79,13 +79,27 @@ curl http://localhost:8080/api/runs/1
 { "error": "Run 4 not found" }
 ```
 
+## GET /api/runs/{id}/labels — список операций прогона
+
+```bash
+curl http://localhost:8080/api/runs/1/labels
+```
+
+Ответ 200:
+
+```json
+["TC_Controller", "UC01_Get_products", "UC02_Get_product", "UC03_Get_carts", "UC04_Get_cart"]
+```
+
 ## GET /api/runs/{id}/stats — статистика по группам
 
 `groupBy`: `label` (по умолчанию), `responseCode`, `errorMessage`.
+`labels` — повторяемый параметр: учитывать только указанные операции (опционально; по умолчанию — все операции прогона).
 
 ```bash
 curl http://localhost:8080/api/runs/1/stats
 curl "http://localhost:8080/api/runs/1/stats?groupBy=responseCode"
+curl "http://localhost:8080/api/runs/1/stats?labels=UC01_Get_products&labels=UC02_Get_product"
 ```
 
 Ответ 200 (`groupBy=label`, elapsed в мс, группы отсортированы по `calls`):
@@ -203,12 +217,13 @@ curl -w "\n%{http_code}" http://localhost:8080/api/runs/999/stats
 
 ## GET /api/runs/{id}/timeseries — временной ряд
 
-Бакеты по времени. `bucketMs` — размер бакета в мс (опционально, по умолчанию подбирается автоматически под длительность прогона, ~100 точек). `label` — фильтр по сценарию (опционально).
+Бакеты по времени. `bucketMs` — размер бакета в мс (опционально, по умолчанию подбирается автоматически под длительность прогона, ~100 точек). `label` — фильтр по сценарию (опционально). `labels` — повторяемый параметр: учитывать только указанные операции (опционально).
 
 ```bash
 curl http://localhost:8080/api/runs/1/timeseries
 curl "http://localhost:8080/api/runs/1/timeseries?bucketMs=1000"
 curl "http://localhost:8080/api/runs/1/timeseries?bucketMs=60000&label=UC01_Get_products"
+curl "http://localhost:8080/api/runs/1/timeseries?bucketMs=1000&labels=UC01_Get_products&labels=UC02_Get_product"
 ```
 
 Ответ 200 (`bucketMs=1000`):

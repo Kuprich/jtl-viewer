@@ -24,20 +24,33 @@ public class StatsService {
         this.sampleRepository = sampleRepository;
     }
 
-    public List<StatDto> stats(long runId, String groupBy) {
+    public List<StatDto> stats(long runId, String groupBy, List<String> labels) {
         if (!runRepository.existsById(runId)) {
             throw new RunNotFoundException(runId);
         }
         if (groupBy == null || !VALID_GROUP_BY.contains(groupBy)) {
             throw new InvalidGroupByException(groupBy);
         }
+        if (labels == null) {
+            labels = sampleRepository.findDistinctLabels(runId);
+        }
+        if (labels.isEmpty()) {
+            return List.of();
+        }
 
         List<GroupStatRow> rows = switch (groupBy) {
-            case "responseCode" -> sampleRepository.findStatsByResponseCode(runId);
-            case "errorMessage" -> sampleRepository.findStatsByErrorMessage(runId);
-            default             -> sampleRepository.findStatsByLabel(runId);
+            case "responseCode" -> sampleRepository.findStatsByResponseCode(runId, labels);
+            case "errorMessage" -> sampleRepository.findStatsByErrorMessage(runId, labels);
+            default             -> sampleRepository.findStatsByLabel(runId, labels);
         };
         return rows.stream().map(StatsService::toStat).toList();
+    }
+
+    public List<String> labels(long runId) {
+        if (!runRepository.existsById(runId)) {
+            throw new RunNotFoundException(runId);
+        }
+        return sampleRepository.findDistinctLabels(runId);
     }
 
     private static StatDto toStat(GroupStatRow r) {

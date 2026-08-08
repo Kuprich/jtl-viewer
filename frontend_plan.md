@@ -109,6 +109,16 @@ npm install chart.js
 
 ---
 
+## Шаг 7.5 — Фильтр операций (transfer)
+
+- Бэк: `GET /api/runs/{id}/labels` (distinct label), повторяемый параметр `labels` у `/stats` и `/timeseries` (`AND label IN (:labels)`). Отсутствие `labels` = все операции; пустой выбор = пустой результат.
+- `src/components/OpsFilter.vue` — `el-transfer` (слева «Не учитываются», справа «Учитываются»), `filterable`, применяется мгновенно при переносе.
+- `RunDetailView.vue` — карточка «Фильтр операций» выше KPI; KPI и таблица пересчитываются из отфильтрованных данных (Запросы/Ошибки = Σ stats, Длительность = span отфильтрованного timeseries).
+
+**Проверка:** перенос «Transaction Controller» влево → KPI/таблица/график обновляются, error rate ≈ 2,1% (без дублей ошибок TC).
+
+---
+
 ## Шаг 8 (позже) — Прод-сборка
 
 - `npm run build` → копия `dist/*` в `backend/jtlweb/src/main/resources/static/`.

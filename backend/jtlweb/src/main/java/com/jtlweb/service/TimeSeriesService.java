@@ -27,15 +27,21 @@ public class TimeSeriesService {
         this.sampleRepository = sampleRepository;
     }
 
-    public List<TimeSeriesPoint> timeseries(long runId, Long bucketMs, String label) {
+    public List<TimeSeriesPoint> timeseries(long runId, Long bucketMs, String label, List<String> labels) {
         if (!runRepository.existsById(runId)) {
             throw new RunNotFoundException(runId);
         }
         if (bucketMs != null && bucketMs <= 0) {
             throw new InvalidBucketMsException(bucketMs);
         }
+        if (labels == null) {
+            labels = sampleRepository.findDistinctLabels(runId);
+        }
+        if (labels.isEmpty()) {
+            return List.of();
+        }
 
-        JtlSampleRepository.TimeRange range = sampleRepository.findTimeRange(runId);
+        JtlSampleRepository.TimeRange range = sampleRepository.findTimeRange(runId, labels);
         if (range.getMinTs() == null || range.getMaxTs() == null) {
             return List.of();
         }
@@ -44,7 +50,7 @@ public class TimeSeriesService {
         long bucket = bucketMs != null ? bucketMs
                 : clamp((maxTs - minTs) / DEFAULT_POINTS, MIN_BUCKET_MS, MAX_BUCKET_MS);
 
-        List<JtlSampleRepository.TimeSeriesRow> rows = sampleRepository.findTimeSeries(runId, bucket, label);
+        List<JtlSampleRepository.TimeSeriesRow> rows = sampleRepository.findTimeSeries(runId, bucket, label, labels);
         Map<Long, TimeSeriesPoint> byBucket = new HashMap<>();
         for (JtlSampleRepository.TimeSeriesRow r : rows) {
             byBucket.put(r.getBucket() * bucket, toPoint(r, bucket));

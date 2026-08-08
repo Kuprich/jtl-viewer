@@ -24,10 +24,12 @@ public interface JtlSampleRepository extends JpaRepository<JtlSample, Long> {
                    SUM(bytes)                                   AS totalBytes
             FROM jtl_sample
             WHERE run_id = :runId
+              AND label IN (:labels)
             GROUP BY label
             ORDER BY calls DESC
             """, nativeQuery = true)
-    List<GroupStatRow> findStatsByLabel(@Param("runId") long runId);
+    List<GroupStatRow> findStatsByLabel(@Param("runId") long runId,
+                                        @Param("labels") List<String> labels);
 
     @Query(value = """
             SELECT COALESCE(response_code, '(none)')                AS grp,
@@ -44,10 +46,12 @@ public interface JtlSampleRepository extends JpaRepository<JtlSample, Long> {
                    SUM(bytes)                                   AS totalBytes
             FROM jtl_sample
             WHERE run_id = :runId
+              AND label IN (:labels)
             GROUP BY response_code
             ORDER BY calls DESC
             """, nativeQuery = true)
-    List<GroupStatRow> findStatsByResponseCode(@Param("runId") long runId);
+    List<GroupStatRow> findStatsByResponseCode(@Param("runId") long runId,
+                                               @Param("labels") List<String> labels);
 
     @Query(value = """
             SELECT COALESCE(failure_message, '(none)')                AS grp,
@@ -64,10 +68,12 @@ public interface JtlSampleRepository extends JpaRepository<JtlSample, Long> {
                    SUM(bytes)                                   AS totalBytes
             FROM jtl_sample
             WHERE run_id = :runId
+              AND label IN (:labels)
             GROUP BY failure_message
             ORDER BY calls DESC
             """, nativeQuery = true)
-    List<GroupStatRow> findStatsByErrorMessage(@Param("runId") long runId);
+    List<GroupStatRow> findStatsByErrorMessage(@Param("runId") long runId,
+                                               @Param("labels") List<String> labels);
 
     interface GroupStatRow {
         String getGrp();
@@ -96,6 +102,15 @@ public interface JtlSampleRepository extends JpaRepository<JtlSample, Long> {
     }
 
     @Query(value = """
+            SELECT DISTINCT label
+            FROM jtl_sample
+            WHERE run_id = :runId
+              AND label IS NOT NULL
+            ORDER BY label
+            """, nativeQuery = true)
+    List<String> findDistinctLabels(@Param("runId") long runId);
+
+    @Query(value = """
             SELECT (time_stamp / :bucketMs)                         AS bucket,
                    COUNT(*)                                         AS calls,
                    COUNT(*) FILTER (WHERE NOT success)              AS errors,
@@ -110,16 +125,19 @@ public interface JtlSampleRepository extends JpaRepository<JtlSample, Long> {
             FROM jtl_sample
             WHERE run_id = :runId
               AND (:label IS NULL OR label = :label)
+              AND label IN (:labels)
             GROUP BY bucket
             ORDER BY bucket
             """, nativeQuery = true)
     List<TimeSeriesRow> findTimeSeries(@Param("runId") long runId,
                                        @Param("bucketMs") long bucketMs,
-                                       @Param("label") String label);
+                                       @Param("label") String label,
+                                       @Param("labels") List<String> labels);
 
     @Query(value = "SELECT MIN(time_stamp) AS minTs, MAX(time_stamp) AS maxTs " +
-            "FROM jtl_sample WHERE run_id = :runId", nativeQuery = true)
-    TimeRange findTimeRange(@Param("runId") long runId);
+            "FROM jtl_sample WHERE run_id = :runId AND label IN (:labels)", nativeQuery = true)
+    TimeRange findTimeRange(@Param("runId") long runId,
+                            @Param("labels") List<String> labels);
 
     interface TimeSeriesRow {
         long getBucket();

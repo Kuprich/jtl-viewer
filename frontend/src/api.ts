@@ -17,14 +17,24 @@ export function getRun(id: number): Promise<RunSummary> {
   return request<RunSummary>(`/runs/${id}`)
 }
 
-export function getStats(id: number, groupBy: GroupBy): Promise<StatDto[]> {
-  return request<StatDto[]>(`/runs/${id}/stats?groupBy=${groupBy}`)
+export function getLabels(id: number): Promise<string[]> {
+  return request<string[]>(`/runs/${id}/labels`)
 }
 
-export function getTimeseries(id: number, opts: { bucketMs?: number; label?: string } = {}): Promise<TimeSeriesPoint[]> {
+export function getStats(id: number, groupBy: GroupBy, labels?: string[]): Promise<StatDto[]> {
+  const params = new URLSearchParams({ groupBy })
+  for (const l of labels ?? []) params.append('labels', l)
+  return request<StatDto[]>(`/runs/${id}/stats?${params}`)
+}
+
+export function getTimeseries(
+  id: number,
+  opts: { bucketMs?: number; label?: string; labels?: string[] } = {},
+): Promise<TimeSeriesPoint[]> {
   const params = new URLSearchParams()
   if (opts.bucketMs !== undefined) params.set('bucketMs', String(opts.bucketMs))
   if (opts.label !== undefined) params.set('label', opts.label)
+  for (const l of opts.labels ?? []) params.append('labels', l)
   const qs = params.toString()
   return request<TimeSeriesPoint[]>(`/runs/${id}/timeseries${qs ? `?${qs}` : ''}`)
 }

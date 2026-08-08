@@ -9,7 +9,9 @@
 - `POST /api/runs` — загрузка JTL-файла (multipart `file`). Парсит файл, сохраняет строки в БД и возвращает общую статистику прогона: `{ id, fileName, uploadedAt, rows, errors }`.
 - `GET /api/runs` — список прогонов (от новых к старым).
 - `GET /api/runs/{id}` — информация о прогоне.
-- `GET /api/runs/{id}/stats` — статистика по группам (`groupBy=label|responseCode|errorMessage`): счётчики, ошибки, перцентили, RPS, объём ответов.
+- `GET /api/runs/{id}/labels` — список операций (label) прогона.
+- `GET /api/runs/{id}/stats` — статистика по группам (`groupBy=label|responseCode|errorMessage`): счётчики, ошибки, перцентили, RPS, объём ответов. Фильтр по операциям — повторяемый параметр `labels`.
+- `GET /api/runs/{id}/timeseries` — временной ряд (бакеты, метрики в каждом бакете). Параметры `bucketMs`, `label`, `labels`.
 
 Примеры запросов и ответов: [docs/api-examples.md](docs/api-examples.md).
 
@@ -52,5 +54,4 @@
 ## Roadmap
 
 - `GET /api/runs/{id}/samples` — строки прогона (пагинация, основные колонки)
-- Фильтры в статистике (по времени, статусу, label/threadName/responseCode)
-- Web-интерфейс
+- Авторизация

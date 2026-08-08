@@ -2,14 +2,15 @@
 import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import TimeChart from '../components/TimeChart.vue'
-import { getRun, getStats, getTimeseries } from '../api'
+import OpsFilter from '../components/OpsFilter.vue'
+import { getLabels, getRun, getStats, getTimeseries } from '../api'
 import type { GroupBy, RunSummary, StatDto, TimeSeriesPoint } from '../types'
 import { formatBytes, formatDateTime, formatDuration, formatMs, formatNumber, formatPercent } from '../utils/format'
 
 const route = useRoute()
 const run = ref<RunSummary | null>(null)
 const series = ref<TimeSeriesPoint[]>([])
-const chartSeries = ref<TimeSeriesPoint[]>([])
+const scenarioSeries = ref<TimeSeriesPoint[]>([])
 const chartLoading = ref(false)
 const chartError = ref('')
 const scenario = ref('')
@@ -20,6 +21,8 @@ const statsLoading = ref(false)
 const statsError = ref('')
 const groupBy = ref('label')
 const selectedGroup = ref<string | null>(null)
+const availableOps = ref<string[]>([])
+const selectedOps = ref<string[]>([])
 
 const id = computed(() => Number(route.params.id))
 
@@ -27,7 +30,9 @@ async function loadStats() {
   statsLoading.value = true
   statsError.value = ''
   try {
-    stats.value = await getStats(id.value, groupBy.value as GroupBy)
+    stats.value = selectedOps.value.length
+      ? await getStats(id.value, groupBy.value as GroupBy, selectedOps.value)
+      : []
   } catch (e) {
     statsError.value = e instanceof Error ? e.message : String(e)
   } finally {
@@ -35,19 +40,37 @@ async function loadStats() {
   }
 }
 
-async function loadChartSeries() {
+async function loadSeries() {
+  try {
+    series.value = selectedOps.value.length
+      ? await getTimeseries(id.value, { labels: selectedOps.value })
+      : []
+  } catch (e) {
+    series.value = []
+    chartError.value = e instanceof Error ? e.message : String(e)
+  }
+}
+
+async function loadScenarioSeries() {
+  if (!scenario.value) {
+    scenarioSeries.value = []
+    return
+  }
   chartLoading.value = true
   chartError.value = ''
   try {
-    chartSeries.value = scenario.value
-      ? await getTimeseries(id.value, { label: scenario.value })
-      : series.value
+    scenarioSeries.value = await getTimeseries(id.value, {
+      label: scenario.value,
+      labels: selectedOps.value,
+    })
   } catch (e) {
     chartError.value = e instanceof Error ? e.message : String(e)
   } finally {
     chartLoading.value = false
   }
 }
+
+const chartSeries = computed(() => (scenario.value ? scenarioSeries.value : series.value))
 
 watch(
   id,
@@ -56,23 +79,32 @@ watch(
     error.value = ''
     run.value = null
     series.value = []
-    chartSeries.value = []
+    scenarioSeries.value = []
+    stats.value = []
     selectedGroup.value = null
     scenario.value = ''
+    availableOps.value = []
+    selectedOps.value = []
     try {
-      const [runData, seriesData] = await Promise.all([getRun(value), getTimeseries(value)])
+      const [runData, ops] = await Promise.all([getRun(value), getLabels(value)])
       run.value = runData
-      series.value = seriesData
+      availableOps.value = ops
+      selectedOps.value = [...ops]
     } catch (e) {
       error.value = e instanceof Error ? e.message : String(e)
     } finally {
       loading.value = false
     }
-    await loadStats()
-    await loadChartSeries()
   },
   { immediate: true },
 )
+
+watch(selectedOps, () => {
+  if (!run.value) return
+  loadStats()
+  loadSeries()
+  if (scenario.value) loadScenarioSeries()
+})
 
 watch(groupBy, (v) => {
   if (v !== 'label') scenario.value = ''
@@ -80,17 +112,17 @@ watch(groupBy, (v) => {
 })
 
 watch(scenario, () => {
-  if (run.value) loadChartSeries()
+  if (run.value) loadScenarioSeries()
 })
 
 const showScenario = computed(() => groupBy.value === 'label')
 
 const scenarioLabels = computed(() => (showScenario.value ? stats.value.map((s) => s.group) : []))
 
-const errorRate = computed(() => {
-  if (!run.value || run.value.rows === 0) return 0
-  return (run.value.errors / run.value.rows) * 100
-})
+const callsTotal = computed(() => stats.value.reduce((sum, s) => sum + s.calls, 0))
+const errorsTotal = computed(() => stats.value.reduce((sum, s) => sum + s.errors, 0))
+
+const errorRate = computed(() => (callsTotal.value > 0 ? (errorsTotal.value / callsTotal.value) * 100 : 0))
 
 const duration = computed(() => {
   if (series.value.length < 2) return 0
@@ -98,8 +130,8 @@ const duration = computed(() => {
 })
 
 const kpis = computed(() => [
-  { label: 'Запросы', value: run.value ? formatNumber(run.value.rows) : '—', danger: false },
-  { label: 'Ошибки', value: run.value ? formatNumber(run.value.errors) : '—', danger: (run.value?.errors ?? 0) > 0 },
+  { label: 'Запросы', value: run.value ? formatNumber(callsTotal.value) : '—', danger: false },
+  { label: 'Ошибки', value: run.value ? formatNumber(errorsTotal.value) : '—', danger: errorsTotal.value > 0 },
   { label: 'Error rate', value: run.value ? formatPercent(errorRate.value) : '—', danger: errorRate.value > 0 },
   { label: 'Длительность', value: duration.value ? formatDuration(duration.value) : '—', danger: false },
 ])
@@ -135,6 +167,11 @@ const noCodeMeta = computed(() =>
         <h2>{{ run?.fileName ?? 'Загрузка…' }}</h2>
         <span v-if="run" class="meta">{{ formatDateTime(run.uploadedAt) }}</span>
       </div>
+
+      <el-card v-if="run" class="zone" shadow="never">
+        <template #header>Фильтр операций</template>
+        <OpsFilter :available="availableOps" v-model="selectedOps" />
+      </el-card>
 
       <div v-loading="loading" class="kpis">
         <el-card v-for="k in kpis" :key="k.label" class="kpi" shadow="never">

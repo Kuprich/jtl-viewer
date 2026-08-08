@@ -28,7 +28,7 @@ class RunStatsControllerTest {
 
     @Test
     void statsReturnsList() throws Exception {
-        when(statsService.stats(1L, "label")).thenReturn(List.of(new StatDto(
+        when(statsService.stats(1L, "label", null)).thenReturn(List.of(new StatDto(
                 "UC01_Get_products", 302, 0, 0.0, 147, 1195, 172.6,
                 162.5, 189.0, 196.0, 406.5, 0.2, 3445364, 11408.5)));
 
@@ -43,8 +43,30 @@ class RunStatsControllerTest {
     }
 
     @Test
+    void statsWithLabelsPassesThemThrough() throws Exception {
+        when(statsService.stats(1L, "label", List.of("UC01_Get_products"))).thenReturn(List.of(new StatDto(
+                "UC01_Get_products", 302, 0, 0.0, 147, 1195, 172.6,
+                162.5, 189.0, 196.0, 406.5, 0.2, 3445364, 11408.5)));
+
+        mockMvc.perform(get("/api/runs/1/stats").param("groupBy", "label")
+                        .param("labels", "UC01_Get_products"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].group").value("UC01_Get_products"));
+    }
+
+    @Test
+    void labelsReturnsList() throws Exception {
+        when(statsService.labels(1L)).thenReturn(List.of("TC_Controller", "UC01_Get_products"));
+
+        mockMvc.perform(get("/api/runs/1/labels"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0]").value("TC_Controller"))
+                .andExpect(jsonPath("$[1]").value("UC01_Get_products"));
+    }
+
+    @Test
     void invalidGroupByReturns400() throws Exception {
-        when(statsService.stats(1L, "bogus")).thenThrow(new InvalidGroupByException("bogus"));
+        when(statsService.stats(1L, "bogus", null)).thenThrow(new InvalidGroupByException("bogus"));
 
         mockMvc.perform(get("/api/runs/1/stats").param("groupBy", "bogus"))
                 .andExpect(status().isBadRequest())
@@ -53,7 +75,7 @@ class RunStatsControllerTest {
 
     @Test
     void missingRunReturns404() throws Exception {
-        when(statsService.stats(999L, "label")).thenThrow(new RunNotFoundException(999));
+        when(statsService.stats(999L, "label", null)).thenThrow(new RunNotFoundException(999));
 
         mockMvc.perform(get("/api/runs/999/stats"))
                 .andExpect(status().isNotFound())

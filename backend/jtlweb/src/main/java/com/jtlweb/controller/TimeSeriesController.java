@@ -19,7 +19,8 @@ public class TimeSeriesController {
     @GetMapping("/{id}/timeseries")
     public List<TimeSeriesPoint> timeseries(@PathVariable long id,
                                             @RequestParam(required = false) Long bucketMs,
-                                            @RequestParam(required = false) String label) {
-        return timeSeriesService.timeseries(id, bucketMs, label);
+                                            @RequestParam(required = false) String label,
+                                            @RequestParam(required = false) List<String> labels) {
+        return timeSeriesService.timeseries(id, bucketMs, label, labels);
     }
 }
