@@ -12,6 +12,8 @@ const props = defineProps<{
   lineWidth: number
   pointSize: number
   fillOpacity: number
+  showVu?: boolean
+  vuData?: (number | null)[]
 }>()
 
 const PALETTE = [
@@ -40,8 +42,26 @@ function hexToRgba(hex: string, alpha: number): string {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`
 }
 
-const datasets = computed(() =>
-  props.series.map((s, i) => {
+const vuDs = () => {
+  const color = '#e4e6ea'
+  return {
+    label: 'VU',
+    data: props.vuData ?? [],
+    borderColor: color,
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    pointRadius: 1,
+    pointHoverRadius: 6,
+    pointHitRadius: 8,
+    tension: 0.25,
+    spanGaps: false,
+    fill: false,
+    yAxisID: 'yVu',
+  }
+}
+
+const datasets = computed(() => [
+  ...props.series.map((s, i) => {
     const byBucket = new Map(s.points.map((p) => [p.bucket, p]))
     const alpha = props.fillOpacity / 100
     return {
@@ -61,7 +81,8 @@ const datasets = computed(() =>
       fill: alpha > 0,
     }
   }),
-)
+  ...(props.showVu ? [vuDs()] : []),
+])
 
 function formatValue(v: number): string {
   return `${Math.round(v)} ms`
@@ -71,6 +92,8 @@ function render() {
   if (!chart) return
   chart.data.labels = labels.value
   chart.data.datasets = datasets.value as never
+  const yVu = chart.options.scales?.yVu
+  if (yVu) yVu.display = props.showVu
   chart.update()
 }
 
@@ -104,7 +127,10 @@ onMounted(() => {
           borderWidth: 1,
           padding: 10,
           callbacks: {
-            label: (ctx) => `${ctx.dataset.label}: ${formatValue(ctx.parsed.y ?? 0)}`,
+            label: (ctx) => {
+              if (ctx.dataset.label === 'VU') return `VU: ${Math.round(ctx.parsed.y ?? 0)}`
+              return `${ctx.dataset.label}: ${formatValue(ctx.parsed.y ?? 0)}`
+            },
           },
         },
       },
@@ -120,6 +146,13 @@ onMounted(() => {
           grid: { color: '#33363b' },
           title: { display: true, text: 'Время отклика', color: '#8b919a' },
         },
+        yVu: {
+          position: 'right',
+          beginAtZero: true,
+          grid: { drawOnChartArea: false },
+          ticks: { color: '#8b919a' },
+          title: { display: true, text: 'ВУ', color: '#8b919a' },
+        },
       },
     },
   })
@@ -134,6 +167,8 @@ watch(
     () => props.lineWidth,
     () => props.pointSize,
     () => props.fillOpacity,
+    () => props.showVu,
+    () => props.vuData,
   ],
   render,
 )

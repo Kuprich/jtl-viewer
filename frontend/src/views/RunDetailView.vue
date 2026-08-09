@@ -29,6 +29,8 @@ const opsLoading = ref(false)
 const opsError = ref('')
 const rateMode = ref(false)
 const showVuTime = ref(true)
+const showVuAll = ref(true)
+const showVuOps = ref(true)
 const settingsOpen = ref(true)
 const lineWidth = ref(1)
 const pointSize = ref(1)
@@ -327,6 +329,9 @@ const noCodeMeta = computed(() =>
         <template #header>
           <div class="zone-header">
             <span>Время отклика по всем операциям</span>
+            <div class="zone-controls">
+              <el-checkbox v-model="showVuAll" size="small">График VU</el-checkbox>
+            </div>
           </div>
         </template>
         <el-alert v-if="chartError" type="error" :title="chartError" show-icon :closable="false" />
@@ -336,6 +341,8 @@ const noCodeMeta = computed(() =>
           :line-width="lineWidth"
           :point-size="pointSize"
           :fill-opacity="fillOpacity"
+          :show-vu="showVuAll"
+          :vu-data="vuData"
         />
       </el-card>
 
@@ -343,9 +350,12 @@ const noCodeMeta = computed(() =>
         <template #header>
           <div class="zone-header">
             <span>Время отклика по операциям</span>
-            <el-select v-model="percentile" size="small" style="width: 110px">
-              <el-option v-for="p in ['p50', 'p90', 'p95', 'p99'] as const" :key="p" :label="p" :value="p" />
-            </el-select>
+            <div class="zone-controls">
+              <el-checkbox v-model="showVuOps" size="small">График VU</el-checkbox>
+              <el-select v-model="percentile" size="small" style="width: 110px">
+                <el-option v-for="p in ['p50', 'p90', 'p95', 'p99'] as const" :key="p" :label="p" :value="p" />
+              </el-select>
+            </div>
           </div>
         </template>
         <el-alert v-if="opsError" type="error" :title="opsError" show-icon :closable="false" />
@@ -358,6 +368,8 @@ const noCodeMeta = computed(() =>
           :line-width="lineWidth"
           :point-size="pointSize"
           :fill-opacity="fillOpacity"
+          :show-vu="showVuOps"
+          :vu-data="vuData"
         />
       </el-card>
 
