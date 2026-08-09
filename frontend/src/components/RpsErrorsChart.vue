@@ -9,6 +9,8 @@ const props = defineProps<{
   lineWidth: number
   pointSize: number
   fillOpacity: number
+  showVu?: boolean
+  vuData?: (number | null)[]
 }>()
 
 const canvas = ref<HTMLCanvasElement | null>(null)
@@ -49,7 +51,7 @@ function buildDatasets() {
     tension: 0.25,
     fill,
   }
-  if (props.rateMode) return [errDs]
+  if (props.rateMode) return [...(props.showVu ? [vuDs()] : []), errDs]
   return [
     {
       label: 'RPS',
@@ -64,7 +66,25 @@ function buildDatasets() {
       fill,
     },
     errDs,
+    ...(props.showVu ? [vuDs()] : []),
   ]
+}
+
+const vuDs = () => {
+  const color = '#e4e6ea'
+  return {
+    label: 'VU',
+    data: props.vuData ?? [],
+    borderColor: color,
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    pointRadius: 1,
+    pointHoverRadius: 6,
+    pointHitRadius: 8,
+    tension: 0.25,
+    fill: false,
+    yAxisID: 'yVu',
+  }
 }
 
 const yMax = computed(() => (props.rateMode ? 100 : undefined))
@@ -75,6 +95,8 @@ function render() {
   chart.data.datasets = buildDatasets() as never
   const y = chart.options.scales?.y
   if (y) y.max = yMax.value
+  const yVu = chart.options.scales?.yVu
+  if (yVu) yVu.display = props.showVu
   chart.update()
 }
 
@@ -111,6 +133,7 @@ onMounted(() => {
             label: (ctx) => {
               if (ctx.parsed.y == null) return ''
               const v = ctx.parsed.y ?? 0
+              if (ctx.dataset.label === 'VU') return `${ctx.dataset.label}: ${Math.round(v)}`
               const suffix = ctx.dataset.label === 'Errors %' ? '%' : ''
               return `${ctx.dataset.label}: ${formatValue(v)}${suffix}`
             },
@@ -129,6 +152,13 @@ onMounted(() => {
           grid: { color: '#33363b' },
           title: { display: true, text: 'Значение', color: '#8b919a' },
         },
+        yVu: {
+          position: 'right',
+          beginAtZero: true,
+          grid: { drawOnChartArea: false },
+          ticks: { color: '#8b919a' },
+          title: { display: true, text: 'ВУ', color: '#8b919a' },
+        },
       },
     },
   })
@@ -136,7 +166,7 @@ onMounted(() => {
 })
 
 watch(
-  [() => props.series, () => props.rateMode, () => props.lineWidth, () => props.pointSize, () => props.fillOpacity],
+  [() => props.series, () => props.rateMode, () => props.lineWidth, () => props.pointSize, () => props.fillOpacity, () => props.showVu, () => props.vuData],
   render,
 )
 

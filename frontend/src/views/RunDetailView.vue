@@ -28,6 +28,7 @@ const opSeries = ref<{ label: string; points: TimeSeriesPoint[] }[]>([])
 const opsLoading = ref(false)
 const opsError = ref('')
 const rateMode = ref(false)
+const showVuTime = ref(true)
 const settingsOpen = ref(true)
 const lineWidth = ref(1)
 const pointSize = ref(1)
@@ -170,6 +171,8 @@ watch(groupBy, () => {
 
 const seriesBuckets = computed(() => series.value.map((p) => p.bucket))
 
+const vuData = computed(() => series.value.map((p) => (p.calls > 0 ? p.threads : null)))
+
 const callsTotal = computed(() => stats.value.reduce((sum, s) => sum + s.calls, 0))
 const errorsTotal = computed(() => stats.value.reduce((sum, s) => sum + s.errors, 0))
 
@@ -298,10 +301,13 @@ const noCodeMeta = computed(() =>
         <template #header>
           <div class="zone-header">
             <span>Временной ряд</span>
-            <el-radio-group v-model="rateMode" size="small">
-              <el-radio-button :value="false">Errors/sec</el-radio-button>
-              <el-radio-button :value="true">Errors %</el-radio-button>
-            </el-radio-group>
+            <div class="zone-controls">
+              <el-checkbox v-model="showVuTime" size="small">График VU</el-checkbox>
+              <el-radio-group v-model="rateMode" size="small">
+                <el-radio-button :value="false">Errors/sec</el-radio-button>
+                <el-radio-button :value="true">Errors %</el-radio-button>
+              </el-radio-group>
+            </div>
           </div>
         </template>
         <el-alert v-if="chartError" type="error" :title="chartError" show-icon :closable="false" />
@@ -312,6 +318,8 @@ const noCodeMeta = computed(() =>
           :line-width="lineWidth"
           :point-size="pointSize"
           :fill-opacity="fillOpacity"
+          :show-vu="showVuTime"
+          :vu-data="vuData"
         />
       </el-card>
 
@@ -510,6 +518,12 @@ const noCodeMeta = computed(() =>
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
+}
+
+.zone-controls {
+  display: flex;
+  align-items: center;
   gap: 12px;
 }
 
