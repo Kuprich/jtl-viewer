@@ -32,7 +32,7 @@ const { selection } = useLineChart({
   deps: () => [props.series, props.lineWidth, props.pointSize, props.fillOpacity, props.zoomEnabled, props.visibleRange],
   render: () => {
     const alpha = props.fillOpacity / 100
-    const scales: Record<string, { min?: number; max?: number; display?: boolean }> = {}
+    const scales: Record<string, { min?: number; max?: number; display?: boolean }> = { yVu: { display: false } }
     if (props.visibleRange) scales.x = { min: props.visibleRange.min, max: props.visibleRange.max }
     return {
       labels: data.value.labels,
