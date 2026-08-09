@@ -125,7 +125,15 @@ export function buildOptions(r: ChartRender): ChartOptions<'line'> {
       legend: {
         position: 'bottom',
         align: 'start',
-        labels: { color: chartColors.text, boxWidth: 12, boxHeight: 12 },
+        labels: {
+          color: chartColors.text,
+          boxWidth: 12,
+          boxHeight: 12,
+          filter: (item, data) => {
+            const ds = item.datasetIndex == null ? undefined : (data.datasets[item.datasetIndex] as { label?: unknown } | undefined)
+            return ds?.label !== 'VU'
+          },
+        },
       },
       tooltip: {
         backgroundColor: chartColors.tooltipBg,
