@@ -41,6 +41,6 @@ public class RunService {
     }
 
     private static RunSummary toSummary(JtlRun r) {
-        return new RunSummary(r.getId(), r.getFileName(), r.getUploadedAt(), r.getRows(), r.getErrors());
+        return RunSummary.from(r);
     }
 }

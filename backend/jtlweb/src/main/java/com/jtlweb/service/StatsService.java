@@ -6,6 +6,7 @@ import com.jtlweb.exception.RunNotFoundException;
 import com.jtlweb.repository.JtlRunRepository;
 import com.jtlweb.repository.JtlSampleRepository;
 import com.jtlweb.repository.JtlSampleRepository.GroupStatRow;
+import com.jtlweb.util.Metrics;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -61,20 +62,16 @@ public class StatsService {
                 r.getGrp(),
                 calls,
                 r.getErrors(),
-                round1(calls == 0 ? 0 : r.getErrors() * 100.0 / calls),
+                Metrics.round1(calls == 0 ? 0 : r.getErrors() * 100.0 / calls),
                 r.getMinElapsed(),
                 r.getMaxElapsed(),
-                round1(r.getAvgElapsed()),
-                round1(r.getP50()),
-                round1(r.getP90()),
-                round1(r.getP95()),
-                round1(r.getP99()),
-                round1(throughput),
+                Metrics.round1(r.getAvgElapsed()),
+                Metrics.round1(r.getP50()),
+                Metrics.round1(r.getP90()),
+                Metrics.round1(r.getP95()),
+                Metrics.round1(r.getP99()),
+                Metrics.round1(throughput),
                 r.getTotalBytes(),
-                round1(calls == 0 ? 0 : r.getTotalBytes() / (double) calls));
-    }
-
-    private static double round1(double v) {
-        return Math.round(v * 10) / 10.0;
+                Metrics.round1(calls == 0 ? 0 : r.getTotalBytes() / (double) calls));
     }
 }

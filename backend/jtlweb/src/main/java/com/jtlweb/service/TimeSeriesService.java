@@ -5,6 +5,7 @@ import com.jtlweb.exception.InvalidBucketMsException;
 import com.jtlweb.exception.RunNotFoundException;
 import com.jtlweb.repository.JtlRunRepository;
 import com.jtlweb.repository.JtlSampleRepository;
+import com.jtlweb.util.Metrics;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -60,7 +61,7 @@ public class TimeSeriesService {
         long start = minTs / bucket * bucket;
         long end = maxTs / bucket * bucket;
         for (long b = start; b <= end; b += bucket) {
-            result.add(byBucket.getOrDefault(b, emptyPoint(b)));
+            result.add(byBucket.getOrDefault(b, TimeSeriesPoint.empty(b)));
         }
         return result;
     }
@@ -72,25 +73,17 @@ public class TimeSeriesService {
                 r.getErrors(),
                 r.getMinElapsed(),
                 r.getMaxElapsed(),
-                round1(r.getAvgElapsed()),
-                round1(r.getP50()),
-                round1(r.getP90()),
-                round1(r.getP95()),
-                round1(r.getP99()),
-                round1(r.getCalls() / (bucketMs / 1000.0)),
+                Metrics.round1(r.getAvgElapsed()),
+                Metrics.round1(r.getP50()),
+                Metrics.round1(r.getP90()),
+                Metrics.round1(r.getP95()),
+                Metrics.round1(r.getP99()),
+                Metrics.round1(r.getCalls() / (bucketMs / 1000.0)),
                 r.getTotalBytes(),
                 r.getThreads());
     }
 
-    private static TimeSeriesPoint emptyPoint(long bucketStart) {
-        return new TimeSeriesPoint(bucketStart, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-    }
-
     private static long clamp(long v, long min, long max) {
         return Math.max(min, Math.min(max, v));
-    }
-
-    private static double round1(double v) {
-        return Math.round(v * 10) / 10.0;
     }
 }

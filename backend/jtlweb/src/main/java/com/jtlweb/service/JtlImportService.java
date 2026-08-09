@@ -13,8 +13,8 @@ import java.io.InputStream;
 @Service
 public class JtlImportService {
     private final JtlParser parser;
-    private JtlRunRepository runRepository;
-    private JtlSampleRepository sampleRepository;
+    private final JtlRunRepository runRepository;
+    private final JtlSampleRepository sampleRepository;
 
     public JtlImportService(JtlParser parser, JtlRunRepository runRepository, JtlSampleRepository sampleRepository) {
         this.parser = parser;
