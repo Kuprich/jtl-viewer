@@ -153,6 +153,10 @@ function formatRps(value: number): string {
   gap: 12px;
 }
 
+.zone-header > span:first-child {
+  user-select: none;
+}
+
 .zone-controls {
   display: flex;
   align-items: center;
