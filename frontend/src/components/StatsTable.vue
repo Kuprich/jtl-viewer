@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
+import { Search } from '@element-plus/icons-vue'
 import type { GroupBy, StatDto } from '../types'
 import { formatBytes, formatMs, formatNumber, formatPercent } from '../utils/format'
 
@@ -17,6 +18,13 @@ const emit = defineEmits<{
 const groupBy = computed({
   get: () => props.groupBy,
   set: (v: GroupBy) => emit('update:groupBy', v),
+})
+
+const query = ref('')
+
+const filteredStats = computed(() => {
+  const q = query.value.trim().toLowerCase()
+  return q ? props.stats.filter((s) => s.group.toLowerCase().includes(q)) : props.stats
 })
 
 const NO_CODE = '(none)'
@@ -41,11 +49,21 @@ function formatRps(value: number): string {
     <template #header>
       <div class="zone-header">
         <span>Группировка и статистика</span>
-        <el-radio-group v-model="groupBy" size="small">
-          <el-radio-button value="label">Сценарий</el-radio-button>
-          <el-radio-button value="responseCode">Код ответа</el-radio-button>
-          <el-radio-button value="errorMessage">Ошибки</el-radio-button>
-        </el-radio-group>
+        <div class="zone-controls">
+          <el-input
+            v-model="query"
+            size="small"
+            clearable
+            :prefix-icon="Search"
+            placeholder="Поиск операции"
+            class="stats-search"
+          />
+          <el-radio-group v-model="groupBy" size="small">
+            <el-radio-button value="label">Сценарий</el-radio-button>
+            <el-radio-button value="responseCode">Код ответа</el-radio-button>
+            <el-radio-button value="errorMessage">Ошибки</el-radio-button>
+          </el-radio-group>
+        </div>
       </div>
     </template>
 
@@ -53,9 +71,9 @@ function formatRps(value: number): string {
     <el-table
       v-else
       v-loading="loading"
-      :data="stats"
+      :data="filteredStats"
       stripe
-      empty-text="Нет данных"
+      :empty-text="query.trim() ? 'Ничего не найдено' : 'Нет данных'"
       max-height="480"
       highlight-current-row
       :row-class-name="rowClass"
@@ -133,6 +151,16 @@ function formatRps(value: number): string {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+}
+
+.zone-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.stats-search {
+  width: 200px;
 }
 
 .cell-danger {
