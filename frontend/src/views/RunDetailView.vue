@@ -7,9 +7,10 @@ import AllPercentilesChart from '../components/AllPercentilesChart.vue'
 import OpsPercentilesChart, { type Percentile } from '../components/OpsPercentilesChart.vue'
 import VUsersChart from '../components/VUsersChart.vue'
 import OpsFilter from '../components/OpsFilter.vue'
+import StatsTable from '../components/StatsTable.vue'
 import { getLabels, getRun, getStats, getTimeseries } from '../api'
 import type { GroupBy, RunDetail, StatDto, TimeSeriesPoint } from '../types'
-import { formatBytes, formatDateTime, formatDuration, formatMs, formatNumber, formatPercent } from '../utils/format'
+import { formatDateTime, formatDuration, formatNumber, formatPercent } from '../utils/format'
 
 const route = useRoute()
 const run = ref<RunDetail | null>(null)
@@ -20,7 +21,7 @@ const loading = ref(false)
 const error = ref('')
 const statsLoading = ref(false)
 const statsError = ref('')
-const groupBy = ref('label')
+const groupBy = ref<GroupBy>('label')
 const availableOps = ref<string[]>([])
 const selectedOps = ref<string[]>([])
 const percentile = ref<Percentile>('p95')
@@ -201,22 +202,6 @@ const testRange = computed(() => {
     duration: formatDuration(r.durationMs),
   }
 })
-
-function formatRps(value: number): string {
-  return value.toFixed(2).replace('.', ',')
-}
-
-function rowClass(data: { row: StatDto }) {
-  return data.row.errors > 0 ? 'row-danger' : ''
-}
-
-const NO_CODE = '(none)'
-
-const noCodeMeta = computed(() =>
-  groupBy.value === 'errorMessage'
-    ? { label: 'без текста' }
-    : { label: 'без кода' },
-)
 </script>
 
 <template>
@@ -389,90 +374,12 @@ const noCodeMeta = computed(() =>
         />
       </el-card>
 
-      <el-card class="zone" shadow="never">
-        <template #header>
-          <div class="zone-header">
-            <span>Группировка и статистика</span>
-            <el-radio-group v-model="groupBy" size="small">
-              <el-radio-button value="label">Сценарий</el-radio-button>
-              <el-radio-button value="responseCode">Код ответа</el-radio-button>
-              <el-radio-button value="errorMessage">Ошибки</el-radio-button>
-            </el-radio-group>
-          </div>
-        </template>
-
-        <el-alert v-if="statsError" type="error" :title="statsError" show-icon :closable="false" />
-        <el-table
-          v-else
-          v-loading="statsLoading"
-          :data="stats"
-          stripe
-          empty-text="Нет данных"
-          max-height="480"
-          highlight-current-row
-          :row-class-name="rowClass"
-        >
-          <el-table-column prop="group" label="Группа" fixed="left" min-width="200" show-overflow-tooltip>
-            <template #default="{ row }">
-              <el-tooltip v-if="row.group === NO_CODE" placement="top">
-                <span class="no-code">{{ noCodeMeta.label }}</span>
-                <template #content>
-                  <div v-if="groupBy === 'errorMessage'" class="no-code-tip">
-                    Упавшие сэмплы без текста ошибки —<br />
-                    например Transaction Controller.
-                  </div>
-                  <div v-else class="no-code-tip">
-                    Сэмплы без responseCode — обычно Transaction Controller,<br />
-                    агрегирующий вложенные запросы.<br />
-                    Детали — во вкладке «Сценарий».
-                  </div>
-                </template>
-              </el-tooltip>
-              <template v-else>{{ row.group }}</template>
-            </template>
-          </el-table-column>
-          <el-table-column prop="calls" label="Запросы" sortable align="right" width="90">
-            <template #default="{ row }">{{ formatNumber(row.calls) }}</template>
-          </el-table-column>
-          <el-table-column prop="errors" label="Ошибки" sortable align="right" width="90">
-            <template #default="{ row }">
-              <span :class="{ 'cell-danger': row.errors > 0 }">{{ formatNumber(row.errors) }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column prop="errorRate" label="Errors %" sortable align="right" width="90">
-            <template #default="{ row }">
-              <span :class="{ 'cell-danger': row.errors > 0 }">{{ formatPercent(row.errorRate) }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column prop="min" label="Min" sortable align="right" width="90">
-            <template #default="{ row }">{{ formatMs(row.min) }}</template>
-          </el-table-column>
-          <el-table-column prop="avg" label="Avg" sortable align="right" width="90">
-            <template #default="{ row }">{{ formatMs(row.avg) }}</template>
-          </el-table-column>
-          <el-table-column prop="p50" label="p50" sortable align="right" width="90">
-            <template #default="{ row }">{{ formatMs(row.p50) }}</template>
-          </el-table-column>
-          <el-table-column prop="p90" label="p90" sortable align="right" width="90">
-            <template #default="{ row }">{{ formatMs(row.p90) }}</template>
-          </el-table-column>
-          <el-table-column prop="p95" label="p95" sortable align="right" width="90">
-            <template #default="{ row }">{{ formatMs(row.p95) }}</template>
-          </el-table-column>
-          <el-table-column prop="p99" label="p99" sortable align="right" width="90">
-            <template #default="{ row }">{{ formatMs(row.p99) }}</template>
-          </el-table-column>
-          <el-table-column prop="max" label="Max" sortable align="right" width="90">
-            <template #default="{ row }">{{ formatMs(row.max) }}</template>
-          </el-table-column>
-          <el-table-column prop="throughput" label="RPS" sortable align="right" width="90">
-            <template #default="{ row }">{{ formatRps(row.throughput) }}</template>
-          </el-table-column>
-          <el-table-column prop="avgBytes" label="Ср. байт" sortable align="right" width="110">
-            <template #default="{ row }">{{ formatBytes(row.avgBytes) }}</template>
-          </el-table-column>
-        </el-table>
-      </el-card>
+      <StatsTable
+        :stats="stats"
+        :loading="statsLoading"
+        :error="statsError"
+        v-model:group-by="groupBy"
+      />
     </template>
   </div>
 </template>
@@ -537,12 +444,6 @@ const noCodeMeta = computed(() =>
   display: flex;
   align-items: center;
   gap: 12px;
-}
-
-.muted {
-  color: #8b919a;
-  margin: 0;
-  font-size: 13px;
 }
 
 .settings-section {
@@ -628,28 +529,5 @@ const noCodeMeta = computed(() =>
 
 .settings-slider :deep(.el-slider__input .el-input-number) {
   width: 100%;
-}
-
-.cell-danger {
-  color: #f56c6c;
-  font-weight: 600;
-}
-
-.no-code {
-  cursor: help;
-  border-bottom: 1px dashed #8b919a;
-}
-
-:global(.no-code-tip) {
-  max-width: 280px;
-  line-height: 1.5;
-}
-
-:deep(.row-danger td.el-table__cell) {
-  background-color: rgba(245, 108, 108, 0.05);
-}
-
-:deep(.row-danger:hover td.el-table__cell) {
-  background-color: rgba(245, 108, 108, 0.09);
 }
 </style>
