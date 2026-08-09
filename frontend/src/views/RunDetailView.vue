@@ -6,6 +6,7 @@ import RpsErrorsChart from '../components/RpsErrorsChart.vue'
 import AllPercentilesChart from '../components/AllPercentilesChart.vue'
 import OpsPercentilesChart, { type Percentile } from '../components/OpsPercentilesChart.vue'
 import VUsersChart from '../components/VUsersChart.vue'
+import FrequencyChart from '../components/FrequencyChart.vue'
 import OpsFilter from '../components/OpsFilter.vue'
 import StatsTable from '../components/StatsTable.vue'
 import { getLabels, getRun, getStats, getTimeseries } from '../api'
@@ -21,6 +22,9 @@ const loading = ref(false)
 const error = ref('')
 const statsLoading = ref(false)
 const statsError = ref('')
+const frequency = ref<StatDto[]>([])
+const frequencyLoading = ref(false)
+const frequencyError = ref('')
 const groupBy = ref<GroupBy>('label')
 const availableOps = ref<string[]>([])
 const selectedOps = ref<string[]>([])
@@ -39,6 +43,7 @@ const zoomRange = ref<{ min: number; max: number } | null>(null)
 const lineWidth = ref(1)
 const pointSize = ref(1)
 const fillOpacity = ref(10)
+const errorThreshold = ref(5)
 
 const BUCKET_OPTIONS = [
   { label: 'Авто', ms: -1 },
@@ -97,9 +102,25 @@ async function loadStats() {
   }
 }
 
+async function loadFrequency() {
+  frequencyLoading.value = true
+  frequencyError.value = ''
+  try {
+    const w = statsWindow.value
+    frequency.value = selectedOps.value.length
+      ? await getStats(id.value, 'label', selectedOps.value, w?.fromMs, w?.toMs)
+      : []
+  } catch (e) {
+    frequencyError.value = e instanceof Error ? e.message : String(e)
+  } finally {
+    frequencyLoading.value = false
+  }
+}
+
 function applyZoom(range: { min: number; max: number } | null) {
   zoomRange.value = range
   loadStats()
+  loadFrequency()
 }
 
 async function loadSeries() {
@@ -150,6 +171,7 @@ watch(
     series.value = []
     chartError.value = ''
     stats.value = []
+    frequency.value = []
     opSeries.value = []
     opsError.value = ''
     availableOps.value = []
@@ -174,6 +196,7 @@ watch(selectedOps, () => {
   if (!run.value) return
   zoomRange.value = null
   loadStats()
+  loadFrequency()
   loadSeries()
   loadOpsSeries()
 })
@@ -181,6 +204,8 @@ watch(selectedOps, () => {
 watch(bucketMs, () => {
   if (!run.value) return
   zoomRange.value = null
+  loadStats()
+  loadFrequency()
   loadSeries()
   loadOpsSeries()
 })
@@ -381,6 +406,21 @@ const testRange = computed(() => {
         />
       </el-card>
 
+      <el-card class="zone" shadow="never">
+        <template #header>
+          <div class="zone-header">
+            <span>Частота вызовов</span>
+          </div>
+        </template>
+        <el-alert v-if="frequencyError" type="error" :title="frequencyError" show-icon :closable="false" />
+        <FrequencyChart
+          v-else
+          v-loading="frequencyLoading"
+          :stats="frequency"
+          :error-threshold="errorThreshold"
+        />
+      </el-card>
+
       <StatsTable
         :stats="stats"
         :loading="statsLoading"
@@ -437,6 +477,17 @@ const testRange = computed(() => {
           <span class="settings-label">Заливка областей</span>
           <el-slider
             v-model="fillOpacity"
+            class="settings-slider"
+            :min="0"
+            :max="100"
+            show-input
+            :show-input-controls="false"
+          />
+        </div>
+        <div class="settings-section">
+          <span class="settings-label">Порог ошибок, %</span>
+          <el-slider
+            v-model="errorThreshold"
             class="settings-slider"
             :min="0"
             :max="100"
