@@ -6,6 +6,9 @@ import type { TimeSeriesPoint } from '../types'
 const props = defineProps<{
   series: TimeSeriesPoint[]
   rateMode: boolean
+  lineWidth: number
+  pointSize: number
+  fillOpacity: number
 }>()
 
 const canvas = ref<HTMLCanvasElement | null>(null)
@@ -32,17 +35,19 @@ function formatValue(v: number): string {
 }
 
 function buildDatasets() {
+  const alpha = props.fillOpacity / 100
+  const fill = alpha > 0
   const errDs = {
     label: errLabel.value,
     data: props.rateMode ? data.value.errRate : data.value.err,
     borderColor: '#f56c6c',
-    backgroundColor: 'rgba(245, 108, 108, 0.1)',
-    borderWidth: 2,
-    pointRadius: 2,
+    backgroundColor: `rgba(245, 108, 108, ${alpha})`,
+    borderWidth: props.lineWidth,
+    pointRadius: props.pointSize,
     pointHoverRadius: 6,
     pointHitRadius: 8,
     tension: 0.25,
-    fill: false,
+    fill,
   }
   if (props.rateMode) return [errDs]
   return [
@@ -50,13 +55,13 @@ function buildDatasets() {
       label: 'RPS',
       data: data.value.rps,
       borderColor: '#4fc3f7',
-      backgroundColor: 'rgba(79, 195, 247, 0.1)',
-      borderWidth: 2,
-      pointRadius: 2,
+      backgroundColor: `rgba(79, 195, 247, ${alpha})`,
+      borderWidth: props.lineWidth,
+      pointRadius: props.pointSize,
       pointHoverRadius: 6,
       pointHitRadius: 8,
       tension: 0.25,
-      fill: false,
+      fill,
     },
     errDs,
   ]
@@ -130,7 +135,10 @@ onMounted(() => {
   render()
 })
 
-watch([() => props.series, () => props.rateMode], render)
+watch(
+  [() => props.series, () => props.rateMode, () => props.lineWidth, () => props.pointSize, () => props.fillOpacity],
+  render,
+)
 
 onBeforeUnmount(() => {
   chart?.destroy()

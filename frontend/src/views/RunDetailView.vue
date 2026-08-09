@@ -27,6 +27,9 @@ const opsLoading = ref(false)
 const opsError = ref('')
 const rateMode = ref(false)
 const settingsOpen = ref(true)
+const lineWidth = ref(1)
+const pointSize = ref(1)
+const fillOpacity = ref(10)
 
 const BUCKET_OPTIONS = [
   { label: 'Авто', ms: -1 },
@@ -238,14 +241,46 @@ const noCodeMeta = computed(() =>
             <div class="collapse-inner">
               <OpsFilter :available="availableOps" v-model="selectedOps" />
               <div class="settings-section">
-                <div class="settings-label">Интервал агрегации</div>
+                <span class="settings-label">Интервал агрегации</span>
                 <el-radio-group v-model="bucketMs" size="small">
                   <el-radio-button v-for="opt in visibleBuckets" :key="opt.label" :value="opt.ms">
                     {{ opt.label }}
                   </el-radio-button>
                 </el-radio-group>
               </div>
-            </div>
+              <div class="settings-section">
+                <span class="settings-label">Толщина линий</span>
+                <el-slider
+                  v-model="lineWidth"
+                  class="settings-slider"
+                  :min="1"
+                  :max="10"
+                  show-input
+                  :show-input-controls="false"
+                />
+              </div>
+              <div class="settings-section">
+                <span class="settings-label">Размер точек</span>
+                <el-slider
+                  v-model="pointSize"
+                  class="settings-slider"
+                  :min="1"
+                  :max="10"
+                  show-input
+                  :show-input-controls="false"
+                />
+              </div>
+              <div class="settings-section">
+                <span class="settings-label">Заливка областей</span>
+                <el-slider
+                  v-model="fillOpacity"
+                  class="settings-slider"
+                  :min="0"
+                  :max="100"
+                  show-input
+                  :show-input-controls="false"
+                />
+              </div>            </div>
           </div>
         </Transition>
       </el-card>
@@ -353,7 +388,14 @@ const noCodeMeta = computed(() =>
           </div>
         </template>
         <el-alert v-if="chartError" type="error" :title="chartError" show-icon :closable="false" />
-        <RpsErrorsChart v-else :series="series" :rate-mode="rateMode" />
+        <RpsErrorsChart
+          v-else
+          :series="series"
+          :rate-mode="rateMode"
+          :line-width="lineWidth"
+          :point-size="pointSize"
+          :fill-opacity="fillOpacity"
+        />
       </el-card>
 
       <el-card class="zone" shadow="never">
@@ -372,6 +414,9 @@ const noCodeMeta = computed(() =>
           :axis="seriesBuckets"
           :series="opSeries"
           :percentile="percentile"
+          :line-width="lineWidth"
+          :point-size="pointSize"
+          :fill-opacity="fillOpacity"
         />
       </el-card>
     </template>
@@ -444,6 +489,9 @@ const noCodeMeta = computed(() =>
   margin-top: 14px;
   padding-top: 12px;
   border-top: 1px solid #2a2c31;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .settings-header {
@@ -485,6 +533,10 @@ const noCodeMeta = computed(() =>
 
 .collapse-inner {
   min-height: 0;
+}
+
+.collapse-body.collapse-enter-active .collapse-inner,
+.collapse-body.collapse-leave-active .collapse-inner {
   overflow: hidden;
 }
 
@@ -496,7 +548,26 @@ const noCodeMeta = computed(() =>
 .settings-label {
   font-size: 12px;
   color: #8b919a;
-  margin-bottom: 8px;
+  white-space: nowrap;
+  margin: 0;
+  flex: 0 0 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.settings-slider {
+  width: 260px;
+  max-width: 100%;
+  flex-shrink: 1;
+  margin-left: 8px;
+}
+
+.settings-slider :deep(.el-slider__input) {
+  width: 56px;
+}
+
+.settings-slider :deep(.el-slider__input .el-input-number) {
+  width: 100%;
 }
 
 .cell-danger {

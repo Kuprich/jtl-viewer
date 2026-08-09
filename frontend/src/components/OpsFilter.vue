@@ -167,7 +167,9 @@ function moveKey(from: 'left' | 'right', key: string) {
 </script>
 
 <template>
-  <div class="ops-filter" :class="{ dragging }">
+  <div class="ops-filter-wrap">
+    <div class="ops-filter-title">Выберите операции, которые будут учитываться в статистике</div>
+    <div class="ops-filter" :class="{ dragging }">
     <div class="panel">
       <div class="panel-head">
         <span class="panel-title">Не учитываются</span>
@@ -217,9 +219,21 @@ function moveKey(from: 'left' | 'right', key: string) {
       </ul>
     </div>
   </div>
+</div>
 </template>
 
 <style scoped>
+.ops-filter-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.ops-filter-title {
+  font-size: 12px;
+  color: #8b919a;
+  margin-bottom: 8px;
+}
+
 .ops-filter {
   display: flex;
   gap: 12px;

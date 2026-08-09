@@ -9,6 +9,9 @@ const props = defineProps<{
   axis: number[]
   series: { label: string; points: TimeSeriesPoint[] }[]
   percentile: Percentile
+  lineWidth: number
+  pointSize: number
+  fillOpacity: number
 }>()
 
 const PALETTE = [
@@ -29,9 +32,18 @@ let chart: Chart | null = null
 
 const labels = computed(() => props.axis.map((b) => new Date(b).toLocaleTimeString('ru-RU')))
 
+function hexToRgba(hex: string, alpha: number): string {
+  const n = parseInt(hex.slice(1), 16)
+  const r = (n >> 16) & 255
+  const g = (n >> 8) & 255
+  const b = n & 255
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`
+}
+
 const datasets = computed(() =>
   props.series.map((s, i) => {
     const byBucket = new Map(s.points.map((p) => [p.bucket, p]))
+    const alpha = props.fillOpacity / 100
     return {
       label: s.label,
       data: props.axis.map((b) => {
@@ -39,13 +51,14 @@ const datasets = computed(() =>
         return point && point.calls > 0 ? point[props.percentile] : null
       }),
       borderColor: PALETTE[i % PALETTE.length],
-      backgroundColor: 'transparent',
-      borderWidth: 2,
-      pointRadius: 2,
+      backgroundColor: alpha > 0 ? hexToRgba(PALETTE[i % PALETTE.length], alpha) : 'transparent',
+      borderWidth: props.lineWidth,
+      pointRadius: props.pointSize,
       pointHoverRadius: 6,
       pointHitRadius: 8,
       tension: 0.25,
       spanGaps: false,
+      fill: alpha > 0,
     }
   }),
 )
@@ -113,7 +126,17 @@ onMounted(() => {
   render()
 })
 
-watch([() => props.axis, () => props.series, () => props.percentile], render)
+watch(
+  [
+    () => props.axis,
+    () => props.series,
+    () => props.percentile,
+    () => props.lineWidth,
+    () => props.pointSize,
+    () => props.fillOpacity,
+  ],
+  render,
+)
 
 onBeforeUnmount(() => {
   chart?.destroy()
