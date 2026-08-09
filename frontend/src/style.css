@@ -44,3 +44,18 @@ body {
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+
+.canvas-wrap {
+  position: relative;
+  height: var(--chart-height, 260px);
+}
+
+.chart-empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8b919a;
+  font-size: 13px;
+}

@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { Chart } from 'chart.js/auto'
+import { computed, ref } from 'vue'
 import type { TimeSeriesPoint } from '../types'
+import { useLineChart } from '../composables/useLineChart'
+import { chartColors, makeTooltipLabel, makeVuDataset } from '../utils/chartTheme'
 
 const props = defineProps<{
   series: TimeSeriesPoint[]
@@ -14,7 +15,6 @@ const props = defineProps<{
 }>()
 
 const canvas = ref<HTMLCanvasElement | null>(null)
-let chart: Chart | null = null
 
 const data = computed(() => {
   const points = props.series
@@ -32,147 +32,65 @@ const data = computed(() => {
 
 const errLabel = computed(() => (props.rateMode ? 'Errors %' : 'Errors/sec'))
 
+const yMax = computed(() => (props.rateMode ? 100 : undefined))
+
 function formatValue(v: number): string {
   return v.toFixed(2)
 }
 
-function buildDatasets() {
-  const alpha = props.fillOpacity / 100
-  const fill = alpha > 0
-  const errDs = {
-    label: errLabel.value,
-    data: props.rateMode ? data.value.errRate : data.value.err,
-    borderColor: '#f56c6c',
-    backgroundColor: `rgba(245, 108, 108, ${alpha})`,
-    borderWidth: props.lineWidth,
-    pointRadius: props.pointSize,
-    pointHoverRadius: 6,
-    pointHitRadius: 8,
-    tension: 0.25,
-    fill,
-  }
-  if (props.rateMode) return [...(props.showVu ? [vuDs()] : []), errDs]
-  return [
-    {
-      label: 'RPS',
-      data: data.value.rps,
-      borderColor: '#4fc3f7',
-      backgroundColor: `rgba(79, 195, 247, ${alpha})`,
+useLineChart({
+  canvas,
+  deps: () => [
+    props.series,
+    props.rateMode,
+    props.lineWidth,
+    props.pointSize,
+    props.fillOpacity,
+    props.showVu,
+    props.vuData,
+  ],
+  render: () => {
+    const alpha = props.fillOpacity / 100
+    const fill = alpha > 0
+    const errDs = {
+      label: errLabel.value,
+      data: props.rateMode ? data.value.errRate : data.value.err,
+      borderColor: chartColors.error,
+      backgroundColor: `rgba(245, 108, 108, ${alpha})`,
       borderWidth: props.lineWidth,
       pointRadius: props.pointSize,
       pointHoverRadius: 6,
       pointHitRadius: 8,
       tension: 0.25,
       fill,
-    },
-    errDs,
-    ...(props.showVu ? [vuDs()] : []),
-  ]
-}
-
-const vuDs = () => {
-  const color = '#e4e6ea'
-  return {
-    label: 'VU',
-    data: props.vuData ?? [],
-    borderColor: color,
-    backgroundColor: 'transparent',
-    borderWidth: 1,
-    pointRadius: 1,
-    pointHoverRadius: 6,
-    pointHitRadius: 8,
-    tension: 0.25,
-    fill: false,
-    yAxisID: 'yVu',
-  }
-}
-
-const yMax = computed(() => (props.rateMode ? 100 : undefined))
-
-function render() {
-  if (!chart) return
-  chart.data.labels = data.value.labels
-  chart.data.datasets = buildDatasets() as never
-  const y = chart.options.scales?.y
-  if (y) y.max = yMax.value
-  const yVu = chart.options.scales?.yVu
-  if (yVu) yVu.display = props.showVu
-  chart.update()
-}
-
-onMounted(() => {
-  if (!canvas.value) return
-  chart = new Chart(canvas.value, {
-    type: 'line',
-    data: {
+    }
+    const datasets: unknown[] = []
+    if (!props.rateMode) {
+      datasets.push({
+        label: 'RPS',
+        data: data.value.rps,
+        borderColor: chartColors.rps,
+        backgroundColor: `rgba(79, 195, 247, ${alpha})`,
+        borderWidth: props.lineWidth,
+        pointRadius: props.pointSize,
+        pointHoverRadius: 6,
+        pointHitRadius: 8,
+        tension: 0.25,
+        fill,
+      })
+    }
+    datasets.push(errDs)
+    if (props.showVu) datasets.push(makeVuDataset(props.vuData))
+    return {
       labels: data.value.labels,
-      datasets: buildDatasets() as never,
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      animation: false,
-      plugins: {
-        legend: {
-          position: 'bottom',
-          align: 'start',
-          labels: {
-            color: '#e4e6ea',
-            boxWidth: 12,
-            boxHeight: 12,
-          },
-        },
-        tooltip: {
-          backgroundColor: '#26282d',
-          titleColor: '#e4e6ea',
-          bodyColor: '#e4e6ea',
-          borderColor: '#33363b',
-          borderWidth: 1,
-          padding: 10,
-          callbacks: {
-            label: (ctx) => {
-              if (ctx.parsed.y == null) return ''
-              const v = ctx.parsed.y ?? 0
-              if (ctx.dataset.label === 'VU') return `${ctx.dataset.label}: ${Math.round(v)}`
-              const suffix = ctx.dataset.label === 'Errors %' ? '%' : ''
-              return `${ctx.dataset.label}: ${formatValue(v)}${suffix}`
-            },
-          },
-        },
-      },
-      scales: {
-        x: {
-          ticks: { color: '#8b919a', maxRotation: 0, autoSkipPadding: 24 },
-          grid: { color: 'rgba(255,255,255,0.04)' },
-        },
-        y: {
-          beginAtZero: true,
-          position: 'left',
-          ticks: { color: '#8b919a', callback: (v) => formatValue(Number(v)) },
-          grid: { color: '#33363b' },
-          title: { display: true, text: 'Значение', color: '#8b919a' },
-        },
-        yVu: {
-          position: 'right',
-          beginAtZero: true,
-          grid: { drawOnChartArea: false },
-          ticks: { color: '#8b919a' },
-          title: { display: true, text: 'ВУ', color: '#8b919a' },
-        },
-      },
-    },
-  })
-  render()
-})
-
-watch(
-  [() => props.series, () => props.rateMode, () => props.lineWidth, () => props.pointSize, () => props.fillOpacity, () => props.showVu, () => props.vuData],
-  render,
-)
-
-onBeforeUnmount(() => {
-  chart?.destroy()
-  chart = null
+      datasets,
+      yTitle: 'Значение',
+      formatTick: formatValue,
+      yMax: yMax.value,
+      tooltipLabel: makeTooltipLabel(formatValue, props.rateMode ? '%' : ''),
+      scales: { yVu: { display: props.showVu } },
+    }
+  },
 })
 </script>
 
@@ -182,20 +100,3 @@ onBeforeUnmount(() => {
     <div v-if="!series.length" class="chart-empty">Нет данных</div>
   </div>
 </template>
-
-<style scoped>
-.canvas-wrap {
-  position: relative;
-  height: 260px;
-}
-
-.chart-empty {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #8b919a;
-  font-size: 13px;
-}
-</style>
