@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { CaretBottom } from '@element-plus/icons-vue'
+import { CaretBottom, Setting } from '@element-plus/icons-vue'
 import RpsErrorsChart from '../components/RpsErrorsChart.vue'
 import AllPercentilesChart from '../components/AllPercentilesChart.vue'
 import OpsPercentilesChart, { type Percentile } from '../components/OpsPercentilesChart.vue'
@@ -33,6 +33,7 @@ const showVuTime = ref(true)
 const showVuAll = ref(true)
 const showVuOps = ref(true)
 const settingsOpen = ref(true)
+const visualOpen = ref(false)
 const lineWidth = ref(1)
 const pointSize = ref(1)
 const fillOpacity = ref(10)
@@ -214,6 +215,10 @@ const testRange = computed(() => {
         <span v-if="testRange" class="meta">
           Тест: {{ testRange.start }} – {{ testRange.end }} ({{ testRange.duration }})
         </span>
+        <button class="visual-toggle" type="button" @click="visualOpen = true">
+          <el-icon :size="15"><Setting /></el-icon>
+          <span>Параметры отображения</span>
+        </button>
       </div>
 
       <el-card
@@ -224,7 +229,7 @@ const testRange = computed(() => {
       >
         <template #header>
           <div class="settings-header" @click="settingsOpen = !settingsOpen">
-            <span>Настройки</span>
+            <span>Выбор операций</span>
             <el-icon class="settings-chevron" :class="{ open: settingsOpen }"><CaretBottom /></el-icon>
           </div>
         </template>
@@ -232,47 +237,7 @@ const testRange = computed(() => {
           <div v-show="settingsOpen" class="collapse-body">
             <div class="collapse-inner">
               <OpsFilter :available="availableOps" v-model="selectedOps" />
-              <div class="settings-section">
-                <span class="settings-label">Интервал агрегации</span>
-                <el-radio-group v-model="bucketMs" size="small">
-                  <el-radio-button v-for="opt in visibleBuckets" :key="opt.label" :value="opt.ms">
-                    {{ opt.label }}
-                  </el-radio-button>
-                </el-radio-group>
-              </div>
-              <div class="settings-section">
-                <span class="settings-label">Толщина линий</span>
-                <el-slider
-                  v-model="lineWidth"
-                  class="settings-slider"
-                  :min="1"
-                  :max="10"
-                  show-input
-                  :show-input-controls="false"
-                />
-              </div>
-              <div class="settings-section">
-                <span class="settings-label">Размер точек</span>
-                <el-slider
-                  v-model="pointSize"
-                  class="settings-slider"
-                  :min="1"
-                  :max="10"
-                  show-input
-                  :show-input-controls="false"
-                />
-              </div>
-              <div class="settings-section">
-                <span class="settings-label">Заливка областей</span>
-                <el-slider
-                  v-model="fillOpacity"
-                  class="settings-slider"
-                  :min="0"
-                  :max="100"
-                  show-input
-                  :show-input-controls="false"
-                />
-              </div>            </div>
+            </div>
           </div>
         </Transition>
       </el-card>
@@ -381,6 +346,52 @@ const testRange = computed(() => {
         v-model:group-by="groupBy"
       />
     </template>
+
+    <el-drawer v-model="visualOpen" direction="rtl" size="360px" title="Параметры отображения">
+      <div class="visual-body">
+        <div class="settings-section">
+          <span class="settings-label">Интервал агрегации</span>
+          <el-radio-group v-model="bucketMs" size="small">
+            <el-radio-button v-for="opt in visibleBuckets" :key="opt.label" :value="opt.ms">
+              {{ opt.label }}
+            </el-radio-button>
+          </el-radio-group>
+        </div>
+        <div class="settings-section">
+          <span class="settings-label">Толщина линий</span>
+          <el-slider
+            v-model="lineWidth"
+            class="settings-slider"
+            :min="1"
+            :max="10"
+            show-input
+            :show-input-controls="false"
+          />
+        </div>
+        <div class="settings-section">
+          <span class="settings-label">Размер точек</span>
+          <el-slider
+            v-model="pointSize"
+            class="settings-slider"
+            :min="1"
+            :max="10"
+            show-input
+            :show-input-controls="false"
+          />
+        </div>
+        <div class="settings-section">
+          <span class="settings-label">Заливка областей</span>
+          <el-slider
+            v-model="fillOpacity"
+            class="settings-slider"
+            :min="0"
+            :max="100"
+            show-input
+            :show-input-controls="false"
+          />
+        </div>
+      </div>
+    </el-drawer>
   </div>
 </template>
 
@@ -404,6 +415,42 @@ const testRange = computed(() => {
 .meta {
   font-size: 13px;
   color: #8b919a;
+}
+
+.visual-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: center;
+  margin-left: auto;
+  padding: 6px 12px;
+  font-size: 13px;
+  color: #e4e6ea;
+  background: transparent;
+  border: 1px solid #33363b;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.visual-toggle:hover {
+  background: #26282d;
+  border-color: #4fc3f7;
+  color: #4fc3f7;
+}
+
+.visual-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.visual-body .settings-section {
+  flex-wrap: wrap;
+}
+
+.visual-body .settings-slider {
+  width: 100%;
+  margin-left: 0;
 }
 
 .kpis {
