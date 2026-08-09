@@ -12,5 +12,6 @@ public record TimeSeriesPoint(
         double p95,
         double p99,
         double throughput,
-        long totalBytes
+        long totalBytes,
+        long threads
 ) {}

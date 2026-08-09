@@ -49,4 +49,5 @@ export interface TimeSeriesPoint {
   p99: number
   throughput: number
   totalBytes: number
+  threads: number
 }

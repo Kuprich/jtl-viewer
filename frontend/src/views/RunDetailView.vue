@@ -3,7 +3,9 @@ import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { CaretBottom } from '@element-plus/icons-vue'
 import RpsErrorsChart from '../components/RpsErrorsChart.vue'
+import AllPercentilesChart from '../components/AllPercentilesChart.vue'
 import OpsPercentilesChart, { type Percentile } from '../components/OpsPercentilesChart.vue'
+import VUsersChart from '../components/VUsersChart.vue'
 import OpsFilter from '../components/OpsFilter.vue'
 import { getLabels, getRun, getStats, getTimeseries } from '../api'
 import type { GroupBy, RunDetail, StatDto, TimeSeriesPoint } from '../types'
@@ -295,6 +297,81 @@ const noCodeMeta = computed(() =>
       <el-card class="zone" shadow="never">
         <template #header>
           <div class="zone-header">
+            <span>Временной ряд</span>
+            <el-radio-group v-model="rateMode" size="small">
+              <el-radio-button :value="false">Errors/sec</el-radio-button>
+              <el-radio-button :value="true">Errors %</el-radio-button>
+            </el-radio-group>
+          </div>
+        </template>
+        <el-alert v-if="chartError" type="error" :title="chartError" show-icon :closable="false" />
+        <RpsErrorsChart
+          v-else
+          :series="series"
+          :rate-mode="rateMode"
+          :line-width="lineWidth"
+          :point-size="pointSize"
+          :fill-opacity="fillOpacity"
+        />
+      </el-card>
+
+      <el-card class="zone" shadow="never">
+        <template #header>
+          <div class="zone-header">
+            <span>Время отклика по всем операциям</span>
+          </div>
+        </template>
+        <el-alert v-if="chartError" type="error" :title="chartError" show-icon :closable="false" />
+        <AllPercentilesChart
+          v-else
+          :series="series"
+          :line-width="lineWidth"
+          :point-size="pointSize"
+          :fill-opacity="fillOpacity"
+        />
+      </el-card>
+
+      <el-card class="zone" shadow="never">
+        <template #header>
+          <div class="zone-header">
+            <span>Время отклика по операциям</span>
+            <el-select v-model="percentile" size="small" style="width: 110px">
+              <el-option v-for="p in ['p50', 'p90', 'p95', 'p99'] as const" :key="p" :label="p" :value="p" />
+            </el-select>
+          </div>
+        </template>
+        <el-alert v-if="opsError" type="error" :title="opsError" show-icon :closable="false" />
+        <OpsPercentilesChart
+          v-else
+          v-loading="opsLoading"
+          :axis="seriesBuckets"
+          :series="opSeries"
+          :percentile="percentile"
+          :line-width="lineWidth"
+          :point-size="pointSize"
+          :fill-opacity="fillOpacity"
+        />
+      </el-card>
+
+      <el-card class="zone" shadow="never">
+        <template #header>
+          <div class="zone-header">
+            <span>Виртуальные пользователи</span>
+          </div>
+        </template>
+        <el-alert v-if="chartError" type="error" :title="chartError" show-icon :closable="false" />
+        <VUsersChart
+          v-else
+          :series="series"
+          :line-width="lineWidth"
+          :point-size="pointSize"
+          :fill-opacity="fillOpacity"
+        />
+      </el-card>
+
+      <el-card class="zone" shadow="never">
+        <template #header>
+          <div class="zone-header">
             <span>Группировка и статистика</span>
             <el-radio-group v-model="groupBy" size="small">
               <el-radio-button value="label">Сценарий</el-radio-button>
@@ -321,8 +398,8 @@ const noCodeMeta = computed(() =>
                 <span class="no-code">{{ noCodeMeta.label }}</span>
                 <template #content>
                   <div v-if="groupBy === 'errorMessage'" class="no-code-tip">
-                    Сэмплы без текста ошибки — обычно успешные запросы<br />
-                    или ошибки без сообщения.
+                    Упавшие сэмплы без текста ошибки —<br />
+                    например Transaction Controller.
                   </div>
                   <div v-else class="no-code-tip">
                     Сэмплы без responseCode — обычно Transaction Controller,<br />
@@ -375,49 +452,6 @@ const noCodeMeta = computed(() =>
             <template #default="{ row }">{{ formatBytes(row.avgBytes) }}</template>
           </el-table-column>
         </el-table>
-      </el-card>
-
-      <el-card class="zone" shadow="never">
-        <template #header>
-          <div class="zone-header">
-            <span>Временной ряд</span>
-            <el-radio-group v-model="rateMode" size="small">
-              <el-radio-button :value="false">Errors/sec</el-radio-button>
-              <el-radio-button :value="true">Errors %</el-radio-button>
-            </el-radio-group>
-          </div>
-        </template>
-        <el-alert v-if="chartError" type="error" :title="chartError" show-icon :closable="false" />
-        <RpsErrorsChart
-          v-else
-          :series="series"
-          :rate-mode="rateMode"
-          :line-width="lineWidth"
-          :point-size="pointSize"
-          :fill-opacity="fillOpacity"
-        />
-      </el-card>
-
-      <el-card class="zone" shadow="never">
-        <template #header>
-          <div class="zone-header">
-            <span>Время отклика по операциям</span>
-            <el-select v-model="percentile" size="small" style="width: 110px">
-              <el-option v-for="p in ['p50', 'p90', 'p95', 'p99'] as const" :key="p" :label="p" :value="p" />
-            </el-select>
-          </div>
-        </template>
-        <el-alert v-if="opsError" type="error" :title="opsError" show-icon :closable="false" />
-        <OpsPercentilesChart
-          v-else
-          v-loading="opsLoading"
-          :axis="seriesBuckets"
-          :series="opSeries"
-          :percentile="percentile"
-          :line-width="lineWidth"
-          :point-size="pointSize"
-          :fill-opacity="fillOpacity"
-        />
       </el-card>
     </template>
   </div>

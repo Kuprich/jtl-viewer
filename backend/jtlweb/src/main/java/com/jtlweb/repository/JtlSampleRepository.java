@@ -69,6 +69,7 @@ public interface JtlSampleRepository extends JpaRepository<JtlSample, Long> {
             FROM jtl_sample
             WHERE run_id = :runId
               AND label IN (:labels)
+              AND NOT success
             GROUP BY failure_message
             ORDER BY calls DESC
             """, nativeQuery = true)
@@ -121,7 +122,8 @@ public interface JtlSampleRepository extends JpaRepository<JtlSample, Long> {
                    PERCENTILE_CONT(0.9)  WITHIN GROUP (ORDER BY elapsed) AS p90,
                    PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY elapsed) AS p95,
                    PERCENTILE_CONT(0.99) WITHIN GROUP (ORDER BY elapsed) AS p99,
-                   SUM(bytes)                                       AS totalBytes
+                   SUM(bytes)                                       AS totalBytes,
+                   COALESCE(MAX(all_threads), 0)                    AS threads
             FROM jtl_sample
             WHERE run_id = :runId
               AND (:label IS NULL OR label = :label)
@@ -165,6 +167,8 @@ public interface JtlSampleRepository extends JpaRepository<JtlSample, Long> {
         double getP99();
 
         long getTotalBytes();
+
+        long getThreads();
     }
 
     interface TimeRange {

@@ -78,11 +78,12 @@ public class TimeSeriesService {
                 round1(r.getP95()),
                 round1(r.getP99()),
                 round1(r.getCalls() / (bucketMs / 1000.0)),
-                r.getTotalBytes());
+                r.getTotalBytes(),
+                r.getThreads());
     }
 
     private static TimeSeriesPoint emptyPoint(long bucketStart) {
-        return new TimeSeriesPoint(bucketStart, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        return new TimeSeriesPoint(bucketStart, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     }
 
     private static long clamp(long v, long min, long max) {
