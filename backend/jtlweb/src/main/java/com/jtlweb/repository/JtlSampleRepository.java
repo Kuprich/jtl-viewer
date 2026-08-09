@@ -34,20 +34,30 @@ public interface JtlSampleRepository extends JpaRepository<JtlSample, Long> {
 
     String FROM_WHERE = "FROM jtl_sample WHERE run_id = :runId AND label IN (:labels) ";
 
+    String STATS_FROM = "FROM jtl_sample WHERE run_id = :runId AND label IN (:labels) " +
+            "AND (:fromMs IS NULL OR time_stamp >= :fromMs) " +
+            "AND (:toMs IS NULL OR time_stamp < :toMs) ";
+
     @Query(value = "SELECT label AS grp, " + MEASURES + ", " + STATS_EXTRA +
-            FROM_WHERE + "GROUP BY label ORDER BY calls DESC", nativeQuery = true)
+            STATS_FROM + "GROUP BY label ORDER BY calls DESC", nativeQuery = true)
     List<GroupStatRow> findStatsByLabel(@Param("runId") long runId,
-                                        @Param("labels") List<String> labels);
+                                        @Param("labels") List<String> labels,
+                                        @Param("fromMs") Long fromMs,
+                                        @Param("toMs") Long toMs);
 
     @Query(value = "SELECT COALESCE(response_code, '(none)') AS grp, " + MEASURES + ", " + STATS_EXTRA +
-            FROM_WHERE + "GROUP BY response_code ORDER BY calls DESC", nativeQuery = true)
+            STATS_FROM + "GROUP BY response_code ORDER BY calls DESC", nativeQuery = true)
     List<GroupStatRow> findStatsByResponseCode(@Param("runId") long runId,
-                                               @Param("labels") List<String> labels);
+                                               @Param("labels") List<String> labels,
+                                               @Param("fromMs") Long fromMs,
+                                               @Param("toMs") Long toMs);
 
     @Query(value = "SELECT COALESCE(failure_message, '(none)') AS grp, " + MEASURES + ", " + STATS_EXTRA +
-            FROM_WHERE + " AND NOT success GROUP BY failure_message ORDER BY calls DESC", nativeQuery = true)
+            STATS_FROM + " AND NOT success GROUP BY failure_message ORDER BY calls DESC", nativeQuery = true)
     List<GroupStatRow> findStatsByErrorMessage(@Param("runId") long runId,
-                                               @Param("labels") List<String> labels);
+                                               @Param("labels") List<String> labels,
+                                               @Param("fromMs") Long fromMs,
+                                               @Param("toMs") Long toMs);
 
     interface GroupStatRow {
         String getGrp();

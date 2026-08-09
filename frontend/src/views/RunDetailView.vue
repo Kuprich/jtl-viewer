@@ -34,6 +34,8 @@ const showVuAll = ref(true)
 const showVuOps = ref(true)
 const settingsOpen = ref(true)
 const visualOpen = ref(false)
+const zoomEnabled = ref(true)
+const zoomRange = ref<{ min: number; max: number } | null>(null)
 const lineWidth = ref(1)
 const pointSize = ref(1)
 const fillOpacity = ref(10)
@@ -50,6 +52,17 @@ const BUCKET_OPTIONS = [
 const bucketMs = ref(-1)
 
 const currentBucket = computed(() => (bucketMs.value > 0 ? bucketMs.value : undefined))
+
+const statsWindow = computed(() => {
+  const range = zoomRange.value
+  const pts = series.value
+  if (!range || pts.length < 2) return null
+  const min = Math.max(0, Math.min(pts.length - 1, range.min))
+  const max = Math.max(0, Math.min(pts.length - 1, range.max))
+  if (min >= max) return null
+  const step = pts[1].bucket - pts[0].bucket
+  return { fromMs: pts[min].bucket, toMs: pts[max].bucket + step }
+})
 
 const filteredSpan = computed(() => {
   const pts = series.value
@@ -73,14 +86,20 @@ async function loadStats() {
   statsLoading.value = true
   statsError.value = ''
   try {
+    const w = statsWindow.value
     stats.value = selectedOps.value.length
-      ? await getStats(id.value, groupBy.value as GroupBy, selectedOps.value)
+      ? await getStats(id.value, groupBy.value as GroupBy, selectedOps.value, w?.fromMs, w?.toMs)
       : []
   } catch (e) {
     statsError.value = e instanceof Error ? e.message : String(e)
   } finally {
     statsLoading.value = false
   }
+}
+
+function applyZoom(range: { min: number; max: number } | null) {
+  zoomRange.value = range
+  loadStats()
 }
 
 async function loadSeries() {
@@ -136,6 +155,7 @@ watch(
     availableOps.value = []
     selectedOps.value = []
     bucketMs.value = -1
+    zoomRange.value = null
     try {
       const [runData, ops] = await Promise.all([getRun(value), getLabels(value)])
       run.value = runData
@@ -152,6 +172,7 @@ watch(
 
 watch(selectedOps, () => {
   if (!run.value) return
+  zoomRange.value = null
   loadStats()
   loadSeries()
   loadOpsSeries()
@@ -159,6 +180,7 @@ watch(selectedOps, () => {
 
 watch(bucketMs, () => {
   if (!run.value) return
+  zoomRange.value = null
   loadSeries()
   loadOpsSeries()
 })
@@ -183,8 +205,16 @@ const errorsTotal = computed(() => stats.value.reduce((sum, s) => sum + s.errors
 const errorRate = computed(() => (callsTotal.value > 0 ? (errorsTotal.value / callsTotal.value) * 100 : 0))
 
 const duration = computed(() => {
-  if (series.value.length < 2) return 0
-  return Math.max(0, series.value[series.value.length - 1].bucket - series.value[0].bucket)
+  const range = zoomRange.value
+  const pts = series.value
+  if (pts.length < 2) return 0
+  if (range) {
+    const min = Math.max(0, Math.min(pts.length - 1, range.min))
+    const max = Math.max(0, Math.min(pts.length - 1, range.max))
+    if (min >= max) return 0
+    return Math.max(0, pts[max].bucket - pts[min].bucket)
+  }
+  return Math.max(0, pts[pts.length - 1].bucket - pts[0].bucket)
 })
 
 const kpis = computed(() => [
@@ -272,6 +302,9 @@ const testRange = computed(() => {
           :fill-opacity="fillOpacity"
           :show-vu="showVuTime"
           :vu-data="vuData"
+          :zoom-enabled="zoomEnabled"
+          :visible-range="zoomRange"
+          @zoom="applyZoom"
         />
       </el-card>
 
@@ -293,6 +326,9 @@ const testRange = computed(() => {
           :fill-opacity="fillOpacity"
           :show-vu="showVuAll"
           :vu-data="vuData"
+          :zoom-enabled="zoomEnabled"
+          :visible-range="zoomRange"
+          @zoom="applyZoom"
         />
       </el-card>
 
@@ -320,6 +356,9 @@ const testRange = computed(() => {
           :fill-opacity="fillOpacity"
           :show-vu="showVuOps"
           :vu-data="vuData"
+          :zoom-enabled="zoomEnabled"
+          :visible-range="zoomRange"
+          @zoom="applyZoom"
         />
       </el-card>
 
@@ -336,6 +375,9 @@ const testRange = computed(() => {
           :line-width="lineWidth"
           :point-size="pointSize"
           :fill-opacity="fillOpacity"
+          :zoom-enabled="zoomEnabled"
+          :visible-range="zoomRange"
+          @zoom="applyZoom"
         />
       </el-card>
 
@@ -349,6 +391,18 @@ const testRange = computed(() => {
 
     <el-drawer v-model="visualOpen" direction="rtl" size="360px" title="Параметры отображения">
       <div class="visual-body">
+        <div class="settings-section">
+          <span class="settings-label">Зум выделением</span>
+          <el-checkbox v-model="zoomEnabled">разрешён</el-checkbox>
+          <button
+            v-if="zoomRange"
+            class="visual-reset"
+            type="button"
+            @click="applyZoom(null)"
+          >
+            Сбросить зум
+          </button>
+        </div>
         <div class="settings-section">
           <span class="settings-label">Интервал агрегации</span>
           <el-radio-group v-model="bucketMs" size="small">
@@ -437,6 +491,20 @@ const testRange = computed(() => {
   background: #26282d;
   border-color: #4fc3f7;
   color: #4fc3f7;
+}
+
+.visual-reset {
+  padding: 4px 10px;
+  font-size: 12px;
+  color: #f56c6c;
+  background: transparent;
+  border: 1px solid #33363b;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.visual-reset:hover {
+  border-color: #f56c6c;
 }
 
 .visual-body {

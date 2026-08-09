@@ -1,17 +1,26 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import type { TimeSeriesPoint } from '../types'
-import { useLineChart } from '../composables/useLineChart'
+import { useLineChart, type ZoomRange } from '../composables/useLineChart'
 import { chartColors, makeTooltipLabel, makeVuDataset } from '../utils/chartTheme'
 
-const props = defineProps<{
-  series: TimeSeriesPoint[]
-  rateMode: boolean
-  lineWidth: number
-  pointSize: number
-  fillOpacity: number
-  showVu?: boolean
-  vuData?: (number | null)[]
+const props = withDefaults(
+  defineProps<{
+    series: TimeSeriesPoint[]
+    rateMode: boolean
+    lineWidth: number
+    pointSize: number
+    fillOpacity: number
+    showVu?: boolean
+    vuData?: (number | null)[]
+    zoomEnabled?: boolean
+    visibleRange?: ZoomRange | null
+  }>(),
+  { showVu: false, vuData: () => [], zoomEnabled: true, visibleRange: null },
+)
+
+const emit = defineEmits<{
+  zoom: [range: ZoomRange | null]
 }>()
 
 const canvas = ref<HTMLCanvasElement | null>(null)
@@ -34,11 +43,7 @@ const errLabel = computed(() => (props.rateMode ? 'Errors %' : 'Errors/sec'))
 
 const yMax = computed(() => (props.rateMode ? 100 : undefined))
 
-function formatValue(v: number): string {
-  return v.toFixed(2)
-}
-
-useLineChart({
+const { selection } = useLineChart({
   canvas,
   deps: () => [
     props.series,
@@ -48,6 +53,8 @@ useLineChart({
     props.fillOpacity,
     props.showVu,
     props.vuData,
+    props.zoomEnabled,
+    props.visibleRange,
   ],
   render: () => {
     const alpha = props.fillOpacity / 100
@@ -81,6 +88,10 @@ useLineChart({
     }
     datasets.push(errDs)
     if (props.showVu) datasets.push(makeVuDataset(props.vuData))
+    const scales: Record<string, { min?: number; max?: number; display?: boolean }> = {
+      yVu: { display: props.showVu },
+    }
+    if (props.visibleRange) scales.x = { min: props.visibleRange.min, max: props.visibleRange.max }
     return {
       labels: data.value.labels,
       datasets,
@@ -88,15 +99,32 @@ useLineChart({
       formatTick: formatValue,
       yMax: yMax.value,
       tooltipLabel: makeTooltipLabel(formatValue, props.rateMode ? '%' : ''),
-      scales: { yVu: { display: props.showVu } },
+      scales,
     }
   },
+  select: {
+    enabled: () => props.zoomEnabled,
+    onChange: (range) => emit('zoom', range),
+  },
+})
+
+function formatValue(v: number): string {
+  return v.toFixed(2)
+}
+
+const bandStyle = computed(() => {
+  const s = selection.value
+  if (!s) return {}
+  const left = Math.min(s.x1, s.x2)
+  const width = Math.abs(s.x2 - s.x1)
+  return { left: `${left}px`, width: `${width}px` }
 })
 </script>
 
 <template>
   <div class="canvas-wrap">
     <canvas ref="canvas" />
+    <div v-if="selection" class="zoom-band" :style="bandStyle" />
     <div v-if="!series.length" class="chart-empty">Нет данных</div>
   </div>
 </template>

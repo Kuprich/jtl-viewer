@@ -23,8 +23,10 @@ public class RunStatsController {
     @GetMapping("/{id}/stats")
     public List<StatDto> stats(@PathVariable long id,
                                @RequestParam(defaultValue = "label") String groupBy,
-                               @RequestParam(required = false) List<String> labels) {
-        return statsService.stats(id, groupBy, labels);
+                               @RequestParam(required = false) List<String> labels,
+                               @RequestParam(required = false) Long fromMs,
+                               @RequestParam(required = false) Long toMs) {
+        return statsService.stats(id, groupBy, labels, fromMs, toMs);
     }
 
     @GetMapping("/{id}/labels")

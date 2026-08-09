@@ -25,7 +25,7 @@ public class StatsService {
         this.sampleRepository = sampleRepository;
     }
 
-    public List<StatDto> stats(long runId, String groupBy, List<String> labels) {
+    public List<StatDto> stats(long runId, String groupBy, List<String> labels, Long fromMs, Long toMs) {
         if (!runRepository.existsById(runId)) {
             throw new RunNotFoundException(runId);
         }
@@ -40,9 +40,9 @@ public class StatsService {
         }
 
         List<GroupStatRow> rows = switch (groupBy) {
-            case "responseCode" -> sampleRepository.findStatsByResponseCode(runId, labels);
-            case "errorMessage" -> sampleRepository.findStatsByErrorMessage(runId, labels);
-            default             -> sampleRepository.findStatsByLabel(runId, labels);
+            case "responseCode" -> sampleRepository.findStatsByResponseCode(runId, labels, fromMs, toMs);
+            case "errorMessage" -> sampleRepository.findStatsByErrorMessage(runId, labels, fromMs, toMs);
+            default             -> sampleRepository.findStatsByLabel(runId, labels, fromMs, toMs);
         };
         return rows.stream().map(StatsService::toStat).toList();
     }

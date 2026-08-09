@@ -28,7 +28,7 @@ class RunStatsControllerTest {
 
     @Test
     void statsReturnsList() throws Exception {
-        when(statsService.stats(1L, "label", null)).thenReturn(List.of(new StatDto(
+        when(statsService.stats(1L, "label", null, null, null)).thenReturn(List.of(new StatDto(
                 "UC01_Get_products", 302, 0, 0.0, 147, 1195, 172.6,
                 162.5, 189.0, 196.0, 406.5, 0.2, 3445364, 11408.5)));
 
@@ -44,7 +44,7 @@ class RunStatsControllerTest {
 
     @Test
     void statsWithLabelsPassesThemThrough() throws Exception {
-        when(statsService.stats(1L, "label", List.of("UC01_Get_products"))).thenReturn(List.of(new StatDto(
+        when(statsService.stats(1L, "label", List.of("UC01_Get_products"), null, null)).thenReturn(List.of(new StatDto(
                 "UC01_Get_products", 302, 0, 0.0, 147, 1195, 172.6,
                 162.5, 189.0, 196.0, 406.5, 0.2, 3445364, 11408.5)));
 
@@ -52,6 +52,19 @@ class RunStatsControllerTest {
                         .param("labels", "UC01_Get_products"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].group").value("UC01_Get_products"));
+    }
+
+    @Test
+    void statsPassesTimeWindowThrough() throws Exception {
+        when(statsService.stats(1L, "label", null, 1_700_000_000L, 1_700_000_600L)).thenReturn(List.of(new StatDto(
+                "UC01_Get_products", 12, 0, 0.0, 147, 1195, 172.6,
+                162.5, 189.0, 196.0, 406.5, 0.2, 3445364, 11408.5)));
+
+        mockMvc.perform(get("/api/runs/1/stats")
+                        .param("fromMs", "1700000000")
+                        .param("toMs", "1700000600"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].calls").value(12));
     }
 
     @Test
@@ -66,7 +79,7 @@ class RunStatsControllerTest {
 
     @Test
     void invalidGroupByReturns400() throws Exception {
-        when(statsService.stats(1L, "bogus", null)).thenThrow(new InvalidGroupByException("bogus"));
+        when(statsService.stats(1L, "bogus", null, null, null)).thenThrow(new InvalidGroupByException("bogus"));
 
         mockMvc.perform(get("/api/runs/1/stats").param("groupBy", "bogus"))
                 .andExpect(status().isBadRequest())
@@ -75,7 +88,7 @@ class RunStatsControllerTest {
 
     @Test
     void missingRunReturns404() throws Exception {
-        when(statsService.stats(999L, "label", null)).thenThrow(new RunNotFoundException(999));
+        when(statsService.stats(999L, "label", null, null, null)).thenThrow(new RunNotFoundException(999));
 
         mockMvc.perform(get("/api/runs/999/stats"))
                 .andExpect(status().isNotFound())

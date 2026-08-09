@@ -50,6 +50,10 @@ body {
   height: var(--chart-height, 260px);
 }
 
+.canvas-wrap canvas {
+  display: block;
+}
+
 .chart-empty {
   position: absolute;
   inset: 0;
@@ -58,4 +62,15 @@ body {
   justify-content: center;
   color: #8b919a;
   font-size: 13px;
+}
+
+.zoom-band {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 5;
+  background: rgba(79, 195, 247, 0.15);
+  border-left: 1px solid #4fc3f7;
+  border-right: 1px solid #4fc3f7;
+  pointer-events: none;
 }

@@ -21,9 +21,17 @@ export function getLabels(id: number): Promise<string[]> {
   return request<string[]>(`/runs/${id}/labels`)
 }
 
-export function getStats(id: number, groupBy: GroupBy, labels?: string[]): Promise<StatDto[]> {
+export function getStats(
+  id: number,
+  groupBy: GroupBy,
+  labels?: string[],
+  fromMs?: number,
+  toMs?: number,
+): Promise<StatDto[]> {
   const params = new URLSearchParams({ groupBy })
   for (const l of labels ?? []) params.append('labels', l)
+  if (fromMs !== undefined) params.set('fromMs', String(fromMs))
+  if (toMs !== undefined) params.set('toMs', String(toMs))
   return request<StatDto[]>(`/runs/${id}/stats?${params}`)
 }
 
