@@ -425,6 +425,7 @@ const testRange = computed(() => {
         :stats="stats"
         :loading="statsLoading"
         :error="statsError"
+        :error-threshold="errorThreshold"
         v-model:group-by="groupBy"
       />
     </template>

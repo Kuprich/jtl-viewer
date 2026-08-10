@@ -1,15 +1,19 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { Search } from '@element-plus/icons-vue'
+import { QuestionFilled, Search } from '@element-plus/icons-vue'
 import type { GroupBy, StatDto } from '../types'
 import { formatBytes, formatMs, formatNumber, formatPercent } from '../utils/format'
 
-const props = defineProps<{
-  stats: StatDto[]
-  loading: boolean
-  error: string
-  groupBy: GroupBy
-}>()
+const props = withDefaults(
+  defineProps<{
+    stats: StatDto[]
+    loading: boolean
+    error: string
+    groupBy: GroupBy
+    errorThreshold?: number
+  }>(),
+  { errorThreshold: 5 },
+)
 
 const emit = defineEmits<{
   'update:groupBy': [value: GroupBy]
@@ -36,7 +40,7 @@ const noCodeMeta = computed(() =>
 )
 
 function rowClass(data: { row: StatDto }) {
-  return data.row.errors > 0 ? 'row-danger' : ''
+  return data.row.errorRate > props.errorThreshold ? 'row-danger' : ''
 }
 
 function formatRps(value: number): string {
@@ -48,7 +52,19 @@ function formatRps(value: number): string {
   <el-card class="zone" shadow="never">
     <template #header>
       <div class="zone-header">
-        <span>Группировка и статистика</span>
+        <span class="zone-title-group">
+          <span>Группировка и статистика</span>
+          <el-tooltip placement="top">
+            <el-icon class="zone-title-tip"><QuestionFilled /></el-icon>
+            <template #content>
+              <div class="zone-title-tip-content">
+                Красным выделены запросы, у которых доля ошибок выше порога<br />
+                (сейчас {{ props.errorThreshold }}%).<br />
+                Порог настраивается в «Параметрах отображения».
+              </div>
+            </template>
+          </el-tooltip>
+        </span>
         <div class="zone-controls">
           <el-input
             v-model="query"
@@ -102,12 +118,12 @@ function formatRps(value: number): string {
       </el-table-column>
       <el-table-column prop="errors" label="Ошибки" sortable align="right" width="90">
         <template #default="{ row }">
-          <span :class="{ 'cell-danger': row.errors > 0 }">{{ formatNumber(row.errors) }}</span>
+          <span :class="{ 'cell-danger': row.errorRate > props.errorThreshold }">{{ formatNumber(row.errors) }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="errorRate" label="Errors %" sortable align="right" width="90">
         <template #default="{ row }">
-          <span :class="{ 'cell-danger': row.errors > 0 }">{{ formatPercent(row.errorRate) }}</span>
+          <span :class="{ 'cell-danger': row.errorRate > props.errorThreshold }">{{ formatPercent(row.errorRate) }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="min" label="Min" sortable align="right" width="90">
@@ -153,8 +169,20 @@ function formatRps(value: number): string {
   gap: 12px;
 }
 
-.zone-header > span:first-child {
+.zone-title-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   user-select: none;
+}
+
+.zone-title-tip {
+  cursor: help;
+  color: var(--el-text-color-secondary);
+}
+
+.zone-title-tip-content {
+  line-height: 1.4;
 }
 
 .zone-controls {
@@ -182,11 +210,11 @@ function formatRps(value: number): string {
   line-height: 1.5;
 }
 
-:deep(.row-danger td.el-table__cell) {
-  background-color: rgba(245, 108, 108, 0.05);
+:deep(.el-table__body tr.row-danger td.el-table__cell) {
+  background-color: rgba(245, 108, 108, 0.05) !important;
 }
 
-:deep(.row-danger:hover td.el-table__cell) {
-  background-color: rgba(245, 108, 108, 0.09);
+:deep(.el-table__body tr.row-danger:hover td.el-table__cell) {
+  background-color: rgba(245, 108, 108, 0.09) !important;
 }
 </style>
