@@ -3,11 +3,13 @@ import { computed, ref } from 'vue'
 import type { TimeSeriesPoint } from '../types'
 import { useLineChart, type ZoomRange } from '../composables/useLineChart'
 import { chartColors, makeTooltipLabel, makeVuDataset } from '../utils/chartTheme'
+import { RATE_UNIT_FACTOR, RATE_UNIT_LABEL, type RateUnit } from '../utils/rateUnit'
 
 const props = withDefaults(
   defineProps<{
     series: TimeSeriesPoint[]
     rateMode: boolean
+    rateUnit?: RateUnit
     lineWidth: number
     pointSize: number
     fillOpacity: number
@@ -16,7 +18,7 @@ const props = withDefaults(
     zoomEnabled?: boolean
     visibleRange?: ZoomRange | null
   }>(),
-  { showVu: false, vuData: () => [], zoomEnabled: true, visibleRange: null },
+  { showVu: false, vuData: () => [], zoomEnabled: true, visibleRange: null, rateUnit: 'rps' },
 )
 
 const emit = defineEmits<{
@@ -29,9 +31,10 @@ const data = computed(() => {
   const points = props.series
   const bucketMs = points.length > 1 ? points[1].bucket - points[0].bucket : 0
   const secPerBucket = bucketMs > 0 ? bucketMs / 1000 : 0
+  const factor = RATE_UNIT_FACTOR[props.rateUnit]
   return {
     labels: points.map((p) => new Date(p.bucket).toLocaleTimeString('ru-RU')),
-    rps: points.map((p) => (p.calls > 0 ? p.throughput : null)),
+    rps: points.map((p) => (p.calls > 0 ? p.throughput * factor : null)),
     err: points.map((p) =>
       p.calls > 0 ? (secPerBucket > 0 ? Math.round((p.errors / secPerBucket) * 100) / 100 : 0) : null,
     ),
@@ -40,6 +43,7 @@ const data = computed(() => {
 })
 
 const errLabel = computed(() => (props.rateMode ? 'Errors %' : 'Errors/sec'))
+const rateUnitLabel = computed(() => RATE_UNIT_LABEL[props.rateUnit])
 
 const yMax = computed(() => (props.rateMode ? 100 : undefined))
 
@@ -48,6 +52,7 @@ const { selection } = useLineChart({
   deps: () => [
     props.series,
     props.rateMode,
+    props.rateUnit,
     props.lineWidth,
     props.pointSize,
     props.fillOpacity,
@@ -74,7 +79,7 @@ const { selection } = useLineChart({
     const datasets: unknown[] = []
     if (!props.rateMode) {
       datasets.push({
-        label: 'RPS',
+        label: rateUnitLabel.value,
         data: data.value.rps,
         borderColor: chartColors.rps,
         backgroundColor: `rgba(79, 195, 247, ${alpha})`,
@@ -95,7 +100,7 @@ const { selection } = useLineChart({
     return {
       labels: data.value.labels,
       datasets,
-      yTitle: 'Значение',
+      yTitle: props.rateMode ? 'Errors %' : rateUnitLabel.value,
       formatTick: formatValue,
       yMax: yMax.value,
       tooltipLabel: makeTooltipLabel(formatValue, props.rateMode ? '%' : ''),

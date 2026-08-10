@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import { QuestionFilled, Search } from '@element-plus/icons-vue'
 import type { GroupBy, StatDto } from '../types'
+import { RATE_UNIT_FACTOR, RATE_UNIT_LABEL, type RateUnit } from '../utils/rateUnit'
 import { formatBytes, formatMs, formatNumber, formatPercent } from '../utils/format'
 
 const props = withDefaults(
@@ -11,8 +12,9 @@ const props = withDefaults(
     error: string
     groupBy: GroupBy
     errorThreshold?: number
+    rateUnit?: RateUnit
   }>(),
-  { errorThreshold: 5 },
+  { errorThreshold: 5, rateUnit: 'rps' },
 )
 
 const emit = defineEmits<{
@@ -147,8 +149,14 @@ function formatRps(value: number): string {
       <el-table-column prop="max" label="Max" sortable align="right" width="90">
         <template #default="{ row }">{{ formatMs(row.max) }}</template>
       </el-table-column>
-      <el-table-column prop="throughput" label="RPS" sortable align="right" width="90">
-        <template #default="{ row }">{{ formatRps(row.throughput) }}</template>
+      <el-table-column
+        prop="throughput"
+        :label="RATE_UNIT_LABEL[props.rateUnit]"
+        sortable
+        align="right"
+        width="90"
+      >
+        <template #default="{ row }">{{ formatRps(row.throughput * RATE_UNIT_FACTOR[props.rateUnit]) }}</template>
       </el-table-column>
       <el-table-column prop="avgBytes" label="Ср. байт" sortable align="right" width="110">
         <template #default="{ row }">{{ formatBytes(row.avgBytes) }}</template>

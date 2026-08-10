@@ -11,6 +11,7 @@ import OpsFilter from '../components/OpsFilter.vue'
 import StatsTable from '../components/StatsTable.vue'
 import { getLabels, getRun, getStats, getTimeseries } from '../api'
 import type { GroupBy, RunDetail, StatDto, TimeSeriesPoint } from '../types'
+import type { RateUnit } from '../utils/rateUnit'
 import { formatDateTime, formatDuration, formatNumber, formatPercent } from '../utils/format'
 
 const route = useRoute()
@@ -44,6 +45,7 @@ const lineWidth = ref(1)
 const pointSize = ref(1)
 const fillOpacity = ref(10)
 const errorThreshold = ref(5)
+const rateUnit = ref<RateUnit>('rps')
 
 const BUCKET_OPTIONS = [
   { label: 'Авто', ms: -1 },
@@ -307,7 +309,7 @@ const testRange = computed(() => {
       <el-card class="zone" shadow="never">
         <template #header>
           <div class="zone-header">
-            <span>Временной ряд</span>
+            <span>Пропускная способность</span>
             <div class="zone-controls">
               <el-checkbox v-model="showVuTime" size="small">График VU</el-checkbox>
               <el-radio-group v-model="rateMode" size="small">
@@ -322,6 +324,7 @@ const testRange = computed(() => {
           v-else
           :series="series"
           :rate-mode="rateMode"
+          :rate-unit="rateUnit"
           :line-width="lineWidth"
           :point-size="pointSize"
           :fill-opacity="fillOpacity"
@@ -426,6 +429,7 @@ const testRange = computed(() => {
         :loading="statsLoading"
         :error="statsError"
         :error-threshold="errorThreshold"
+        :rate-unit="rateUnit"
         v-model:group-by="groupBy"
       />
     </template>
@@ -495,6 +499,14 @@ const testRange = computed(() => {
             show-input
             :show-input-controls="false"
           />
+        </div>
+        <div class="settings-section">
+          <span class="settings-label">Единицы нагрузки</span>
+          <el-radio-group v-model="rateUnit" size="small">
+            <el-radio-button value="rps">RPS</el-radio-button>
+            <el-radio-button value="rpm">RPM</el-radio-button>
+            <el-radio-button value="rph">RPH</el-radio-button>
+          </el-radio-group>
         </div>
       </div>
     </el-drawer>
