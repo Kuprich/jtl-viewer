@@ -114,7 +114,7 @@ export function buildOptions(r: ChartRender): ChartOptions<'line'> {
       beginAtZero: true,
       grid: { drawOnChartArea: false },
       ticks: { color: chartColors.muted },
-      title: { display: true, text: 'ВУ', color: chartColors.muted },
+      title: { display: true, text: 'Виртуальные пользователи', color: chartColors.muted },
     },
   }
   return {
