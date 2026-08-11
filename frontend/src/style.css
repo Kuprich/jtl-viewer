@@ -8,6 +8,7 @@
   --el-color-primary-dark-2: #3f9cc6;
 
   --mono: ui-monospace, "JetBrains Mono", "Fira Code", Menlo, Consolas, monospace;
+  --panel-width: 320px;
 }
 
 * {

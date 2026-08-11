@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { CaretBottom, Setting } from '@element-plus/icons-vue'
+import { CaretBottom } from '@element-plus/icons-vue'
 import RpsErrorsChart from '../components/RpsErrorsChart.vue'
 import OpsThroughputChart from '../components/OpsThroughputChart.vue'
 import AllPercentilesChart from '../components/AllPercentilesChart.vue'
@@ -13,8 +13,10 @@ import { getLabels, getRun, getStats, getTimeseries } from '../api'
 import type { GroupBy, RunDetail, StatDto, TimeSeriesPoint } from '../types'
 import type { RateUnit } from '../utils/rateUnit'
 import { formatDateTime, formatDuration, formatNumber, formatPercent } from '../utils/format'
+import { useRunHeader } from '../composables/useRunHeader'
 
 const route = useRoute()
+const runHeader = useRunHeader()
 const run = ref<RunDetail | null>(null)
 const series = ref<TimeSeriesPoint[]>([])
 const chartError = ref('')
@@ -39,7 +41,6 @@ const showVuAll = ref(true)
 const showVuOps = ref(true)
 const showVuOpsRate = ref(true)
 const settingsOpen = ref(true)
-const visualOpen = ref(false)
 const zoomEnabled = ref(true)
 const zoomRange = ref<{ min: number; max: number } | null>(null)
 const lineWidth = ref(1)
@@ -261,6 +262,20 @@ const testRange = computed(() => {
     duration: formatDuration(r.durationMs),
   }
 })
+
+watch([run, testRange], () => {
+  const r = run.value
+  runHeader.state.title = r?.fileName ?? 'Загрузка…'
+  runHeader.state.meta = testRange.value
+    ? `Тест: ${testRange.value.start} – ${testRange.value.end} (${testRange.value.duration})`
+    : null
+})
+
+watch(error, (e) => {
+  if (e) runHeader.reset()
+})
+
+onBeforeUnmount(() => runHeader.reset())
 </script>
 
 <template>
@@ -268,17 +283,6 @@ const testRange = computed(() => {
     <el-alert v-if="error" type="error" :title="error" show-icon :closable="false" />
 
     <template v-else>
-      <div class="detail-header">
-        <h2>{{ run?.fileName ?? 'Загрузка…' }}</h2>
-        <span v-if="testRange" class="meta">
-          Тест: {{ testRange.start }} – {{ testRange.end }} ({{ testRange.duration }})
-        </span>
-        <button class="visual-toggle" type="button" @click="visualOpen = true">
-          <el-icon :size="15"><Setting /></el-icon>
-          <span>Параметры отображения</span>
-        </button>
-      </div>
-
       <el-card
         v-if="run"
         class="zone settings-card"
@@ -443,7 +447,7 @@ const testRange = computed(() => {
       />
     </template>
 
-    <el-drawer v-model="visualOpen" direction="rtl" size="360px" title="Параметры отображения">
+    <el-drawer v-model="runHeader.state.settingsOpen" direction="rtl" size="360px" title="Параметры отображения">
       <div class="visual-body">
         <div class="settings-section">
           <span class="settings-label">Зум выделением</span>
@@ -527,45 +531,6 @@ const testRange = computed(() => {
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
-}
-
-.detail-header {
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.detail-header h2 {
-  margin: 0;
-  font-size: 18px;
-}
-
-.meta {
-  font-size: 13px;
-  color: #8b919a;
-}
-
-.visual-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  align-self: center;
-  margin-left: auto;
-  padding: 6px 12px;
-  font-size: 13px;
-  color: #e4e6ea;
-  background: transparent;
-  border: 1px solid #33363b;
-  border-radius: 6px;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.visual-toggle:hover {
-  background: #26282d;
-  border-color: #4fc3f7;
-  color: #4fc3f7;
 }
 
 .visual-reset {
