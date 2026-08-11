@@ -134,6 +134,29 @@ export function buildOptions(r: ChartRender): ChartOptions<'line'> {
             return ds?.label !== 'VU'
           },
         },
+        onClick: (e, legendItem, legend) => {
+          const chart = legend.chart
+          const idx = legendItem.datasetIndex
+          if (idx == null) return
+          const datasets = chart.data.datasets as { label?: unknown }[]
+          const isVu = (i: number) => datasets[i]?.label === 'VU'
+          if (isVu(idx)) return
+          const hidden = (i: number) => chart.getDatasetMeta(i).hidden === true
+          const native = e.native as MouseEvent | null
+          if (native && (native.ctrlKey || native.metaKey)) {
+            chart.getDatasetMeta(idx).hidden = !hidden(idx)
+            chart.update()
+            return
+          }
+          const clickedHidden = hidden(idx)
+          const othersVisible = datasets.some((_, i) => i !== idx && !isVu(i) && !hidden(i))
+          const restore = !clickedHidden && !othersVisible
+          datasets.forEach((_, i) => {
+            if (isVu(i)) return
+            chart.getDatasetMeta(i).hidden = restore ? false : i !== idx
+          })
+          chart.update()
+        },
       },
       tooltip: {
         backgroundColor: chartColors.tooltipBg,
