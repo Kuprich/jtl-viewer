@@ -21,6 +21,10 @@ export function formatPercent(value: number): string {
   return `${value.toFixed(1).replace('.', ',')}%`
 }
 
+export function formatRps(value: number): string {
+  return value.toFixed(2).replace('.', ',')
+}
+
 export function formatDateTime(v: string | number): string {
   const d = new Date(v)
   const pad = (n: number) => String(n).padStart(2, '0')

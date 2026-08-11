@@ -3,7 +3,7 @@ import { computed, ref } from 'vue'
 import { QuestionFilled, Search } from '@element-plus/icons-vue'
 import type { GroupBy, StatDto } from '../types'
 import { RATE_UNIT_FACTOR, RATE_UNIT_LABEL, type RateUnit } from '../utils/rateUnit'
-import { formatBytes, formatMs, formatNumber, formatPercent } from '../utils/format'
+import { formatBytes, formatMs, formatNumber, formatPercent, formatRps } from '../utils/format'
 
 const props = withDefaults(
   defineProps<{
@@ -43,10 +43,6 @@ const noCodeMeta = computed(() =>
 
 function rowClass(data: { row: StatDto }) {
   return data.row.errorRate > props.errorThreshold ? 'row-danger' : ''
-}
-
-function formatRps(value: number): string {
-  return value.toFixed(2).replace('.', ',')
 }
 </script>
 

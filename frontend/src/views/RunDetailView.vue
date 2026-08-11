@@ -12,7 +12,7 @@ import StatsTable from '../components/StatsTable.vue'
 import { getLabels, getRun, getStats, getTimeseries } from '../api'
 import type { GroupBy, RunDetail, StatDto, TimeSeriesPoint } from '../types'
 import type { RateUnit } from '../utils/rateUnit'
-import { formatDateTime, formatDuration, formatNumber, formatPercent } from '../utils/format'
+import { formatDateTime, formatDuration, formatNumber, formatPercent, formatRps } from '../utils/format'
 import { useRunHeader } from '../composables/useRunHeader'
 
 const route = useRoute()
@@ -248,10 +248,15 @@ const duration = computed(() => {
 
 const kpis = computed(() => [
   { label: 'Запросы', value: run.value ? formatNumber(callsTotal.value) : '—', danger: false },
+  { label: 'RPS', value: run.value ? formatRps(rps.value) : '—', danger: false },
   { label: 'Ошибки', value: run.value ? formatNumber(errorsTotal.value) : '—', danger: errorsTotal.value > 0 },
   { label: 'Error rate', value: run.value ? formatPercent(errorRate.value) : '—', danger: errorRate.value > 0 },
   { label: 'Длительность', value: duration.value ? formatDuration(duration.value) : '—', danger: false },
 ])
+
+const rps = computed(() =>
+  callsTotal.value > 0 && duration.value > 0 ? callsTotal.value / (duration.value / 1000) : 0,
+)
 
 const testRange = computed(() => {
   const r = run.value
@@ -563,7 +568,7 @@ onBeforeUnmount(() => runHeader.reset())
 
 .kpis {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 12px;
   margin-bottom: 16px;
   min-height: 90px;
