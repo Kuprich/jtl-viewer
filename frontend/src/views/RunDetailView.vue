@@ -3,9 +3,9 @@ import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { CaretBottom, Setting } from '@element-plus/icons-vue'
 import RpsErrorsChart from '../components/RpsErrorsChart.vue'
+import OpsThroughputChart from '../components/OpsThroughputChart.vue'
 import AllPercentilesChart from '../components/AllPercentilesChart.vue'
 import OpsPercentilesChart, { type Percentile } from '../components/OpsPercentilesChart.vue'
-import VUsersChart from '../components/VUsersChart.vue'
 import FrequencyChart from '../components/FrequencyChart.vue'
 import OpsFilter from '../components/OpsFilter.vue'
 import StatsTable from '../components/StatsTable.vue'
@@ -37,6 +37,7 @@ const rateMode = ref(false)
 const showVuTime = ref(true)
 const showVuAll = ref(true)
 const showVuOps = ref(true)
+const showVuOpsRate = ref(true)
 const settingsOpen = ref(true)
 const visualOpen = ref(false)
 const zoomEnabled = ref(true)
@@ -339,6 +340,33 @@ const testRange = computed(() => {
       <el-card class="zone" shadow="never">
         <template #header>
           <div class="zone-header">
+            <span>Пропускная способность (по операциям)</span>
+            <div class="zone-controls">
+              <el-checkbox v-model="showVuOpsRate" size="small">График VU</el-checkbox>
+            </div>
+          </div>
+        </template>
+        <el-alert v-if="opsError" type="error" :title="opsError" show-icon :closable="false" />
+        <OpsThroughputChart
+          v-else
+          v-loading="opsLoading"
+          :axis="seriesBuckets"
+          :series="opSeries"
+          :rate-unit="rateUnit"
+          :line-width="lineWidth"
+          :point-size="pointSize"
+          :fill-opacity="fillOpacity"
+          :show-vu="showVuOpsRate"
+          :vu-data="vuData"
+          :zoom-enabled="zoomEnabled"
+          :visible-range="zoomRange"
+          @zoom="applyZoom"
+        />
+      </el-card>
+
+      <el-card class="zone" shadow="never">
+        <template #header>
+          <div class="zone-header">
             <span>Время отклика по всем операциям</span>
             <div class="zone-controls">
               <el-checkbox v-model="showVuAll" size="small">График VU</el-checkbox>
@@ -384,25 +412,6 @@ const testRange = computed(() => {
           :fill-opacity="fillOpacity"
           :show-vu="showVuOps"
           :vu-data="vuData"
-          :zoom-enabled="zoomEnabled"
-          :visible-range="zoomRange"
-          @zoom="applyZoom"
-        />
-      </el-card>
-
-      <el-card class="zone" shadow="never">
-        <template #header>
-          <div class="zone-header">
-            <span>Виртуальные пользователи</span>
-          </div>
-        </template>
-        <el-alert v-if="chartError" type="error" :title="chartError" show-icon :closable="false" />
-        <VUsersChart
-          v-else
-          :series="series"
-          :line-width="lineWidth"
-          :point-size="pointSize"
-          :fill-opacity="fillOpacity"
           :zoom-enabled="zoomEnabled"
           :visible-range="zoomRange"
           @zoom="applyZoom"
