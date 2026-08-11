@@ -139,6 +139,14 @@ onMounted(() => {
           position: 'bottom',
           align: 'start',
           labels: { color: chartColors.text, boxWidth: 12, boxHeight: 12 },
+          onHover: (e) => {
+            const target = e.native?.target as HTMLElement | null
+            if (target) target.style.cursor = 'pointer'
+          },
+          onLeave: (e) => {
+            const target = e.native?.target as HTMLElement | null
+            if (target) target.style.cursor = ''
+          },
         },
         tooltip: {
           backgroundColor: chartColors.tooltipBg,

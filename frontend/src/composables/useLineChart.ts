@@ -49,6 +49,35 @@ export function useLineChart({ canvas, deps, render, select }: UseChartLineOptio
     return !!area && x >= area.left && x <= area.right && y >= area.top && y <= area.bottom
   }
 
+  function cursorFor(x: number, y: number): string {
+    if (!chart) return ''
+    if (select && select.enabled() && pointInArea(x, y)) return 'crosshair'
+    const legend = chart.legend as
+      | { left?: number; right?: number; top?: number; bottom?: number }
+      | undefined
+    if (
+      legend &&
+      legend.left != null &&
+      legend.right != null &&
+      legend.top != null &&
+      legend.bottom != null &&
+      x >= legend.left &&
+      x <= legend.right &&
+      y >= legend.top &&
+      y <= legend.bottom
+    ) {
+      return 'pointer'
+    }
+    return ''
+  }
+
+  function updateCursor(e: PointerEvent) {
+    const el = canvas.value
+    if (!el || !chart) return
+    const rect = el.getBoundingClientRect()
+    el.style.cursor = cursorFor(e.clientX - rect.left, e.clientY - rect.top)
+  }
+
   function pixelToIndex(px: number): number {
     if (!chart) return 0
     const x = chart.scales.x
@@ -60,14 +89,6 @@ export function useLineChart({ canvas, deps, render, select }: UseChartLineOptio
 
   function clampIndex(i: number, n: number): number {
     return Math.max(0, Math.min(n - 1, i))
-  }
-
-  function updateCursor(e: PointerEvent) {
-    const el = canvas.value
-    if (!el || !select) return
-    const rect = el.getBoundingClientRect()
-    const inside = select.enabled() && pointInArea(e.clientX - rect.left, e.clientY - rect.top)
-    el.style.cursor = inside ? 'crosshair' : ''
   }
 
   function resetCursor() {
