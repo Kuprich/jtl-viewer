@@ -25,6 +25,12 @@ const activeId = computed(() =>
   route.name === 'run-detail' ? Number(route.params.id) : null,
 )
 
+function statusColor(errors: number, rows: number): string {
+  if (errors <= 0) return 'hsl(120 70% 45%)'
+  const ratio = Math.min(errors / (rows || 1) / 0.25, 1)
+  return `hsl(${120 * (1 - ratio)} 70% 45%)`
+}
+
 function select(run: RunSummary) {
   router.push({ name: 'run-detail', params: { id: run.id } })
 }
@@ -68,7 +74,7 @@ onMounted(load)
 <template>
   <div class="selector">
     <div class="selector-header">
-      <h2>Прогоны</h2>
+      <h2>Логи тестирования</h2>
       <span class="count">{{ runs.length }}</span>
     </div>
 
@@ -102,17 +108,21 @@ onMounted(load)
     <el-skeleton v-if="loading" :rows="6" animated />
     <ul v-else v-loading="uploading" class="run-list">
       <li v-for="r in filtered" :key="r.id">
-        <button class="run-item" :class="{ active: r.id === activeId }" @click="select(r)">
+        <button
+          class="run-item"
+          :class="{ active: r.id === activeId }"
+          :style="{ '--status': statusColor(r.errors, r.rows) }"
+          @click="select(r)"
+        >
           <span class="run-info">
             <span class="run-name">{{ r.fileName }}</span>
-            <span class="run-meta">{{ formatDate(r.uploadedAt) }} · {{ r.rows }} строк</span>
+            <span class="run-meta">{{ formatDate(r.uploadedAt) }}</span>
           </span>
-          <el-tag v-if="r.errors > 0" type="danger" size="small">{{ r.errors }}</el-tag>
-          <el-tag v-else type="success" size="small">ok</el-tag>
+          <el-tag v-if="r.errors > 0" type="danger" size="small">Ошибки: {{ r.errors }}</el-tag>
         </button>
       </li>
       <li v-if="!filtered.length && !loading" class="run-empty">
-        {{ query ? 'Ничего не найдено' : 'Прогонов пока нет — загрузите JTL' }}
+        {{ query ? 'Ничего не найдено' : 'Логов пока нет — загрузите JTL' }}
       </li>
     </ul>
   </div>
@@ -152,24 +162,28 @@ onMounted(load)
   margin-bottom: 14px;
 }
 
+.upload :deep(.el-upload-dragger) {
+  padding: 14px 16px;
+}
+
 .upload-inner {
-  padding: 10px;
+  padding: 6px 10px;
 }
 
 .upload-icon {
-  font-size: 22px;
+  font-size: 20px;
   color: #8b919a;
 }
 
 .upload-title {
   font-size: 13px;
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
 .upload-hint {
   font-size: 12px;
   color: #8b919a;
-  margin-top: 2px;
+  margin-top: 1px;
 }
 
 .run-list {
@@ -183,13 +197,15 @@ onMounted(load)
   align-items: center;
   gap: 8px;
   width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 6px;
-  background: transparent;
+  padding: 12px;
+  border: 1px solid #33363b;
+  border-left: 3px solid var(--status);
+  border-radius: 8px;
+  background: #1e2024;
   color: inherit;
   text-align: left;
   cursor: pointer;
+  margin-bottom: 8px;
 }
 
 .run-item:hover {
@@ -197,8 +213,7 @@ onMounted(load)
 }
 
 .run-item.active {
-  background: rgba(79, 195, 247, 0.12);
-  outline: 1px solid rgba(79, 195, 247, 0.4);
+  background: #26282d;
 }
 
 .run-info {
@@ -207,18 +222,30 @@ onMounted(load)
 }
 
 .run-name {
-  display: block;
-  font-size: 13px;
-  white-space: nowrap;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
   overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: 14px;
+  font-weight: 600;
 }
 
 .run-meta {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-size: 12px;
   color: #8b919a;
-  margin-top: 2px;
+  margin-top: 4px;
+}
+
+.run-meta::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--status);
+  flex-shrink: 0;
 }
 
 .run-empty {
