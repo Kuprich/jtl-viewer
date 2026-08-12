@@ -37,3 +37,11 @@ export function formatBytes(bytes: number): string {
   const i = Math.min(units.length - 1, Math.floor(Math.log(bytes) / Math.log(1024)))
   return `${(bytes / Math.pow(1024, i)).toFixed(i === 0 ? 0 : 1)} ${units[i]}`
 }
+
+export function formatBits(bytes: number): string {
+  const bits = bytes * 8
+  if (!Number.isFinite(bits) || bits <= 0) return '—'
+  const units = ['бит', 'Кбит', 'Мбит', 'Гбит']
+  const i = Math.min(units.length - 1, Math.floor(Math.log(bits) / Math.log(1000)))
+  return `${(bits / Math.pow(1000, i)).toFixed(i === 0 ? 0 : 1)} ${units[i]}`
+}

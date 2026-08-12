@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { CaretBottom } from '@element-plus/icons-vue'
+import { CaretBottom, QuestionFilled } from '@element-plus/icons-vue'
 import RpsErrorsChart from '../components/RpsErrorsChart.vue'
 import OpsThroughputChart from '../components/OpsThroughputChart.vue'
 import AllPercentilesChart from '../components/AllPercentilesChart.vue'
@@ -9,10 +9,18 @@ import OpsPercentilesChart, { type Percentile } from '../components/OpsPercentil
 import FrequencyChart from '../components/FrequencyChart.vue'
 import OpsFilter from '../components/OpsFilter.vue'
 import StatsTable from '../components/StatsTable.vue'
+import TrafficChart from '../components/TrafficChart.vue'
 import { getLabels, getRun, getStats, getTimeseries } from '../api'
 import type { GroupBy, RunDetail, StatDto, TimeSeriesPoint } from '../types'
 import type { RateUnit } from '../utils/rateUnit'
-import { formatDateTime, formatDuration, formatNumber, formatPercent, formatRps } from '../utils/format'
+import {
+  formatBytes,
+  formatDateTime,
+  formatDuration,
+  formatNumber,
+  formatPercent,
+  formatRps,
+} from '../utils/format'
 import { useRunHeader } from '../composables/useRunHeader'
 
 const route = useRoute()
@@ -40,6 +48,7 @@ const showVuTime = ref(true)
 const showVuAll = ref(true)
 const showVuOps = ref(true)
 const showVuOpsRate = ref(true)
+const showVuTraffic = ref(true)
 const settingsOpen = ref(true)
 const zoomEnabled = ref(true)
 const zoomRange = ref<{ min: number; max: number } | null>(null)
@@ -233,6 +242,21 @@ const errorsTotal = computed(() => stats.value.reduce((sum, s) => sum + s.errors
 
 const errorRate = computed(() => (callsTotal.value > 0 ? (errorsTotal.value / callsTotal.value) * 100 : 0))
 
+const trafficTotals = computed(() => {
+  const pts = series.value
+  if (!pts.length) return { bytes: 0, sent: 0 }
+  const range = zoomRange.value
+  const from = range ? Math.max(0, Math.min(pts.length - 1, range.min)) : 0
+  const to = range ? Math.max(0, Math.min(pts.length - 1, range.max)) : pts.length - 1
+  let bytes = 0
+  let sent = 0
+  for (let i = from; i <= to; i++) {
+    bytes += pts[i].totalBytes
+    sent += pts[i].sentBytes
+  }
+  return { bytes, sent }
+})
+
 const duration = computed(() => {
   const range = zoomRange.value
   const pts = series.value
@@ -252,6 +276,16 @@ const kpis = computed(() => [
   { label: 'Ошибки', value: run.value ? formatNumber(errorsTotal.value) : '—', danger: errorsTotal.value > 0 },
   { label: 'Error rate', value: run.value ? formatPercent(errorRate.value) : '—', danger: errorRate.value > 0 },
   { label: 'Длительность', value: duration.value ? formatDuration(duration.value) : '—', danger: false },
+  {
+    label: 'Входящий',
+    value: run.value ? formatBytes(trafficTotals.value.bytes) : '—',
+    danger: false,
+  },
+  {
+    label: 'Исходящий',
+    value: run.value ? formatBytes(trafficTotals.value.sent) : '—',
+    danger: false,
+  },
 ])
 
 const rps = computed(() =>
@@ -430,7 +464,20 @@ onBeforeUnmount(() => runHeader.reset())
       <el-card class="zone" shadow="never">
         <template #header>
           <div class="zone-header">
-            <span>Частота вызовов</span>
+            <span class="zone-title-group">
+              <span>Частота вызовов</span>
+              <el-tooltip placement="top">
+                <el-icon class="zone-title-tip"><QuestionFilled /></el-icon>
+                <template #content>
+                  <div class="zone-title-tip-content">
+                    Для каждой операции показано общее число вызовов,<br />
+                    разбитое на успешные и ошибки, и доля ошибок в %.<br />
+                    Красным выделена доля ошибок выше порога (сейчас {{ errorThreshold }}%).<br />
+                    Порог настраивается в «Параметрах отображения».
+                  </div>
+                </template>
+              </el-tooltip>
+            </span>
           </div>
         </template>
         <el-alert v-if="frequencyError" type="error" :title="frequencyError" show-icon :closable="false" />
@@ -439,6 +486,43 @@ onBeforeUnmount(() => runHeader.reset())
           v-loading="frequencyLoading"
           :stats="frequency"
           :error-threshold="errorThreshold"
+        />
+      </el-card>
+
+      <el-card class="zone" shadow="never">
+        <template #header>
+          <div class="zone-header">
+            <span class="zone-title-group">
+              <span>Трафик (входящий/исходящий)</span>
+              <el-tooltip placement="top">
+                <el-icon class="zone-title-tip"><QuestionFilled /></el-icon>
+                <template #content>
+                  <div class="zone-title-tip-content">
+                    Трафик относительно станции нагрузки:<br />
+                    Входящий — ответы, полученные генератором от сервиса;<br />
+                    Исходящий — запросы, отправленные генератором сервису.<br />
+                    Учитывается только прикладная нагрузка (без заголовков, TCP/IP и TLS-оверхедов).
+                  </div>
+                </template>
+              </el-tooltip>
+            </span>
+            <div class="zone-controls">
+              <el-checkbox v-model="showVuTraffic" size="small">График VU</el-checkbox>
+            </div>
+          </div>
+        </template>
+        <el-alert v-if="chartError" type="error" :title="chartError" show-icon :closable="false" />
+        <TrafficChart
+          v-else
+          :series="series"
+          :show-vu="showVuTraffic"
+          :vu-data="vuData"
+          :line-width="lineWidth"
+          :point-size="pointSize"
+          :fill-opacity="fillOpacity"
+          :zoom-enabled="zoomEnabled"
+          :visible-range="zoomRange"
+          @zoom="applyZoom"
         />
       </el-card>
 
@@ -568,7 +652,7 @@ onBeforeUnmount(() => runHeader.reset())
 
 .kpis {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 12px;
   margin-bottom: 16px;
   min-height: 90px;
@@ -602,6 +686,22 @@ onBeforeUnmount(() => runHeader.reset())
 
 .zone-header > span:first-child {
   user-select: none;
+}
+
+.zone-title-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  user-select: none;
+}
+
+.zone-title-tip {
+  cursor: help;
+  color: var(--el-text-color-secondary);
+}
+
+.zone-title-tip-content {
+  line-height: 1.4;
 }
 
 .zone-controls {

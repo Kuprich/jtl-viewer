@@ -5,6 +5,7 @@ import { ElMessage } from 'element-plus'
 import type { UploadFile } from 'element-plus'
 import { Search, UploadFilled } from '@element-plus/icons-vue'
 import { getRuns, uploadRun } from '../api'
+import { formatPercent } from '../utils/format'
 import type { RunSummary } from '../types'
 
 const route = useRoute()
@@ -118,7 +119,7 @@ onMounted(load)
             <span class="run-name">{{ r.fileName }}</span>
             <span class="run-meta">{{ formatDate(r.uploadedAt) }}</span>
           </span>
-          <el-tag v-if="r.errors > 0" type="danger" size="small">Ошибки: {{ r.errors }}</el-tag>
+          <el-tag v-if="r.errors > 0" type="danger" size="small">Ошибки: {{ formatPercent(r.rows ? (r.errors / r.rows) * 100 : 0) }}</el-tag>
         </button>
       </li>
       <li v-if="!filtered.length && !loading" class="run-empty">
@@ -199,7 +200,6 @@ onMounted(load)
   width: 100%;
   padding: 12px;
   border: 1px solid #33363b;
-  border-left: 3px solid var(--status);
   border-radius: 8px;
   background: #1e2024;
   color: inherit;
@@ -241,8 +241,8 @@ onMounted(load)
 
 .run-meta::before {
   content: '';
-  width: 6px;
-  height: 6px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
   background: var(--status);
   flex-shrink: 0;

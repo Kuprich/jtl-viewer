@@ -29,6 +29,7 @@ public interface JtlSampleRepository extends JpaRepository<JtlSample, Long> {
 
     String TS_EXTRA = """
             SUM(bytes)                                   AS totalBytes,
+            SUM(COALESCE(sent_bytes, 0))                 AS totalSentBytes,
             COALESCE(MAX(all_threads), 0)                AS threads
             """;
 
@@ -133,6 +134,8 @@ public interface JtlSampleRepository extends JpaRepository<JtlSample, Long> {
         double getP99();
 
         long getTotalBytes();
+
+        long getTotalSentBytes();
 
         long getThreads();
     }

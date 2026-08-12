@@ -13,9 +13,10 @@ public record TimeSeriesPoint(
         double p99,
         double throughput,
         long totalBytes,
+        long sentBytes,
         long threads
 ) {
     public static TimeSeriesPoint empty(long bucket) {
-        return new TimeSeriesPoint(bucket, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        return new TimeSeriesPoint(bucket, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     }
 }

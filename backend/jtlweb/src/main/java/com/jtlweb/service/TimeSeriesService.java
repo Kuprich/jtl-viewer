@@ -80,6 +80,7 @@ public class TimeSeriesService {
                 Metrics.round1(r.getP99()),
                 Metrics.round1(r.getCalls() / (bucketMs / 1000.0)),
                 r.getTotalBytes(),
+                r.getTotalSentBytes(),
                 r.getThreads());
     }
 
