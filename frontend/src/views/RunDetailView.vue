@@ -539,7 +539,20 @@ onBeforeUnmount(() => runHeader.reset())
     <el-drawer v-model="runHeader.state.settingsOpen" direction="rtl" size="360px" title="Параметры отображения">
       <div class="visual-body">
         <div class="settings-section">
-          <span class="settings-label">Зум выделением</span>
+          <span class="settings-label settings-label-tip">
+            <span>Зум выделением</span>
+            <el-tooltip placement="top">
+              <el-icon class="zone-title-tip"><QuestionFilled /></el-icon>
+              <template #content>
+                <div class="zone-title-tip-content">
+                  Выделите участок мышью на любом графике —<br />
+                  графики приблизятся к этому интервалу.<br />
+                  Двойной клик по графику или кнопка «Сбросить зум»<br />
+                  вернут полный интервал.
+                </div>
+              </template>
+            </el-tooltip>
+          </span>
           <el-checkbox v-model="zoomEnabled">разрешён</el-checkbox>
           <button
             v-if="zoomRange"
@@ -698,6 +711,7 @@ onBeforeUnmount(() => runHeader.reset())
 .zone-title-tip {
   cursor: help;
   color: var(--el-text-color-secondary);
+  font-size: 18px;
 }
 
 .zone-title-tip-content {
@@ -778,6 +792,14 @@ onBeforeUnmount(() => runHeader.reset())
   flex: 0 0 150px;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.settings-label-tip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  overflow: visible;
+  text-overflow: initial;
 }
 
 .settings-slider {
