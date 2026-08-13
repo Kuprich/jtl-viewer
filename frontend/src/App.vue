@@ -1,13 +1,23 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { computed, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { Menu, Setting } from '@element-plus/icons-vue'
 import RunSelectorPanel from './components/RunSelectorPanel.vue'
 import { useRunHeader } from './composables/useRunHeader'
+import { clearAuthToken, getUsername, isAuthenticated } from './auth'
 
 const route = useRoute()
+const router = useRouter()
 const panelOpen = ref(false)
 const runHeader = useRunHeader()
+const isLogin = computed(() => route.name === 'login')
+const authenticated = computed(() => isAuthenticated())
+const username = computed(() => (authenticated.value ? getUsername() : null))
+
+function logout() {
+  clearAuthToken()
+  router.push({ name: 'login' })
+}
 
 watch(
   () => route.params.id,
@@ -26,40 +36,53 @@ watch(
 
 <template>
   <div class="app">
-    <header class="app-header">
-      <div class="app-header-left">
-        <button class="panel-toggle" type="button" aria-label="Открыть список прогонов" @click="panelOpen = !panelOpen">
-          <el-icon :size="18"><Menu /></el-icon>
-        </button>
-        <h1>jtl-viewer</h1>
-      </div>
-      <div class="app-header-right">
-        <div class="app-header-inner">
-          <div v-if="runHeader.state.title" class="run-header">
-            <h2 class="run-title">{{ runHeader.state.title }}</h2>
-            <span v-if="runHeader.state.meta" class="run-meta">{{ runHeader.state.meta }}</span>
-          </div>
-          <button
-            v-if="runHeader.state.title"
-            class="settings-toggle"
-            type="button"
-            @click="runHeader.openSettings()"
-          >
-            <el-icon :size="15"><Setting /></el-icon>
-            <span>Параметры отображения</span>
+    <template v-if="isLogin">
+      <router-view />
+    </template>
+    <template v-else>
+      <header class="app-header">
+        <div class="app-header-left">
+          <button class="panel-toggle" type="button" aria-label="Открыть список запусков" @click="panelOpen = !panelOpen">
+            <el-icon :size="18"><Menu /></el-icon>
+          </button>
+          <h1>jtl-viewer</h1>
+          <button v-if="authenticated" class="logout-btn" type="button" @click="logout" aria-label="Выйти">
+            <span class="logout-user">{{ username }}</span>
+            <svg class="logout-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M10 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h4" />
+              <path d="M15 8l4 4-4 4" />
+              <path d="M19 12H9" />
+            </svg>
           </button>
         </div>
-      </div>
-    </header>
-    <main class="layout">
-      <div v-if="panelOpen" class="panel-backdrop" @click="panelOpen = false" />
-      <aside class="panel" :class="{ open: panelOpen }">
-        <RunSelectorPanel />
-      </aside>
-      <section class="content">
-        <router-view />
-      </section>
-    </main>
+        <div class="app-header-right">
+          <div class="app-header-inner">
+            <div v-if="runHeader.state.title" class="run-header">
+              <h2 class="run-title">{{ runHeader.state.title }}</h2>
+              <span v-if="runHeader.state.meta" class="run-meta">{{ runHeader.state.meta }}</span>
+            </div>
+            <button
+              v-if="runHeader.state.title"
+              class="settings-toggle"
+              type="button"
+              @click="runHeader.openSettings()"
+            >
+              <el-icon :size="15"><Setting /></el-icon>
+              <span>Параметры отображения</span>
+            </button>
+          </div>
+        </div>
+      </header>
+      <main class="layout">
+        <div v-if="panelOpen" class="panel-backdrop" @click="panelOpen = false" />
+        <aside class="panel" :class="{ open: panelOpen }">
+          <RunSelectorPanel />
+        </aside>
+        <section class="content">
+          <router-view />
+        </section>
+      </main>
+    </template>
   </div>
 </template>
 
@@ -84,7 +107,7 @@ watch(
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 0 24px;
+  padding: 0 0 0 24px;
 }
 
 .app-header-right {
@@ -92,6 +115,8 @@ watch(
   min-width: 0;
   padding: 0 24px;
   display: flex;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
 }
 
 .app-header-inner {
@@ -150,6 +175,35 @@ watch(
   color: #4fc3f7;
 }
 
+.logout-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  padding: 6px 12px;
+  font-size: 13px;
+  color: #e4e6ea;
+  background: transparent;
+  border: 1px solid #33363b;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.logout-btn:hover {
+  background: rgba(245, 108, 108, 0.12);
+  border-color: #f56c6c;
+  color: #f56c6c;
+}
+
+.logout-user {
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .panel-toggle {
   display: none;
   align-items: center;
@@ -196,6 +250,7 @@ watch(
   flex: 1;
   min-width: 0;
   overflow-y: auto;
+  scrollbar-gutter: stable;
   padding: 24px;
 }
 
@@ -248,6 +303,12 @@ watch(
 
   .content {
     padding: 12px;
+  }
+}
+
+@media (max-width: 640px) {
+  .settings-toggle span {
+    display: none;
   }
 }
 </style>

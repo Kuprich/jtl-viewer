@@ -6,14 +6,33 @@
 
 ### API
 
-- `POST /api/runs` — загрузка JTL-файла (multipart `file`). Парсит файл, сохраняет строки в БД и возвращает общую статистику прогона: `{ id, fileName, uploadedAt, rows, errors }`.
-- `GET /api/runs` — список прогонов (от новых к старым).
-- `GET /api/runs/{id}` — информация о прогоне.
-- `GET /api/runs/{id}/labels` — список операций (label) прогона.
+- `POST /api/runs` — загрузка JTL-файла (multipart `file`). Парсит файл, сохраняет строки в БД и возвращает общую статистику запуска: `{ id, fileName, uploadedAt, rows, errors }`.
+- `GET /api/runs` — список запусков (от новых к старым).
+- `GET /api/runs/{id}` — информация о запуске.
+- `GET /api/runs/{id}/labels` — список операций (label) запуска.
 - `GET /api/runs/{id}/stats` — статистика по группам (`groupBy=label|responseCode|errorMessage`): счётчики, ошибки, перцентили, RPS, объём ответов. Фильтр по операциям — повторяемый параметр `labels`.
 - `GET /api/runs/{id}/timeseries` — временной ряд (бакеты, метрики в каждом бакете). Параметры `bucketMs`, `label`, `labels`.
 
+Все эндпоинты `/api/**` защищены HTTP Basic auth (см. «Авторизация»).
+
 Примеры запросов и ответов: [docs/api-examples.md](docs/api-examples.md).
+
+## Авторизация
+
+API защищено HTTP Basic auth. Один административный пользователь задаётся переменными окружения Spring:
+
+- `JTL_ADMIN_USERNAME` — логин (по умолчанию `admin`)
+- `JTL_ADMIN_PASSWORD` — пароль (по умолчанию `admin`)
+
+Пароль можно указать в виде префикс-закодированного значения (рекомендуется для прод-деплоя, например bcrypt):
+
+```bash
+JTL_ADMIN_PASSWORD='{bcrypt}$2a$12$...'
+```
+
+или в открытом виде (удобно локально). Изменения применяются при перезапуске приложения.
+
+Проверка: `curl -u admin:admin http://localhost:8080/api/runs`.
 
 ### Что происходит при загрузке
 
@@ -30,7 +49,7 @@
 
 ### Модель данных
 
-- `jtl_run` — прогоны (fileName, uploadedAt, rows, errors)
+- `jtl_run` — запуски (fileName, uploadedAt, rows, errors)
 - `jtl_sample` — строки JTL (17 колонок: timeStamp, elapsed, label, success, responseCode, threadName и т.д.), индексы по label/success/responseCode/threadName/timeStamp
 
 ### Ошибки
@@ -47,11 +66,12 @@
 ## Тесты
 
 - `JtlParserTest` — unit-тесты парсера (валидный/таб/кавычки/success/ошибки шапки)
-- `JtlImportServiceTest` — интеграционный тест с Testcontainers (Postgres), включает проверку rollback
+- `RunStatsControllerTest` — WebMvcTest статистики (мок сервиса)
+- `SecurityConfigTest` — WebMvcTest авторизации (401 без кредов / 200 с `admin:admin` / 401 при неверном пароле)
+- `JtlwebApplicationTests` — поднятие контекста
 
-Запуск: `./mvnw test` (для интеграционного теста нужен запущенный Docker).
+Запуск: `./mvnw test` (для `JtlwebApplicationTests` нужен запущенный Postgres: `docker compose up -d`).
 
 ## Roadmap
 
-- `GET /api/runs/{id}/samples` — строки прогона (пагинация, основные колонки)
-- Авторизация
+- `GET /api/runs/{id}/samples` — строки запуска (пагинация, основные колонки)

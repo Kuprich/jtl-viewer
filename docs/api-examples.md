@@ -2,12 +2,36 @@
 
 Все ответы — JSON. Ошибки возвращаются в виде `{ "error": "..." }`.
 
+## Авторизация
+
+Все эндпоинты `/api/**` защищены HTTP Basic auth. Дефолтные креды — `admin` / `admin` (настраиваются через `JTL_ADMIN_USERNAME` и `JTL_ADMIN_PASSWORD`). Во все запросы добавляйте заголовок авторизации, например в curl:
+
+```bash
+curl -u admin:admin http://localhost:8080/api/runs
+```
+
+Без кредов или с неверным паролем возвращается `401` (без заголовка `WWW-Authenticate: Basic` — иначе браузер показывал бы собственное окно логина, оно не нужно, т.к. вход идёт через форму приложения):
+
+```bash
+curl -w "\nHTTP %{http_code}\n" http://localhost:8080/api/runs
+```
+
+```json
+{
+  "error": "Authentication required"
+}
+```
+
+HTTP 401
+
+> Примечание: примеры ниже не повторяют `-u admin:admin` для краткости — он обязателен для всех них.
+
 ## POST /api/runs — загрузка JTL-файла
 
 Запрос (multipart, параметр `file`):
 
 ```bash
-curl -F "file=@results.jtl" http://localhost:8080/api/runs
+curl -u admin:admin -F "file=@results.jtl" http://localhost:8080/api/runs
 ```
 
 Ответ 200:
@@ -32,7 +56,7 @@ curl -F "file=@results.jtl" http://localhost:8080/api/runs
 { "error": "File is empty: expected a JTL header (timeStamp,elapsed,label,...)" }
 ```
 
-## GET /api/runs — список прогонов
+## GET /api/runs — список запусков
 
 ```bash
 curl http://localhost:8080/api/runs
@@ -55,7 +79,7 @@ curl http://localhost:8080/api/runs
 }
 ```
 
-## GET /api/runs/{id} — один прогон
+## GET /api/runs/{id} — один запуск
 
 ```bash
 curl http://localhost:8080/api/runs/1
@@ -82,7 +106,7 @@ curl http://localhost:8080/api/runs/1
 { "error": "Run 4 not found" }
 ```
 
-## GET /api/runs/{id}/labels — список операций прогона
+## GET /api/runs/{id}/labels — список операций запуска
 
 ```bash
 curl http://localhost:8080/api/runs/1/labels
@@ -97,7 +121,7 @@ curl http://localhost:8080/api/runs/1/labels
 ## GET /api/runs/{id}/stats — статистика по группам
 
 `groupBy`: `label` (по умолчанию), `responseCode`, `errorMessage`.
-`labels` — повторяемый параметр: учитывать только указанные операции (опционально; по умолчанию — все операции прогона).
+`labels` — повторяемый параметр: учитывать только указанные операции (опционально; по умолчанию — все операции запуска).
 
 ```bash
 curl http://localhost:8080/api/runs/1/stats
@@ -220,7 +244,7 @@ curl -w "\n%{http_code}" http://localhost:8080/api/runs/999/stats
 
 ## GET /api/runs/{id}/timeseries — временной ряд
 
-Бакеты по времени. `bucketMs` — размер бакета в мс (опционально, по умолчанию подбирается автоматически под длительность прогона, ~100 точек). `label` — фильтр по сценарию (опционально). `labels` — повторяемый параметр: учитывать только указанные операции (опционально).
+Бакеты по времени. `bucketMs` — размер бакета в мс (опционально, по умолчанию подбирается автоматически под длительность запуска, ~100 точек). `label` — фильтр по сценарию (опционально). `labels` — повторяемый параметр: учитывать только указанные операции (опционально).
 
 ```bash
 curl http://localhost:8080/api/runs/1/timeseries

@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <el-empty description="Выберите прогон слева, чтобы увидеть результаты" />
+    <el-empty description="Выберите запуск слева, чтобы увидеть результаты" />
   </div>
 </template>
 

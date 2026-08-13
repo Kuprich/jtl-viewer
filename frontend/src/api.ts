@@ -1,10 +1,18 @@
 import type { Envelope, GroupBy, RunDetail, RunSummary, StatDto, TimeSeriesPoint } from './types'
+import { clearAuthToken, getAuthToken, UNAUTHORIZED_EVENT } from './auth'
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
-  const res = await fetch(`/api${path}`, options)
+  const headers = new Headers(options.headers)
+  const token = getAuthToken()
+  if (token) headers.set('Authorization', `Basic ${token}`)
+  const res = await fetch(`/api${path}`, { ...options, headers })
   if (!res.ok) {
     const body = await res.json().catch(() => ({}))
-    throw new Error(body.error || res.statusText)
+    if (res.status === 401) {
+      clearAuthToken()
+      window.dispatchEvent(new Event(UNAUTHORIZED_EVENT))
+    }
+    throw new Error(body.error || (res.status === 401 ? 'Нужна авторизация' : res.statusText))
   }
   return res.json() as Promise<T>
 }

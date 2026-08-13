@@ -42,8 +42,8 @@ npm install vue-router
 ```
 
 - Создать `src/router/index.ts`: `createWebHashHistory` (hash-роутинг, без SPA-fallback на бэке).
-  - `/` → список прогонов
-  - `/runs/:id` → детали прогона
+  - `/` → список запусков
+  - `/runs/:id` → детали запуска
 - `App.vue` = шапка (`jtl-viewer`) + `<router-view>`. Удалить дефолтную витрину Vite.
 - Временные заглушки для обоих маршрутов.
 
