@@ -1,17 +1,36 @@
 import type { ChartOptions, ScaleOptions } from 'chart.js'
 
+function cssVar(name: string, fallback: string): string {
+  const value = getComputedStyle(document.documentElement).getPropertyValue(name).trim()
+  return value || fallback
+}
+
 export const chartColors = {
-  text: '#e4e6ea',
-  muted: '#8b919a',
-  grid: '#33363b',
-  faintGrid: 'rgba(255,255,255,0.04)',
-  tooltipBg: '#26282d',
-  tooltipBorder: '#33363b',
+  get text() {
+    return cssVar('--chart-text', '#e4e6ea')
+  },
+  get muted() {
+    return cssVar('--chart-muted', '#8b919a')
+  },
+  get grid() {
+    return cssVar('--chart-grid', '#33363b')
+  },
+  get faintGrid() {
+    return cssVar('--chart-faint', 'rgba(255,255,255,0.04)')
+  },
+  get tooltipBg() {
+    return cssVar('--chart-tooltip-bg', '#26282d')
+  },
+  get tooltipBorder() {
+    return cssVar('--chart-tooltip-border', '#33363b')
+  },
   rps: '#4fc3f7',
   error: '#f56c6c',
-  vu: '#e4e6ea',
+  get vu() {
+    return cssVar('--chart-text', '#e4e6ea')
+  },
   vusers: '#9c88ff',
-} as const
+}
 
 export const percentilePalette = [
   { field: 'p50', label: 'p50', color: '#81c784' },

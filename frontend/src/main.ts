@@ -5,7 +5,8 @@ import 'element-plus/theme-chalk/dark/css-vars.css'
 import './style.css'
 import App from './App.vue'
 import router from './router'
+import { useTheme } from './composables/useTheme'
 
-document.documentElement.classList.add('dark')
+useTheme()
 
 createApp(App).use(ElementPlus).use(router).mount('#app')

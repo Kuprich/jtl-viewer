@@ -206,7 +206,7 @@ function rowClass(data: { row: StatDto }) {
 
 .no-code {
   cursor: help;
-  border-bottom: 1px dashed #8b919a;
+  border-bottom: 1px dashed var(--muted);
 }
 
 :global(.no-code-tip) {

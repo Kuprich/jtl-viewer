@@ -2,8 +2,11 @@
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { Chart } from 'chart.js/auto'
 import type { StatDto } from '../types'
+import { useTheme } from '../composables/useTheme'
 import { chartColors, hexToRgba } from '../utils/chartTheme'
 import { formatNumber, formatPercent } from '../utils/format'
+
+const { theme } = useTheme()
 
 const props = withDefaults(
   defineProps<{
@@ -90,7 +93,9 @@ function refresh() {
   chart.update()
 }
 
-onMounted(() => {
+function buildChart() {
+  chart?.destroy()
+  chart = null
   if (!canvas.value) return
   chart = new Chart<'bar'>(canvas.value, {
     type: 'bar',
@@ -173,9 +178,13 @@ onMounted(() => {
   })
   applyLabelPadding()
   chart.update()
-})
+}
+
+onMounted(buildChart)
 
 watch(() => [props.stats, props.errorThreshold], refresh)
+
+watch(theme, buildChart)
 
 onBeforeUnmount(() => {
   chart?.destroy()

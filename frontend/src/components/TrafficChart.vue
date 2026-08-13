@@ -2,8 +2,11 @@
 import { computed, ref } from 'vue'
 import type { TimeSeriesPoint } from '../types'
 import { useLineChart, type ZoomRange } from '../composables/useLineChart'
+import { useTheme } from '../composables/useTheme'
 import { chartColors, hexToRgba, makeTooltipLabel, makeVuDataset } from '../utils/chartTheme'
 import { formatBits } from '../utils/format'
+
+const { theme } = useTheme()
 
 const props = withDefaults(
   defineProps<{
@@ -45,6 +48,7 @@ const { selection } = useLineChart({
     props.vuData,
     props.zoomEnabled,
     props.visibleRange,
+    theme.value,
   ],
   render: () => {
     const alpha = props.fillOpacity / 100

@@ -149,8 +149,8 @@ onMounted(load)
 
 .count {
   font-size: 12px;
-  color: #8b919a;
-  background: #26282d;
+  color: var(--muted);
+  background: var(--surface-hover);
   border-radius: 10px;
   padding: 2px 8px;
 }
@@ -173,7 +173,7 @@ onMounted(load)
 
 .upload-icon {
   font-size: 20px;
-  color: #8b919a;
+  color: var(--muted);
 }
 
 .upload-title {
@@ -183,7 +183,7 @@ onMounted(load)
 
 .upload-hint {
   font-size: 12px;
-  color: #8b919a;
+  color: var(--muted);
   margin-top: 1px;
 }
 
@@ -199,9 +199,9 @@ onMounted(load)
   gap: 8px;
   width: 100%;
   padding: 12px;
-  border: 1px solid #33363b;
+  border: 1px solid var(--border);
   border-radius: 8px;
-  background: #1e2024;
+  background: var(--surface);
   color: inherit;
   text-align: left;
   cursor: pointer;
@@ -209,11 +209,11 @@ onMounted(load)
 }
 
 .run-item:hover {
-  background: #26282d;
+  background: var(--surface-hover);
 }
 
 .run-item.active {
-  background: #26282d;
+  background: var(--surface-hover);
 }
 
 .run-info {
@@ -235,7 +235,7 @@ onMounted(load)
   align-items: center;
   gap: 6px;
   font-size: 12px;
-  color: #8b919a;
+  color: var(--muted);
   margin-top: 4px;
 }
 
@@ -251,7 +251,7 @@ onMounted(load)
 .run-empty {
   padding: 16px;
   font-size: 13px;
-  color: #8b919a;
+  color: var(--muted);
   text-align: center;
 }
 </style>

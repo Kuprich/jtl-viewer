@@ -70,8 +70,8 @@ async function submit() {
 .login-card {
   width: 100%;
   max-width: 360px;
-  background: #1e2024;
-  border: 1px solid #33363b;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 8px;
   padding: 28px 24px;
   display: flex;
@@ -90,7 +90,7 @@ async function submit() {
 .login-subtitle {
   margin: -8px 0 4px;
   font-size: 13px;
-  color: #8b919a;
+  color: var(--muted);
   text-align: center;
 }
 

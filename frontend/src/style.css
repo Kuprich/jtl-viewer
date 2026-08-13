@@ -9,6 +9,40 @@
 
   --mono: ui-monospace, "JetBrains Mono", "Fira Code", Menlo, Consolas, monospace;
   --panel-width: 320px;
+
+  --bg: #f5f6f8;
+  --surface: #ffffff;
+  --surface-hover: #eef0f3;
+  --border: #d9dde3;
+  --border-soft: #e6e8ec;
+  --text: #1c2024;
+  --muted: #6b7280;
+  --scroll-thumb: #c9ced6;
+  --scroll-thumb-hover: #aeb5bf;
+  --chart-text: #1c2024;
+  --chart-muted: #6b7280;
+  --chart-grid: #e3e6ea;
+  --chart-faint: rgba(0, 0, 0, 0.04);
+  --chart-tooltip-bg: #ffffff;
+  --chart-tooltip-border: #d9dde3;
+}
+
+.dark {
+  --bg: #1a1b1e;
+  --surface: #1e2024;
+  --surface-hover: #26282d;
+  --border: #33363b;
+  --border-soft: #2a2c31;
+  --text: #e4e6ea;
+  --muted: #8b919a;
+  --scroll-thumb: #3a3d42;
+  --scroll-thumb-hover: #4a4e55;
+  --chart-text: #e4e6ea;
+  --chart-muted: #8b919a;
+  --chart-grid: #33363b;
+  --chart-faint: rgba(255, 255, 255, 0.04);
+  --chart-tooltip-bg: #26282d;
+  --chart-tooltip-border: #33363b;
 }
 
 * {
@@ -23,8 +57,8 @@ body,
 
 body {
   margin: 0;
-  background-color: #1a1b1e;
-  color: #e4e6ea;
+  background-color: var(--bg);
+  color: var(--text);
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
@@ -34,12 +68,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #3a3d42;
+  background: var(--scroll-thumb);
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #4a4e55;
+  background: var(--scroll-thumb-hover);
 }
 
 ::-webkit-scrollbar-track {
@@ -61,7 +95,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #8b919a;
+  color: var(--muted);
   font-size: 13px;
 }
 

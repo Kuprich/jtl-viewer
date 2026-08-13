@@ -230,7 +230,7 @@ function moveKey(from: 'left' | 'right', key: string) {
 
 .ops-filter-title {
   font-size: 12px;
-  color: #8b919a;
+  color: var(--muted);
   margin-bottom: 8px;
 }
 
@@ -260,7 +260,7 @@ function moveKey(from: 'left' | 'right', key: string) {
 
 .panel-count {
   font-size: 12px;
-  color: #8b919a;
+  color: var(--muted);
 }
 
 .list {
@@ -269,9 +269,9 @@ function moveKey(from: 'left' | 'right', key: string) {
   padding: 0;
   height: 240px;
   overflow: auto;
-  border: 1px solid #33363b;
+  border: 1px solid var(--border);
   border-radius: 6px;
-  background: #1e2024;
+  background: var(--surface);
 }
 
 .list li {
@@ -285,14 +285,14 @@ function moveKey(from: 'left' | 'right', key: string) {
 }
 
 .list li.empty {
-  color: #8b919a;
+  color: var(--muted);
   cursor: default;
   text-align: center;
   padding: 16px;
 }
 
 .list li:not(.empty):hover {
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--chart-faint);
 }
 
 .list li.selected {

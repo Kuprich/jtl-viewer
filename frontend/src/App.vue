@@ -96,7 +96,7 @@ watch(
 .app-header {
   display: flex;
   height: 56px;
-  border-bottom: 1px solid #33363b;
+  border-bottom: 1px solid var(--border);
   flex-shrink: 0;
   overflow: hidden;
 }
@@ -148,7 +148,7 @@ watch(
 
 .run-meta {
   font-size: 13px;
-  color: #8b919a;
+  color: var(--muted);
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -160,9 +160,9 @@ watch(
   margin-left: auto;
   padding: 6px 12px;
   font-size: 13px;
-  color: #e4e6ea;
+  color: var(--text);
   background: transparent;
-  border: 1px solid #33363b;
+  border: 1px solid var(--border);
   border-radius: 6px;
   cursor: pointer;
   white-space: nowrap;
@@ -170,7 +170,7 @@ watch(
 }
 
 .settings-toggle:hover {
-  background: #26282d;
+  background: var(--surface-hover);
   border-color: #4fc3f7;
   color: #4fc3f7;
 }
@@ -182,9 +182,9 @@ watch(
   margin-left: auto;
   padding: 6px 12px;
   font-size: 13px;
-  color: #e4e6ea;
+  color: var(--text);
   background: transparent;
-  border: 1px solid #33363b;
+  border: 1px solid var(--border);
   border-radius: 6px;
   cursor: pointer;
   white-space: nowrap;
@@ -210,15 +210,15 @@ watch(
   justify-content: center;
   width: 32px;
   height: 32px;
-  border: 1px solid #33363b;
+  border: 1px solid var(--border);
   border-radius: 6px;
   background: transparent;
-  color: #e4e6ea;
+  color: var(--text);
   cursor: pointer;
 }
 
 .panel-toggle:hover {
-  background: #26282d;
+  background: var(--surface-hover);
 }
 
 .app-header h1 {
@@ -238,7 +238,7 @@ watch(
 .panel {
   width: var(--panel-width);
   flex-shrink: 0;
-  border-right: 1px solid #33363b;
+  border-right: 1px solid var(--border);
   overflow-y: auto;
 }
 
@@ -279,8 +279,8 @@ watch(
     bottom: 0;
     width: min(85vw, var(--panel-width));
     z-index: 40;
-    border-right: 1px solid #33363b;
-    background: #1a1b1e;
+    border-right: 1px solid var(--border);
+    background: var(--bg);
     transform: translateX(-100%);
     transition: transform 0.25s ease;
   }

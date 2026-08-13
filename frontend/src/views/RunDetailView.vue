@@ -22,9 +22,11 @@ import {
   formatRps,
 } from '../utils/format'
 import { useRunHeader } from '../composables/useRunHeader'
+import { useTheme } from '../composables/useTheme'
 
 const route = useRoute()
 const runHeader = useRunHeader()
+const { theme } = useTheme()
 const run = ref<RunDetail | null>(null)
 const series = ref<TimeSeriesPoint[]>([])
 const chartError = ref('')
@@ -539,6 +541,13 @@ onBeforeUnmount(() => runHeader.reset())
     <el-drawer v-model="runHeader.state.settingsOpen" direction="rtl" size="360px" title="Параметры отображения">
       <div class="visual-body">
         <div class="settings-section">
+          <span class="settings-label">Тема оформления</span>
+          <el-radio-group v-model="theme" size="small">
+            <el-radio-button value="dark">Тёмная</el-radio-button>
+            <el-radio-button value="light">Светлая</el-radio-button>
+          </el-radio-group>
+        </div>
+        <div class="settings-section">
           <span class="settings-label settings-label-tip">
             <span>Зум выделением</span>
             <el-tooltip placement="top">
@@ -640,7 +649,7 @@ onBeforeUnmount(() => runHeader.reset())
   font-size: 12px;
   color: #f56c6c;
   background: transparent;
-  border: 1px solid #33363b;
+  border: 1px solid var(--border);
   border-radius: 6px;
   cursor: pointer;
 }
@@ -673,7 +682,7 @@ onBeforeUnmount(() => runHeader.reset())
 
 .kpi-label {
   font-size: 12px;
-  color: #8b919a;
+  color: var(--muted);
   margin-bottom: 6px;
 }
 
@@ -727,7 +736,7 @@ onBeforeUnmount(() => runHeader.reset())
 .settings-section {
   margin-top: 14px;
   padding-top: 12px;
-  border-top: 1px solid #2a2c31;
+  border-top: 1px solid var(--border-soft);
   display: flex;
   align-items: center;
   gap: 12px;
@@ -742,7 +751,7 @@ onBeforeUnmount(() => runHeader.reset())
 }
 
 .settings-chevron {
-  color: #8b919a;
+  color: var(--muted);
   font-size: 12px;
   transition: transform 0.2s;
 }
@@ -786,7 +795,7 @@ onBeforeUnmount(() => runHeader.reset())
 
 .settings-label {
   font-size: 12px;
-  color: #8b919a;
+  color: var(--muted);
   white-space: nowrap;
   margin: 0;
   flex: 0 0 150px;

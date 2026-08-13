@@ -2,7 +2,10 @@
 import { computed, ref } from 'vue'
 import type { TimeSeriesPoint } from '../types'
 import { useLineChart, type ZoomRange } from '../composables/useLineChart'
+import { useTheme } from '../composables/useTheme'
 import { hexToRgba, makeTooltipLabel, makeVuDataset, opPalette } from '../utils/chartTheme'
+
+const { theme } = useTheme()
 
 export type Percentile = 'p50' | 'p90' | 'p95' | 'p99'
 
@@ -43,6 +46,7 @@ const { selection } = useLineChart({
     props.vuData,
     props.zoomEnabled,
     props.visibleRange,
+    theme.value,
   ],
   render: () => {
     const alpha = props.fillOpacity / 100
