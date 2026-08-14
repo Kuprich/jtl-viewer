@@ -60,6 +60,27 @@ const fillOpacity = ref(10)
 const errorThreshold = ref(5)
 const rateUnit = ref<RateUnit>('rps')
 
+const OPS_STORAGE_PREFIX = 'jtl_selected_ops:'
+
+function loadSavedOps(runId: number): string[] | null {
+  try {
+    const raw = localStorage.getItem(`${OPS_STORAGE_PREFIX}${runId}`)
+    if (raw === null) return null
+    const parsed = JSON.parse(raw)
+    return Array.isArray(parsed) ? parsed.filter((o) => typeof o === 'string') : null
+  } catch {
+    return null
+  }
+}
+
+function saveOps(runId: number, ops: string[]) {
+  try {
+    localStorage.setItem(`${OPS_STORAGE_PREFIX}${runId}`, JSON.stringify(ops))
+  } catch {
+    // storage full / unavailable - ignore, selection just won't persist
+  }
+}
+
 const BUCKET_OPTIONS = [
   { label: 'Авто', ms: -1 },
   { label: '5s', ms: 5_000 },
@@ -197,7 +218,8 @@ watch(
       const [runData, ops] = await Promise.all([getRun(value), getLabels(value)])
       run.value = runData
       availableOps.value = ops
-      selectedOps.value = [...ops]
+      const saved = loadSavedOps(value)
+      selectedOps.value = saved ? ops.filter((o) => saved.includes(o)) : [...ops]
     } catch (e) {
       error.value = e instanceof Error ? e.message : String(e)
     } finally {
@@ -207,8 +229,9 @@ watch(
   { immediate: true },
 )
 
-watch(selectedOps, () => {
+watch(selectedOps, (ops) => {
   if (!run.value) return
+  saveOps(id.value, ops)
   zoomRange.value = null
   loadStats()
   loadFrequency()
