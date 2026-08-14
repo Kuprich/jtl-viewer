@@ -44,7 +44,16 @@ public class StatsService {
             case "errorMessage" -> sampleRepository.findStatsByErrorMessage(runId, labels, fromMs, toMs);
             default             -> sampleRepository.findStatsByLabel(runId, labels, fromMs, toMs);
         };
-        return rows.stream().map(StatsService::toStat).toList();
+
+        long totalCalls;
+        switch (groupBy) {
+            case "responseCode" -> totalCalls = rows.stream().mapToLong(GroupStatRow::getCalls).sum();
+            case "errorMessage" -> totalCalls = sampleRepository.countSamples(runId, labels, fromMs, toMs);
+            default             -> totalCalls = -1; // per-group rate: denominator is each group's own calls
+        }
+
+        long denominator = totalCalls;
+        return rows.stream().map(r -> toStat(r, denominator)).toList();
     }
 
     public List<String> labels(long runId) {
@@ -54,15 +63,16 @@ public class StatsService {
         return sampleRepository.findDistinctLabels(runId);
     }
 
-    private static StatDto toStat(GroupStatRow r) {
+    private static StatDto toStat(GroupStatRow r, long totalCalls) {
         long calls = r.getCalls();
         double durationSec = r.getDurationMs() / 1000.0;
         double throughput = durationSec > 0 ? calls / durationSec : 0;
+        long errorDenominator = totalCalls >= 0 ? totalCalls : calls;
         return new StatDto(
                 r.getGrp(),
                 calls,
                 r.getErrors(),
-                Metrics.round1(calls == 0 ? 0 : r.getErrors() * 100.0 / calls),
+                Metrics.round1(errorDenominator == 0 ? 0 : r.getErrors() * 100.0 / errorDenominator),
                 r.getMinElapsed(),
                 r.getMaxElapsed(),
                 Metrics.round1(r.getAvgElapsed()),

@@ -103,6 +103,14 @@ public interface JtlSampleRepository extends JpaRepository<JtlSample, Long> {
                                        @Param("label") String label,
                                        @Param("labels") List<String> labels);
 
+    @Query(value = "SELECT COUNT(*) FROM jtl_sample WHERE run_id = :runId AND label IN (:labels) " +
+            "AND (:fromMs IS NULL OR time_stamp >= :fromMs) " +
+            "AND (:toMs IS NULL OR time_stamp < :toMs)", nativeQuery = true)
+    long countSamples(@Param("runId") long runId,
+                      @Param("labels") List<String> labels,
+                      @Param("fromMs") Long fromMs,
+                      @Param("toMs") Long toMs);
+
     @Query(value = "SELECT MIN(time_stamp) AS minTs, MAX(time_stamp) AS maxTs " +
             "FROM jtl_sample WHERE run_id = :runId AND label IN (:labels)", nativeQuery = true)
     TimeRange findTimeRange(@Param("runId") long runId,
