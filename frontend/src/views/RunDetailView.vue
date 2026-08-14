@@ -687,6 +687,7 @@ onBeforeUnmount(() => runHeader.reset())
           </el-radio-group>
         </div>
         <div class="settings-section">
+          <div class="zoom-row">
           <span class="settings-label settings-label-tip">
             <span>Зум выделением</span>
             <el-tooltip placement="top">
@@ -701,7 +702,8 @@ onBeforeUnmount(() => runHeader.reset())
               </template>
             </el-tooltip>
           </span>
-          <el-checkbox v-model="zoomEnabled">разрешён</el-checkbox>
+          <el-switch v-model="zoomEnabled" />
+        </div>
           <button
             v-if="zoomRange"
             class="visual-reset"
@@ -786,34 +788,29 @@ onBeforeUnmount(() => runHeader.reset())
         <div class="export-section">
           <span class="settings-label">Панели</span>
           <div class="export-panels">
-            <el-checkbox
-              v-for="p in EXPORT_PANELS"
-              :key="p.key"
-              :model-value="exportPanels.includes(p.key)"
-              @change="(v: boolean) => toggleExportPanel(p.key, v)"
-            >
-              {{ p.label }}
-            </el-checkbox>
+            <div v-for="p in EXPORT_PANELS" :key="p.key" class="export-row">
+              <span class="export-row-label">{{ p.label }}</span>
+              <el-switch
+                :model-value="exportPanels.includes(p.key)"
+                @change="(v: boolean) => toggleExportPanel(p.key, v)"
+              />
+            </div>
             <span class="export-subtitle">Пропускная способность</span>
-            <el-checkbox
-              v-for="p in EXPORT_THROUGHPUT_PANELS"
-              :key="p.key"
-              class="export-subitem"
-              :model-value="exportPanels.includes(p.key)"
-              @change="(v: boolean) => toggleExportPanel(p.key, v)"
-            >
-              {{ p.label }}
-            </el-checkbox>
+            <div v-for="p in EXPORT_THROUGHPUT_PANELS" :key="p.key" class="export-row export-subitem">
+              <span class="export-row-label">{{ p.label }}</span>
+              <el-switch
+                :model-value="exportPanels.includes(p.key)"
+                @change="(v: boolean) => toggleExportPanel(p.key, v)"
+              />
+            </div>
             <span class="export-subtitle">Группировка и статистика</span>
-            <el-checkbox
-              v-for="p in EXPORT_STATS_PANELS"
-              :key="p.key"
-              class="export-subitem"
-              :model-value="exportPanels.includes(p.key)"
-              @change="(v: boolean) => toggleExportPanel(p.key, v)"
-            >
-              {{ p.label }}
-            </el-checkbox>
+            <div v-for="p in EXPORT_STATS_PANELS" :key="p.key" class="export-row export-subitem">
+              <span class="export-row-label">{{ p.label }}</span>
+              <el-switch
+                :model-value="exportPanels.includes(p.key)"
+                @change="(v: boolean) => toggleExportPanel(p.key, v)"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -840,6 +837,14 @@ onBeforeUnmount(() => runHeader.reset())
   border: 1px solid var(--border);
   border-radius: 6px;
   cursor: pointer;
+}
+
+.zoom-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
 }
 
 .visual-reset:hover {
@@ -880,14 +885,16 @@ onBeforeUnmount(() => runHeader.reset())
   width: 100%;
 }
 
-.export-panels :deep(.el-checkbox) {
-  margin-right: 0;
-  height: auto;
-  white-space: normal;
+.export-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 2px 0;
 }
 
-.export-panels :deep(.el-checkbox__label) {
-  white-space: normal;
+.export-row-label {
+  font-size: 13px;
   line-height: 1.4;
 }
 
@@ -973,6 +980,7 @@ onBeforeUnmount(() => runHeader.reset())
   padding-top: 12px;
   border-top: 1px solid var(--border-soft);
   display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 12px;
 }
