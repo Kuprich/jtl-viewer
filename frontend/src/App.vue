@@ -2,6 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Menu, Setting } from '@element-plus/icons-vue'
+import { Download } from '@element-plus/icons-vue'
 import RunSelectorPanel from './components/RunSelectorPanel.vue'
 import { useRunHeader } from './composables/useRunHeader'
 import { clearAuthToken, getUsername, isAuthenticated } from './auth'
@@ -61,15 +62,28 @@ watch(
               <h2 class="run-title">{{ runHeader.state.title }}</h2>
               <span v-if="runHeader.state.meta" class="run-meta">{{ runHeader.state.meta }}</span>
             </div>
-            <button
-              v-if="runHeader.state.title"
-              class="settings-toggle"
-              type="button"
-              @click="runHeader.openSettings()"
-            >
-              <el-icon :size="15"><Setting /></el-icon>
-              <span>Параметры отображения</span>
-            </button>
+            <div class="header-actions">
+              <el-tooltip content="Экспорт отчёта в HTML" placement="bottom">
+                <button
+                  v-if="runHeader.state.title"
+                  class="settings-toggle"
+                  type="button"
+                  aria-label="Экспорт отчёта"
+                  @click="runHeader.openExport()"
+                >
+                  <el-icon :size="15"><Download /></el-icon>
+                </button>
+              </el-tooltip>
+              <button
+                v-if="runHeader.state.title"
+                class="settings-toggle"
+                type="button"
+                @click="runHeader.openSettings()"
+              >
+                <el-icon :size="15"><Setting /></el-icon>
+                <span>Параметры отображения</span>
+              </button>
+            </div>
           </div>
         </div>
       </header>
@@ -153,11 +167,18 @@ watch(
   text-overflow: ellipsis;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
 .settings-toggle {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-left: auto;
   padding: 6px 12px;
   font-size: 13px;
   color: var(--text);

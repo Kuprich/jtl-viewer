@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
 import { CaretBottom, QuestionFilled } from '@element-plus/icons-vue'
 import RpsErrorsChart from '../components/RpsErrorsChart.vue'
 import OpsThroughputChart from '../components/OpsThroughputChart.vue'
@@ -12,6 +13,7 @@ import StatsTable from '../components/StatsTable.vue'
 import TrafficChart from '../components/TrafficChart.vue'
 import { ApiError, getLabels, getRun, getStats, getTimeseries } from '../api'
 import { RUNS_CHANGED_EVENT } from '../events'
+import { downloadReportHtml } from '../utils/exportReport'
 import type { GroupBy, RunDetail, StatDto, TimeSeriesPoint } from '../types'
 import {
   formatBytes,
@@ -22,13 +24,33 @@ import {
   formatRps,
 } from '../utils/format'
 import { useRunHeader } from '../composables/useRunHeader'
-import { useTheme } from '../composables/useTheme'
+import { useTheme, type Theme } from '../composables/useTheme'
 import { useDisplaySettings } from '../composables/useDisplaySettings'
+
+const EXPORT_PANELS = [
+  { key: 'kpis', label: 'Показатели (KPI)' },
+  { key: 'ops-throughput', label: 'Пропускная способность (по операциям)' },
+  { key: 'all-percentiles', label: 'Время отклика по всем операциям' },
+  { key: 'ops-percentiles', label: 'Время отклика по операциям' },
+  { key: 'frequency', label: 'Частота вызовов' },
+  { key: 'traffic', label: 'Трафик (входящий/исходящий)' },
+] as const
+
+const EXPORT_THROUGHPUT_PANELS = [
+  { key: 'throughput-errors', label: 'Errors/sec', mode: false, title: 'Пропускная способность (Errors/sec)' },
+  { key: 'throughput-rate', label: 'Errors %', mode: true, title: 'Пропускная способность (Errors %)' },
+] as const
+
+const EXPORT_STATS_PANELS = [
+  { key: 'stats-label', label: 'Сценарий', groupBy: 'label' },
+  { key: 'stats-responseCode', label: 'Код ответа', groupBy: 'responseCode' },
+  { key: 'stats-errorMessage', label: 'Ошибки', groupBy: 'errorMessage' },
+] as const
 
 const route = useRoute()
 const router = useRouter()
 const runHeader = useRunHeader()
-const { theme } = useTheme()
+const { theme, setTheme } = useTheme()
 const run = ref<RunDetail | null>(null)
 const series = ref<TimeSeriesPoint[]>([])
 const chartError = ref('')
@@ -55,6 +77,10 @@ const showVuOpsRate = ref(true)
 const showVuTraffic = ref(true)
 const settingsOpen = ref(true)
 const zoomRange = ref<{ min: number; max: number } | null>(null)
+const exporting = ref(false)
+const detailRoot = ref<HTMLElement | null>(null)
+const exportTheme = ref<Theme>('light')
+const exportPanels = ref<string[]>(['kpis', 'throughput-errors', 'throughput-rate', 'ops-throughput', 'all-percentiles', 'ops-percentiles', 'frequency', 'traffic', 'stats-label', 'stats-responseCode', 'stats-errorMessage'])
 
 const { zoomEnabled, bucketMs, lineWidth, pointSize, fillOpacity, errorThreshold, rateUnit } =
   useDisplaySettings()
@@ -331,6 +357,91 @@ const testRange = computed(() => {
   }
 })
 
+function loadVisibleCols(): Set<string> {
+  try {
+    const raw = localStorage.getItem('jtl_stats_columns')
+    if (raw === null) return new Set()
+    const parsed = JSON.parse(raw)
+    return Array.isArray(parsed) ? new Set(parsed.filter((k): k is string => typeof k === 'string')) : new Set()
+  } catch {
+    return new Set()
+  }
+}
+
+async function exportReport() {
+  if (exporting.value || !run.value) return
+  exporting.value = true
+  const previousTheme = theme.value
+  const previousRateMode = rateMode.value
+  const selected = new Set(exportPanels.value)
+  try {
+    setTheme(exportTheme.value)
+    await nextTick()
+    await new Promise((r) => setTimeout(r, 120))
+
+    const root = detailRoot.value
+    const chartData: { title: string; dataUrl: string }[] = []
+
+    for (const panel of EXPORT_THROUGHPUT_PANELS) {
+      if (!selected.has(panel.key)) continue
+      rateMode.value = panel.mode
+      await nextTick()
+      await new Promise((r) => setTimeout(r, 120))
+      const zone = root?.querySelector('[data-export-panel="throughput"]')
+      const canvas = zone?.querySelector<HTMLCanvasElement>('canvas')
+      if (canvas) chartData.push({ title: panel.title, dataUrl: canvas.toDataURL('image/png') })
+    }
+
+    for (const panel of EXPORT_PANELS) {
+      if (!selected.has(panel.key)) continue
+      const zone = root?.querySelector(`[data-export-panel="${panel.key}"]`)
+      const canvas = zone?.querySelector<HTMLCanvasElement>('canvas')
+      if (!canvas) continue
+      chartData.push({ title: panel.label, dataUrl: canvas.toDataURL('image/png') })
+    }
+
+    const kpiItems = selected.has('kpis') ? kpis.value.map((k) => ({ label: k.label, value: k.value, danger: k.danger })) : []
+
+    const w = statsWindow.value
+    const tables = await Promise.all(
+      EXPORT_STATS_PANELS.filter((p) => selected.has(p.key)).map(async (p) => ({
+        groupBy: p.groupBy as GroupBy,
+        title: p.label,
+        stats: selectedOps.value.length
+          ? await getStats(id.value, p.groupBy as GroupBy, selectedOps.value, w?.fromMs, w?.toMs)
+          : [],
+      })),
+    )
+
+    downloadReportHtml({
+      fileName: run.value.fileName,
+      uploadedAt: run.value.uploadedAt,
+      testRange: testRange.value,
+      kpis: kpiItems,
+      charts: chartData,
+      tables,
+      rateUnit: rateUnit.value,
+      visibleCols: loadVisibleCols(),
+      theme: exportTheme.value,
+      includeKpis: selected.has('kpis'),
+    })
+    ElMessage.success('Отчёт сохранён в HTML')
+  } catch (e) {
+    ElMessage.error(e instanceof Error ? e.message : String(e))
+  } finally {
+    setTheme(previousTheme)
+    rateMode.value = previousRateMode
+    exporting.value = false
+  }
+}
+
+function toggleExportPanel(key: string, on: boolean) {
+  const next = new Set(exportPanels.value)
+  if (on) next.add(key)
+  else next.delete(key)
+  exportPanels.value = [...next]
+}
+
 watch([run, testRange], () => {
   const r = run.value
   runHeader.state.title = r?.fileName ?? 'Загрузка…'
@@ -347,7 +458,7 @@ onBeforeUnmount(() => runHeader.reset())
 </script>
 
 <template>
-  <div class="detail">
+  <div ref="detailRoot" class="detail">
     <el-alert v-if="error" type="error" :title="error" show-icon :closable="false" />
 
     <template v-else>
@@ -372,14 +483,14 @@ onBeforeUnmount(() => runHeader.reset())
         </Transition>
       </el-card>
 
-      <div v-loading="loading" class="kpis">
+      <div v-loading="loading" class="kpis" data-export-panel="kpis">
         <el-card v-for="k in kpis" :key="k.label" class="kpi" shadow="never">
           <div class="kpi-label">{{ k.label }}</div>
           <div class="kpi-value" :class="{ danger: k.danger }">{{ k.value }}</div>
         </el-card>
       </div>
 
-      <el-card class="zone" shadow="never">
+      <el-card class="zone" shadow="never" data-export-panel="throughput">
         <template #header>
           <div class="zone-header">
             <span>Пропускная способность</span>
@@ -409,7 +520,7 @@ onBeforeUnmount(() => runHeader.reset())
         />
       </el-card>
 
-      <el-card class="zone" shadow="never">
+      <el-card class="zone" shadow="never" data-export-panel="ops-throughput">
         <template #header>
           <div class="zone-header">
             <span>Пропускная способность (по операциям)</span>
@@ -436,7 +547,7 @@ onBeforeUnmount(() => runHeader.reset())
         />
       </el-card>
 
-      <el-card class="zone" shadow="never">
+      <el-card class="zone" shadow="never" data-export-panel="all-percentiles">
         <template #header>
           <div class="zone-header">
             <span>Время отклика по всем операциям</span>
@@ -460,7 +571,7 @@ onBeforeUnmount(() => runHeader.reset())
         />
       </el-card>
 
-      <el-card class="zone" shadow="never">
+      <el-card class="zone" shadow="never" data-export-panel="ops-percentiles">
         <template #header>
           <div class="zone-header">
             <span>Время отклика по операциям</span>
@@ -490,7 +601,7 @@ onBeforeUnmount(() => runHeader.reset())
         />
       </el-card>
 
-      <el-card class="zone" shadow="never">
+      <el-card class="zone" shadow="never" data-export-panel="frequency">
         <template #header>
           <div class="zone-header">
             <span class="zone-title-group">
@@ -518,7 +629,7 @@ onBeforeUnmount(() => runHeader.reset())
         />
       </el-card>
 
-      <el-card class="zone" shadow="never">
+      <el-card class="zone" shadow="never" data-export-panel="traffic">
         <template #header>
           <div class="zone-header">
             <span class="zone-title-group">
@@ -556,6 +667,7 @@ onBeforeUnmount(() => runHeader.reset())
       </el-card>
 
       <StatsTable
+        data-export-panel="stats"
         :stats="stats"
         :loading="statsLoading"
         :error="statsError"
@@ -661,6 +773,55 @@ onBeforeUnmount(() => runHeader.reset())
         </div>
       </div>
     </el-drawer>
+
+    <el-dialog v-model="runHeader.state.exportOpen" title="Экспорт отчёта" width="420px" align-center>
+      <div class="export-body">
+        <div class="export-section">
+          <span class="settings-label">Тема экспорта</span>
+          <el-radio-group v-model="exportTheme" size="small">
+            <el-radio-button value="dark">Тёмная</el-radio-button>
+            <el-radio-button value="light">Светлая</el-radio-button>
+          </el-radio-group>
+        </div>
+        <div class="export-section">
+          <span class="settings-label">Панели</span>
+          <div class="export-panels">
+            <el-checkbox
+              v-for="p in EXPORT_PANELS"
+              :key="p.key"
+              :model-value="exportPanels.includes(p.key)"
+              @change="(v: boolean) => toggleExportPanel(p.key, v)"
+            >
+              {{ p.label }}
+            </el-checkbox>
+            <span class="export-subtitle">Пропускная способность</span>
+            <el-checkbox
+              v-for="p in EXPORT_THROUGHPUT_PANELS"
+              :key="p.key"
+              class="export-subitem"
+              :model-value="exportPanels.includes(p.key)"
+              @change="(v: boolean) => toggleExportPanel(p.key, v)"
+            >
+              {{ p.label }}
+            </el-checkbox>
+            <span class="export-subtitle">Группировка и статистика</span>
+            <el-checkbox
+              v-for="p in EXPORT_STATS_PANELS"
+              :key="p.key"
+              class="export-subitem"
+              :model-value="exportPanels.includes(p.key)"
+              @change="(v: boolean) => toggleExportPanel(p.key, v)"
+            >
+              {{ p.label }}
+            </el-checkbox>
+          </div>
+        </div>
+      </div>
+      <template #footer>
+        <el-button @click="runHeader.state.exportOpen = false">Отмена</el-button>
+        <el-button type="primary" :loading="exporting" @click="exportReport">Скачать HTML</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -692,6 +853,53 @@ onBeforeUnmount(() => runHeader.reset())
 
 .visual-body .settings-section {
   flex-wrap: wrap;
+}
+
+.export-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.export-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.export-section .settings-label {
+  flex: none;
+  width: auto;
+}
+
+.export-panels {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+}
+
+.export-panels :deep(.el-checkbox) {
+  margin-right: 0;
+  height: auto;
+  white-space: normal;
+}
+
+.export-panels :deep(.el-checkbox__label) {
+  white-space: normal;
+  line-height: 1.4;
+}
+
+.export-subtitle {
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.export-subitem {
+  padding-left: 22px;
 }
 
 .visual-body .settings-slider {
