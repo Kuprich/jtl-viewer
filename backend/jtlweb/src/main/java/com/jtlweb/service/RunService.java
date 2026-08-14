@@ -7,6 +7,7 @@ import com.jtlweb.model.JtlRun;
 import com.jtlweb.repository.JtlRunRepository;
 import com.jtlweb.repository.JtlSampleRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -38,6 +39,14 @@ public class RunService {
 
         return new RunDetail(run.getId(), run.getFileName(), run.getUploadedAt(),
                 run.getRows(), run.getErrors(), startTime, endTime, durationMs);
+    }
+
+    @Transactional
+    public void delete(long id) {
+        runRepository.findById(id)
+                .orElseThrow(() -> new RunNotFoundException(id));
+        sampleRepository.deleteByRunId(id);
+        runRepository.deleteById(id);
     }
 
     private static RunSummary toSummary(JtlRun r) {

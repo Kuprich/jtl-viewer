@@ -4,6 +4,8 @@ import com.jtlweb.dto.Envelope;
 import com.jtlweb.dto.RunDetail;
 import com.jtlweb.dto.RunSummary;
 import com.jtlweb.service.RunService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,5 +32,11 @@ public class RunController {
     @GetMapping("/{id}")
     public RunDetail get(@PathVariable long id) {
         return runService.getById(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable long id) {
+        runService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

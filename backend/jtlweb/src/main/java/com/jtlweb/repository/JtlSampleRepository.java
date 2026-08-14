@@ -112,6 +112,8 @@ public interface JtlSampleRepository extends JpaRepository<JtlSample, Long> {
             "FROM jtl_sample WHERE run_id = :runId", nativeQuery = true)
     TimeRange findTimeRangeAll(@Param("runId") long runId);
 
+    long deleteByRunId(long runId);
+
     interface TimeSeriesRow {
         long getBucket();
 

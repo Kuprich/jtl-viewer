@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, h, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import type { UploadFile } from 'element-plus'
-import { Search, UploadFilled } from '@element-plus/icons-vue'
-import { getRuns, uploadRun } from '../api'
+import { Delete, Search, UploadFilled } from '@element-plus/icons-vue'
+import { deleteRun, getRuns, uploadRun } from '../api'
+import { RUNS_CHANGED_EVENT } from '../events'
 import { formatPercent } from '../utils/format'
 import type { RunSummary } from '../types'
 
@@ -69,7 +70,48 @@ async function handleFileChange(uploadFile: UploadFile) {
   }
 }
 
-onMounted(load)
+async function confirmDelete(run: RunSummary) {
+  try {
+    await ElMessageBox.confirm(
+      `Удалить запуск «${run.fileName}»? Данные будут удалены безвозвратно.`,
+      'Удаление запуска',
+      {
+        icon: h(Delete, { style: 'color: #f56c6c' }),
+        confirmButtonText: 'Удалить',
+        cancelButtonText: 'Отмена',
+      },
+    )
+  } catch {
+    return
+  }
+  try {
+    await deleteRun(run.id)
+    localStorage.removeItem(`jtl_selected_ops:${run.id}`)
+    ElMessage.success(`Удалён: ${run.fileName}`)
+    if (run.id === activeId.value) {
+      router.push({ name: 'home' })
+    }
+    await load()
+  } catch (e) {
+    ElMessage.error(e instanceof Error ? e.message : String(e))
+  }
+}
+
+watch(
+  () => route.name,
+  (name) => {
+    if (name === 'home') load()
+  },
+)
+
+onMounted(() => {
+  load()
+  window.addEventListener(RUNS_CHANGED_EVENT, load)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener(RUNS_CHANGED_EVENT, load)
+})
 </script>
 
 <template>
@@ -109,18 +151,25 @@ onMounted(load)
     <el-skeleton v-if="loading" :rows="6" animated />
     <ul v-else v-loading="uploading" class="run-list">
       <li v-for="r in filtered" :key="r.id">
-        <button
+        <div
           class="run-item"
           :class="{ active: r.id === activeId }"
           :style="{ '--status': statusColor(r.errors, r.rows) }"
+          role="button"
+          tabindex="0"
           @click="select(r)"
+          @keydown.enter="select(r)"
+          @keydown.space.prevent="select(r)"
         >
           <span class="run-info">
             <span class="run-name">{{ r.fileName }}</span>
             <span class="run-meta">{{ formatDate(r.uploadedAt) }}</span>
           </span>
           <el-tag v-if="r.errors > 0" type="danger" size="small">Ошибки: {{ formatPercent(r.rows ? (r.errors / r.rows) * 100 : 0) }}</el-tag>
-        </button>
+          <button class="run-delete" type="button" title="Удалить запуск" @click.stop="confirmDelete(r)">
+            <el-icon><Delete /></el-icon>
+          </button>
+        </div>
       </li>
       <li v-if="!filtered.length && !loading" class="run-empty">
         {{ query ? 'Ничего не найдено' : 'Логов пока нет — загрузите JTL' }}
@@ -246,6 +295,31 @@ onMounted(load)
   border-radius: 50%;
   background: var(--status);
   flex-shrink: 0;
+}
+
+.run-delete {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+
+.run-item:hover .run-delete {
+  opacity: 1;
+}
+
+.run-delete:hover {
+  color: #f56c6c;
+  background: rgba(245, 108, 108, 0.12);
 }
 
 .run-empty {

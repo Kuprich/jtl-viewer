@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { CaretBottom, QuestionFilled } from '@element-plus/icons-vue'
 import RpsErrorsChart from '../components/RpsErrorsChart.vue'
 import OpsThroughputChart from '../components/OpsThroughputChart.vue'
@@ -10,7 +10,8 @@ import FrequencyChart from '../components/FrequencyChart.vue'
 import OpsFilter from '../components/OpsFilter.vue'
 import StatsTable from '../components/StatsTable.vue'
 import TrafficChart from '../components/TrafficChart.vue'
-import { getLabels, getRun, getStats, getTimeseries } from '../api'
+import { ApiError, getLabels, getRun, getStats, getTimeseries } from '../api'
+import { RUNS_CHANGED_EVENT } from '../events'
 import type { GroupBy, RunDetail, StatDto, TimeSeriesPoint } from '../types'
 import {
   formatBytes,
@@ -25,6 +26,7 @@ import { useTheme } from '../composables/useTheme'
 import { useDisplaySettings } from '../composables/useDisplaySettings'
 
 const route = useRoute()
+const router = useRouter()
 const runHeader = useRunHeader()
 const { theme } = useTheme()
 const run = ref<RunDetail | null>(null)
@@ -217,6 +219,12 @@ watch(
       const saved = loadSavedOps(value)
       selectedOps.value = saved ? ops.filter((o) => saved.includes(o)) : [...ops]
     } catch (e) {
+      if (e instanceof ApiError && e.status === 404) {
+        runHeader.reset()
+        window.dispatchEvent(new Event(RUNS_CHANGED_EVENT))
+        router.replace({ name: 'home' })
+        return
+      }
       error.value = e instanceof Error ? e.message : String(e)
     } finally {
       loading.value = false
