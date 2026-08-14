@@ -12,7 +12,6 @@ import StatsTable from '../components/StatsTable.vue'
 import TrafficChart from '../components/TrafficChart.vue'
 import { getLabels, getRun, getStats, getTimeseries } from '../api'
 import type { GroupBy, RunDetail, StatDto, TimeSeriesPoint } from '../types'
-import type { RateUnit } from '../utils/rateUnit'
 import {
   formatBytes,
   formatDateTime,
@@ -23,6 +22,7 @@ import {
 } from '../utils/format'
 import { useRunHeader } from '../composables/useRunHeader'
 import { useTheme } from '../composables/useTheme'
+import { useDisplaySettings } from '../composables/useDisplaySettings'
 
 const route = useRoute()
 const runHeader = useRunHeader()
@@ -52,13 +52,10 @@ const showVuOps = ref(true)
 const showVuOpsRate = ref(true)
 const showVuTraffic = ref(true)
 const settingsOpen = ref(true)
-const zoomEnabled = ref(true)
 const zoomRange = ref<{ min: number; max: number } | null>(null)
-const lineWidth = ref(1)
-const pointSize = ref(1)
-const fillOpacity = ref(10)
-const errorThreshold = ref(5)
-const rateUnit = ref<RateUnit>('rps')
+
+const { zoomEnabled, bucketMs, lineWidth, pointSize, fillOpacity, errorThreshold, rateUnit } =
+  useDisplaySettings()
 
 const OPS_STORAGE_PREFIX = 'jtl_selected_ops:'
 
@@ -90,7 +87,6 @@ const BUCKET_OPTIONS = [
   { label: '5m', ms: 300_000 },
   { label: '10m', ms: 600_000 },
 ]
-const bucketMs = ref(-1)
 
 const currentBucket = computed(() => (bucketMs.value > 0 ? bucketMs.value : undefined))
 

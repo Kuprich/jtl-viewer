@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { Chart } from 'chart.js/auto'
 import type { StatDto } from '../types'
 import { useTheme } from '../composables/useTheme'
@@ -18,6 +18,14 @@ const props = withDefaults(
 
 const SUCCESS_COLOR = '#81c784'
 const LABEL_FONT = '12px system-ui, sans-serif'
+
+const ROW_HEIGHT = 34
+const EXTRA = 64
+
+const chartHeight = computed(() => {
+  const n = props.stats.length
+  return n ? Math.max(180, n * ROW_HEIGHT + EXTRA) : 180
+})
 
 const canvas = ref<HTMLCanvasElement | null>(null)
 let chart: Chart<'bar'> | null = null
@@ -193,7 +201,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="canvas-wrap" style="--chart-height: 320px">
+  <div class="canvas-wrap" :style="{ '--chart-height': chartHeight + 'px' }">
     <canvas ref="canvas" />
     <div v-if="!stats.length" class="chart-empty">Нет данных</div>
   </div>
