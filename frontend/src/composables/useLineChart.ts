@@ -29,9 +29,22 @@ export function useLineChart({ canvas, deps, render, select }: UseChartLineOptio
 
   function refresh() {
     if (!chart) return
+    const hiddenByLabel = new Map<string, boolean>()
+    const current = chart
+    current.data.datasets.forEach((ds, i) => {
+      const label = (ds as { label?: string }).label
+      if (label != null) hiddenByLabel.set(label, current.getDatasetMeta(i).hidden === true)
+    })
     const r = render()
     chart.data.labels = r.labels
     chart.data.datasets = r.datasets as never
+    const next = chart
+    next.data.datasets.forEach((ds, i) => {
+      const label = (ds as { label?: string }).label
+      if (label != null && hiddenByLabel.has(label)) {
+        next.getDatasetMeta(i).hidden = hiddenByLabel.get(label) ?? false
+      }
+    })
     chart.options = buildOptions(r)
     chart.update()
   }
