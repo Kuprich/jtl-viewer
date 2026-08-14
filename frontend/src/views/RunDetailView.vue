@@ -116,6 +116,36 @@ const BUCKET_OPTIONS = [
   { label: '10m', ms: 600_000 },
 ]
 
+const MIN_BUCKET_MS = 100
+const MAX_BUCKET_MS = 60_000
+const DEFAULT_POINTS = 100
+
+const autoBucketMs = computed(() => {
+  const span = filteredSpan.value
+  if (span <= 0) return null
+  const raw = Math.min(MAX_BUCKET_MS, Math.max(MIN_BUCKET_MS, Math.round(span / DEFAULT_POINTS)))
+  return Math.max(1_000, Math.round(raw / 1_000) * 1_000)
+})
+
+function resolveAutoBucket(): number | null {
+  const target = autoBucketMs.value
+  if (target == null) return null
+  const presets = BUCKET_OPTIONS.filter((o) => o.ms > 0 && !isBucketDisabled(o.ms))
+  if (!presets.length) return null
+  let best = presets[0]
+  for (const o of presets) {
+    if (Math.abs(o.ms - target) < Math.abs(best.ms - target)) best = o
+  }
+  return best.ms
+}
+
+function onBucketChange(value: number) {
+  if (value === -1) {
+    const resolved = resolveAutoBucket()
+    bucketMs.value = resolved ?? -1
+  }
+}
+
 const currentBucket = computed(() => (bucketMs.value > 0 ? bucketMs.value : undefined))
 
 const statsWindow = computed(() => {
@@ -702,7 +732,7 @@ onBeforeUnmount(() => runHeader.reset())
               </template>
             </el-tooltip>
           </span>
-          <el-switch v-model="zoomEnabled" />
+          <el-switch v-model="zoomEnabled" size="small" />
         </div>
           <button
             v-if="zoomRange"
@@ -715,7 +745,7 @@ onBeforeUnmount(() => runHeader.reset())
         </div>
         <div class="settings-section">
           <span class="settings-label">Интервал агрегации</span>
-          <el-radio-group v-model="bucketMs" size="small">
+          <el-radio-group v-model="bucketMs" size="small" @change="onBucketChange">
             <el-radio-button v-for="opt in visibleBuckets" :key="opt.label" :value="opt.ms">
               {{ opt.label }}
             </el-radio-button>
@@ -791,6 +821,7 @@ onBeforeUnmount(() => runHeader.reset())
             <div v-for="p in EXPORT_PANELS" :key="p.key" class="export-row">
               <span class="export-row-label">{{ p.label }}</span>
               <el-switch
+                size="small"
                 :model-value="exportPanels.includes(p.key)"
                 @change="(v: boolean) => toggleExportPanel(p.key, v)"
               />
@@ -799,6 +830,7 @@ onBeforeUnmount(() => runHeader.reset())
             <div v-for="p in EXPORT_THROUGHPUT_PANELS" :key="p.key" class="export-row export-subitem">
               <span class="export-row-label">{{ p.label }}</span>
               <el-switch
+                size="small"
                 :model-value="exportPanels.includes(p.key)"
                 @change="(v: boolean) => toggleExportPanel(p.key, v)"
               />
@@ -807,6 +839,7 @@ onBeforeUnmount(() => runHeader.reset())
             <div v-for="p in EXPORT_STATS_PANELS" :key="p.key" class="export-row export-subitem">
               <span class="export-row-label">{{ p.label }}</span>
               <el-switch
+                size="small"
                 :model-value="exportPanels.includes(p.key)"
                 @change="(v: boolean) => toggleExportPanel(p.key, v)"
               />
