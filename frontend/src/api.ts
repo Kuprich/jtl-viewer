@@ -1,5 +1,6 @@
 import type { Envelope, GroupBy, RunDetail, RunSummary, StatDto, TimeSeriesPoint } from './types'
 import { clearAuthToken, getAuthToken, UNAUTHORIZED_EVENT } from './auth'
+import { t } from './i18n'
 
 export class ApiError extends Error {
   status: number
@@ -22,7 +23,7 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
       clearAuthToken()
       window.dispatchEvent(new Event(UNAUTHORIZED_EVENT))
     }
-    throw new ApiError(res.status, body.error || (res.status === 401 ? 'Нужна авторизация' : res.statusText))
+    throw new ApiError(res.status, body.error || (res.status === 401 ? t('api.authRequired') : res.statusText))
   }
   if (res.status === 204) return undefined as T
   return res.json() as Promise<T>

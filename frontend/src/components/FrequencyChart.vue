@@ -3,10 +3,12 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { Chart } from 'chart.js/auto'
 import type { StatDto } from '../types'
 import { useTheme } from '../composables/useTheme'
+import { useI18n } from '../i18n'
 import { chartColors, hexToRgba } from '../utils/chartTheme'
 import { formatNumber, formatPercent } from '../utils/format'
 
 const { theme } = useTheme()
+const { locale, t } = useI18n()
 
 const props = withDefaults(
   defineProps<{
@@ -111,7 +113,7 @@ function buildChart() {
       labels: props.stats.map((s) => s.group),
       datasets: [
         {
-          label: 'Успешные',
+          label: t('chart.successful'),
           data: props.stats.map((s) => s.calls - s.errors),
           backgroundColor: hexToRgba(SUCCESS_COLOR, 0.9),
           borderRadius: 3,
@@ -119,7 +121,7 @@ function buildChart() {
           maxBarThickness: 22,
         },
         {
-          label: 'Ошибки',
+          label: t('chart.errors'),
           data: props.stats.map((s) => s.errors),
           backgroundColor: hexToRgba(chartColors.error, 0.9),
           borderRadius: 3,
@@ -172,7 +174,7 @@ function buildChart() {
             label: (ctx) => {
               const s = props.stats[ctx.dataIndex]
               if (!s) return ''
-              return `Успешные: ${formatNumber(s.calls - s.errors)} · Ошибки: ${formatNumber(s.errors)}`
+              return `${t('chart.freqTooltip', { ok: formatNumber(s.calls - s.errors), err: formatNumber(s.errors) })}`
             },
             footer: (items) => {
               const s = props.stats[items[0]?.dataIndex ?? -1]
@@ -193,6 +195,7 @@ onMounted(buildChart)
 watch(() => [props.stats, props.errorThreshold], refresh)
 
 watch(theme, buildChart)
+watch(locale, buildChart)
 
 onBeforeUnmount(() => {
   chart?.destroy()
@@ -203,6 +206,6 @@ onBeforeUnmount(() => {
 <template>
   <div class="canvas-wrap" :style="{ '--chart-height': chartHeight + 'px' }">
     <canvas ref="canvas" />
-    <div v-if="!stats.length" class="chart-empty">Нет данных</div>
+    <div v-if="!stats.length" class="chart-empty">{{ t('chart.empty') }}</div>
   </div>
 </template>

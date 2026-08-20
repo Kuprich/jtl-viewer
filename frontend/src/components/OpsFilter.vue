@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { ArrowLeft, ArrowRight, DArrowLeft, DArrowRight, Search } from '@element-plus/icons-vue'
+import { useI18n } from '../i18n'
+
+const { t } = useI18n()
 
 const props = defineProps<{
   available: string[]
@@ -168,14 +171,14 @@ function moveKey(from: 'left' | 'right', key: string) {
 
 <template>
   <div class="ops-filter-wrap">
-    <div class="ops-filter-title">Выберите операции, которые будут учитываться в статистике</div>
+    <div class="ops-filter-title">{{ t('ops.title') }}</div>
     <div class="ops-filter" :class="{ dragging }">
     <div class="panel">
       <div class="panel-head">
-        <span class="panel-title">Не учитываются</span>
+        <span class="panel-title">{{ t('ops.excluded') }}</span>
         <span class="panel-count">{{ leftList.length }}</span>
       </div>
-      <el-input v-model="leftQuery" size="small" clearable :prefix-icon="Search" placeholder="Поиск" />
+      <el-input v-model="leftQuery" size="small" clearable :prefix-icon="Search" :placeholder="t('ops.search')" />
       <ul class="list">
         <li
           v-for="(item, idx) in leftVisible"
@@ -187,23 +190,23 @@ function moveKey(from: 'left' | 'right', key: string) {
         >
           {{ item }}
         </li>
-        <li v-if="!leftVisible.length" class="empty">Нет данных</li>
+        <li v-if="!leftVisible.length" class="empty">{{ t('ops.empty') }}</li>
       </ul>
     </div>
 
     <div class="buttons">
-      <el-button circle :icon="DArrowRight" :disabled="!leftList.length" title="Перенести все" @click="moveAllRight" />
-      <el-button circle :icon="ArrowRight" :disabled="!leftSel.size" title="Перенести выбранные" @click="moveRightSel" />
-      <el-button circle :icon="ArrowLeft" :disabled="!rightSel.size" title="Вернуть выбранные" @click="moveLeftSel" />
-      <el-button circle :icon="DArrowLeft" :disabled="!rightList.length" title="Вернуть все" @click="moveAllLeft" />
+      <el-button circle :icon="DArrowRight" :disabled="!leftList.length" :title="t('ops.moveAllRight')" @click="moveAllRight" />
+      <el-button circle :icon="ArrowRight" :disabled="!leftSel.size" :title="t('ops.moveRight')" @click="moveRightSel" />
+      <el-button circle :icon="ArrowLeft" :disabled="!rightSel.size" :title="t('ops.moveLeft')" @click="moveLeftSel" />
+      <el-button circle :icon="DArrowLeft" :disabled="!rightList.length" :title="t('ops.moveAllLeft')" @click="moveAllLeft" />
     </div>
 
     <div class="panel">
       <div class="panel-head">
-        <span class="panel-title">Учитываются</span>
+        <span class="panel-title">{{ t('ops.included') }}</span>
         <span class="panel-count">{{ rightList.length }}</span>
       </div>
-      <el-input v-model="rightQuery" size="small" clearable :prefix-icon="Search" placeholder="Поиск" />
+      <el-input v-model="rightQuery" size="small" clearable :prefix-icon="Search" :placeholder="t('ops.search')" />
       <ul class="list">
         <li
           v-for="(item, idx) in rightVisible"
@@ -215,7 +218,7 @@ function moveKey(from: 'left' | 'right', key: string) {
         >
           {{ item }}
         </li>
-        <li v-if="!rightVisible.length" class="empty">Нет данных</li>
+        <li v-if="!rightVisible.length" class="empty">{{ t('ops.empty') }}</li>
       </ul>
     </div>
   </div>

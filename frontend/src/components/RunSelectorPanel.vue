@@ -8,6 +8,9 @@ import { deleteRun, getRuns, uploadRun } from '../api'
 import { RUNS_CHANGED_EVENT } from '../events'
 import { formatPercent } from '../utils/format'
 import type { RunSummary } from '../types'
+import { useI18n } from '../i18n'
+
+const { t } = useI18n()
 
 const route = useRoute()
 const router = useRouter()
@@ -60,7 +63,7 @@ async function handleFileChange(uploadFile: UploadFile) {
   uploading.value = true
   try {
     const created = await uploadRun(uploadFile.raw)
-    ElMessage.success(`Загружен: ${created.fileName}, строк ${created.rows}`)
+    ElMessage.success(t('selector.uploaded', { file: created.fileName, n: created.rows }))
     await load()
     router.push({ name: 'run-detail', params: { id: created.id } })
   } catch (e) {
@@ -73,12 +76,12 @@ async function handleFileChange(uploadFile: UploadFile) {
 async function confirmDelete(run: RunSummary) {
   try {
     await ElMessageBox.confirm(
-      `Удалить запуск «${run.fileName}»? Данные будут удалены безвозвратно.`,
-      'Удаление запуска',
+      t('selector.deleteConfirm', { file: run.fileName }),
+      t('selector.deleteTitle'),
       {
         icon: h(Delete, { style: 'color: #f56c6c' }),
-        confirmButtonText: 'Удалить',
-        cancelButtonText: 'Отмена',
+        confirmButtonText: t('selector.delete'),
+        cancelButtonText: t('selector.cancel'),
       },
     )
   } catch {
@@ -87,7 +90,7 @@ async function confirmDelete(run: RunSummary) {
   try {
     await deleteRun(run.id)
     localStorage.removeItem(`jtl_selected_ops:${run.id}`)
-    ElMessage.success(`Удалён: ${run.fileName}`)
+    ElMessage.success(t('selector.deleted', { file: run.fileName }))
     if (run.id === activeId.value) {
       router.push({ name: 'home' })
     }
@@ -117,13 +120,13 @@ onBeforeUnmount(() => {
 <template>
   <div class="selector">
     <div class="selector-header">
-      <h2>Логи тестирования</h2>
+      <h2>{{ t('selector.title') }}</h2>
       <span class="count">{{ runs.length }}</span>
     </div>
 
     <el-input
       v-model="query"
-      placeholder="Поиск по имени файла"
+      :placeholder="t('selector.search')"
       clearable
       size="small"
       class="search"
@@ -143,8 +146,8 @@ onBeforeUnmount(() => {
     >
       <div class="upload-inner">
         <el-icon class="upload-icon"><UploadFilled /></el-icon>
-        <div class="upload-title">Загрузить JTL</div>
-        <div class="upload-hint">перетащите файл или кликните</div>
+        <div class="upload-title">{{ t('selector.uploadTitle') }}</div>
+        <div class="upload-hint">{{ t('selector.uploadHint') }}</div>
       </div>
     </el-upload>
 
@@ -165,14 +168,14 @@ onBeforeUnmount(() => {
             <span class="run-name">{{ r.fileName }}</span>
             <span class="run-meta">{{ formatDate(r.uploadedAt) }}</span>
           </span>
-          <el-tag v-if="r.errors > 0" type="danger" size="small">Ошибки: {{ formatPercent(r.rows ? (r.errors / r.rows) * 100 : 0) }}</el-tag>
-          <button class="run-delete" type="button" title="Удалить запуск" @click.stop="confirmDelete(r)">
+          <el-tag v-if="r.errors > 0" type="danger" size="small">{{ t('selector.errorsTag', { pct: formatPercent(r.rows ? (r.errors / r.rows) * 100 : 0) }) }}</el-tag>
+          <button class="run-delete" type="button" :title="t('selector.deleteTitle')" @click.stop="confirmDelete(r)">
             <el-icon><Delete /></el-icon>
           </button>
         </div>
       </li>
       <li v-if="!filtered.length && !loading" class="run-empty">
-        {{ query ? 'Ничего не найдено' : 'Логов пока нет — загрузите JTL' }}
+        {{ query ? t('selector.noMatches') : t('selector.empty') }}
       </li>
     </ul>
   </div>

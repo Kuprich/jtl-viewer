@@ -3,9 +3,11 @@ import { computed, ref } from 'vue'
 import type { TimeSeriesPoint } from '../types'
 import { useLineChart, type ZoomRange } from '../composables/useLineChart'
 import { useTheme } from '../composables/useTheme'
+import { useI18n } from '../i18n'
 import { hexToRgba, makeTooltipLabel, makeVuDataset, percentilePalette } from '../utils/chartTheme'
 
 const { theme } = useTheme()
+const { locale, t } = useI18n()
 
 const props = withDefaults(
   defineProps<{
@@ -41,6 +43,7 @@ const { selection } = useLineChart({
     props.zoomEnabled,
     props.visibleRange,
     theme.value,
+    locale.value,
   ],
   render: () => {
     const alpha = props.fillOpacity / 100
@@ -65,7 +68,7 @@ const { selection } = useLineChart({
     return {
       labels: labels.value,
       datasets,
-      yTitle: 'Время отклика',
+      yTitle: t('chart.responseTime'),
       formatTick: msFormat,
       tooltipLabel: makeTooltipLabel(msFormat),
       scales,
@@ -94,6 +97,6 @@ const bandStyle = computed(() => {
   <div class="canvas-wrap" style="--chart-height: 320px">
     <canvas ref="canvas" />
     <div v-if="selection" class="zoom-band" :style="bandStyle" />
-    <div v-if="!series.length" class="chart-empty">Нет данных</div>
+    <div v-if="!series.length" class="chart-empty">{{ t('chart.empty') }}</div>
   </div>
 </template>

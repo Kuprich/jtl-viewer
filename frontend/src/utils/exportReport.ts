@@ -1,6 +1,7 @@
 import type { GroupBy, StatDto } from '../types'
 import { formatBytes, formatMs, formatNumber, formatPercent, formatRps } from './format'
 import { RATE_UNIT_FACTOR, RATE_UNIT_LABEL, type RateUnit } from './rateUnit'
+import { locale, t } from '../i18n'
 
 export interface ReportChart {
   title: string
@@ -33,18 +34,18 @@ export interface ExportReportData {
 }
 
 const STAT_COLUMNS = [
-  { key: 'calls', label: 'Запросы', format: (s: StatDto) => formatNumber(s.calls) },
-  { key: 'errors', label: 'Ошибки', format: (s: StatDto) => formatNumber(s.errors) },
-  { key: 'errorRate', label: 'Errors %', format: (s: StatDto) => formatPercent(s.errorRate) },
-  { key: 'min', label: 'Min', format: (s: StatDto) => formatMs(s.min) },
-  { key: 'avg', label: 'Avg', format: (s: StatDto) => formatMs(s.avg) },
-  { key: 'p50', label: 'p50', format: (s: StatDto) => formatMs(s.p50) },
-  { key: 'p90', label: 'p90', format: (s: StatDto) => formatMs(s.p90) },
-  { key: 'p95', label: 'p95', format: (s: StatDto) => formatMs(s.p95) },
-  { key: 'p99', label: 'p99', format: (s: StatDto) => formatMs(s.p99) },
-  { key: 'max', label: 'Max', format: (s: StatDto) => formatMs(s.max) },
+  { key: 'calls', label: () => t('stats.colRequests'), format: (s: StatDto) => formatNumber(s.calls) },
+  { key: 'errors', label: () => t('stats.colErrors'), format: (s: StatDto) => formatNumber(s.errors) },
+  { key: 'errorRate', label: () => 'Errors %', format: (s: StatDto) => formatPercent(s.errorRate) },
+  { key: 'min', label: () => 'Min', format: (s: StatDto) => formatMs(s.min) },
+  { key: 'avg', label: () => 'Avg', format: (s: StatDto) => formatMs(s.avg) },
+  { key: 'p50', label: () => 'p50', format: (s: StatDto) => formatMs(s.p50) },
+  { key: 'p90', label: () => 'p90', format: (s: StatDto) => formatMs(s.p90) },
+  { key: 'p95', label: () => 'p95', format: (s: StatDto) => formatMs(s.p95) },
+  { key: 'p99', label: () => 'p99', format: (s: StatDto) => formatMs(s.p99) },
+  { key: 'max', label: () => 'Max', format: (s: StatDto) => formatMs(s.max) },
   { key: 'throughput', label: null, format: (s: StatDto, rateUnit: RateUnit) => formatRps(s.throughput * RATE_UNIT_FACTOR[rateUnit]) },
-  { key: 'avgBytes', label: 'Ср. байт', format: (s: StatDto) => formatBytes(s.avgBytes) },
+  { key: 'avgBytes', label: () => t('stats.colAvgBytes'), format: (s: StatDto) => formatBytes(s.avgBytes) },
 ] as const
 
 function escapeHtml(s: string): string {
@@ -62,10 +63,10 @@ function sanitizeFileName(name: string): string {
 function statsTableHtml(table: ReportTable, rateUnit: RateUnit, visibleCols: Set<string>): string {
   const { stats, groupBy } = table
   const columns = STAT_COLUMNS.filter((c) => c.key === 'throughput' ? visibleCols.has('throughput') : visibleCols.has(c.key))
-  const groupLabel = groupBy === 'errorMessage' ? 'Ошибка' : groupBy === 'responseCode' ? 'Код ответа' : 'Сценарий'
+  const groupLabel = groupBy === 'errorMessage' ? t('stats.groupByErrorMessage') : groupBy === 'responseCode' ? t('stats.groupByResponseCode') : t('stats.groupByLabel')
 
-  const head = `<tr><th class="left">${groupLabel}</th>${columns
-    .map((c) => `<th class="num">${escapeHtml(c.label ?? RATE_UNIT_LABEL[rateUnit])}</th>`)
+  const head = `<tr><th class="left">${escapeHtml(groupLabel)}</th>${columns
+    .map((c) => `<th class="num">${escapeHtml(c.label ? c.label() : RATE_UNIT_LABEL[rateUnit])}</th>`)
     .join('')}</tr>`
   const body = stats
     .map(
@@ -83,10 +84,14 @@ function buildHtml(data: ExportReportData): string {
   const date = new Date(data.uploadedAt)
   const uploaded = isNaN(date.getTime())
     ? ''
-    : `<p class="uploaded">Загружен: ${escapeHtml(date.toLocaleString('ru-RU'))}</p>`
+    : `<p class="uploaded">${t('report.uploaded', { date: date.toLocaleString(locale.value === 'ru' ? 'ru-RU' : 'en-US') })}</p>`
 
   const meta = data.testRange
-    ? `<p class="meta">Тест: ${escapeHtml(data.testRange.start)} – ${escapeHtml(data.testRange.end)} (${escapeHtml(data.testRange.duration)})</p>`
+    ? `<p class="meta">${t('report.test', {
+        start: data.testRange.start,
+        end: data.testRange.end,
+        duration: data.testRange.duration,
+      })}</p>`
     : ''
 
   const kpis = data.kpis
@@ -113,17 +118,17 @@ function buildHtml(data: ExportReportData): string {
   const kpiBlock = data.includeKpis ? `<div class="kpis">${kpis}</div>` : ''
   const tableBlock = data.tables
     .map(
-      (t) =>
-        `<section class="chart"><h2>Группировка и статистика — ${escapeHtml(t.title)}</h2>${statsTableHtml(t, data.rateUnit, data.visibleCols)}</section>`,
+      (tbl) =>
+        `<section class="chart"><h2>${escapeHtml(t('report.statsSection', { title: tbl.title }))}</h2>${statsTableHtml(tbl, data.rateUnit, data.visibleCols)}</section>`,
     )
     .join('')
 
   return `<!doctype html>
-<html lang="ru">
+<html lang="${locale.value}">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>${escapeHtml(data.fileName)} — отчёт jtl-viewer</title>
+<title>${escapeHtml(t('report.title', { file: data.fileName }))}</title>
 <style>
   :root { color-scheme: ${colorScheme}; }
   * { box-sizing: border-box; }

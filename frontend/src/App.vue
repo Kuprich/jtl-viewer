@@ -3,9 +3,12 @@ import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Menu, Setting } from '@element-plus/icons-vue'
 import { Download } from '@element-plus/icons-vue'
+import en from 'element-plus/es/locale/lang/en'
+import ru from 'element-plus/es/locale/lang/ru'
 import RunSelectorPanel from './components/RunSelectorPanel.vue'
 import { useRunHeader } from './composables/useRunHeader'
 import { clearAuthToken, getUsername, isAuthenticated } from './auth'
+import { locale, setLocale, t } from './i18n'
 
 const route = useRoute()
 const router = useRouter()
@@ -14,6 +17,13 @@ const runHeader = useRunHeader()
 const isLogin = computed(() => route.name === 'login')
 const authenticated = computed(() => isAuthenticated())
 const username = computed(() => (authenticated.value ? getUsername() : null))
+
+const epLocale = computed(() => (locale.value === 'ru' ? ru : en))
+const isRu = computed(() => locale.value === 'ru')
+
+function toggleLocale() {
+  setLocale(isRu.value ? 'en' : 'ru')
+}
 
 function logout() {
   clearAuthToken()
@@ -36,68 +46,73 @@ watch(
 </script>
 
 <template>
-  <div class="app">
-    <template v-if="isLogin">
-      <router-view />
-    </template>
-    <template v-else>
-      <header class="app-header">
-        <div class="app-header-left">
-          <button class="panel-toggle" type="button" aria-label="Открыть список запусков" @click="panelOpen = !panelOpen">
-            <el-icon :size="18"><Menu /></el-icon>
-          </button>
-          <h1>jtl-viewer</h1>
-          <button v-if="authenticated" class="logout-btn" type="button" @click="logout" aria-label="Выйти">
-            <span class="logout-user">{{ username }}</span>
-            <svg class="logout-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M10 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h4" />
-              <path d="M15 8l4 4-4 4" />
-              <path d="M19 12H9" />
-            </svg>
-          </button>
-        </div>
-        <div class="app-header-right">
-          <div class="app-header-inner">
-            <div v-if="runHeader.state.title" class="run-header">
-              <h2 class="run-title">{{ runHeader.state.title }}</h2>
-              <span v-if="runHeader.state.meta" class="run-meta">{{ runHeader.state.meta }}</span>
-            </div>
-            <div class="header-actions">
-              <el-tooltip content="Экспорт отчёта в HTML" placement="bottom">
+  <el-config-provider :locale="epLocale">
+    <div class="app">
+      <template v-if="isLogin">
+        <router-view />
+      </template>
+      <template v-else>
+        <header class="app-header">
+          <div class="app-header-left">
+            <button class="panel-toggle" type="button" :aria-label="t('app.openRuns')" @click="panelOpen = !panelOpen">
+              <el-icon :size="18"><Menu /></el-icon>
+            </button>
+            <h1>jtl-viewer</h1>
+            <button v-if="authenticated" class="logout-btn" type="button" @click="logout" :aria-label="t('app.logout')">
+              <span class="logout-user">{{ username }}</span>
+              <svg class="logout-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M10 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h4" />
+                <path d="M15 8l4 4-4 4" />
+                <path d="M19 12H9" />
+              </svg>
+            </button>
+          </div>
+          <div class="app-header-right">
+            <div class="app-header-inner">
+              <div v-if="runHeader.state.title" class="run-header">
+                <h2 class="run-title">{{ runHeader.state.title }}</h2>
+                <span v-if="runHeader.state.meta" class="run-meta">{{ runHeader.state.meta }}</span>
+              </div>
+              <div class="header-actions">
+                <el-tooltip :content="t('app.exportTooltip')" placement="bottom">
+                  <button
+                    v-if="runHeader.state.title"
+                    class="settings-toggle"
+                    type="button"
+                    :aria-label="t('app.export')"
+                    @click="runHeader.openExport()"
+                  >
+                    <el-icon :size="15"><Download /></el-icon>
+                  </button>
+                </el-tooltip>
                 <button
                   v-if="runHeader.state.title"
                   class="settings-toggle"
                   type="button"
-                  aria-label="Экспорт отчёта"
-                  @click="runHeader.openExport()"
+                  @click="runHeader.openSettings()"
                 >
-                  <el-icon :size="15"><Download /></el-icon>
+                  <el-icon :size="15"><Setting /></el-icon>
+                  <span>{{ t('app.settings') }}</span>
                 </button>
-              </el-tooltip>
-              <button
-                v-if="runHeader.state.title"
-                class="settings-toggle"
-                type="button"
-                @click="runHeader.openSettings()"
-              >
-                <el-icon :size="15"><Setting /></el-icon>
-                <span>Параметры отображения</span>
-              </button>
+                <button class="settings-toggle lang-toggle" type="button" :title="t('app.language')" @click="toggleLocale">
+                  <span>{{ isRu ? 'RU' : 'EN' }}</span>
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      </header>
-      <main class="layout">
-        <div v-if="panelOpen" class="panel-backdrop" @click="panelOpen = false" />
-        <aside class="panel" :class="{ open: panelOpen }">
-          <RunSelectorPanel />
-        </aside>
-        <section class="content">
-          <router-view />
-        </section>
-      </main>
-    </template>
-  </div>
+        </header>
+        <main class="layout">
+          <div v-if="panelOpen" class="panel-backdrop" @click="panelOpen = false" />
+          <aside class="panel" :class="{ open: panelOpen }">
+            <RunSelectorPanel />
+          </aside>
+          <section class="content">
+            <router-view />
+          </section>
+        </main>
+      </template>
+    </div>
+  </el-config-provider>
 </template>
 
 <style scoped>
@@ -194,6 +209,17 @@ watch(
   background: var(--surface-hover);
   border-color: #4fc3f7;
   color: #4fc3f7;
+}
+
+.lang-toggle {
+  min-width: 44px;
+  justify-content: center;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.lang-toggle span {
+  display: inline;
 }
 
 .logout-btn {
@@ -330,6 +356,10 @@ watch(
 @media (max-width: 640px) {
   .settings-toggle span {
     display: none;
+  }
+
+  .lang-toggle span {
+    display: inline;
   }
 }
 </style>

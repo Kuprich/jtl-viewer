@@ -3,10 +3,12 @@ import { computed, ref } from 'vue'
 import type { TimeSeriesPoint } from '../types'
 import { useLineChart, type ZoomRange } from '../composables/useLineChart'
 import { useTheme } from '../composables/useTheme'
+import { useI18n } from '../i18n'
 import { chartColors, makeTooltipLabel, makeVuDataset } from '../utils/chartTheme'
 import { RATE_UNIT_FACTOR, RATE_UNIT_LABEL, type RateUnit } from '../utils/rateUnit'
 
 const { theme } = useTheme()
+const { locale, t } = useI18n()
 
 const props = withDefaults(
   defineProps<{
@@ -64,6 +66,7 @@ const { selection } = useLineChart({
     props.zoomEnabled,
     props.visibleRange,
     theme.value,
+    locale.value,
   ],
   render: () => {
     const alpha = props.fillOpacity / 100
@@ -134,6 +137,6 @@ const bandStyle = computed(() => {
   <div class="canvas-wrap">
     <canvas ref="canvas" />
     <div v-if="selection" class="zoom-band" :style="bandStyle" />
-    <div v-if="!series.length" class="chart-empty">Нет данных</div>
+    <div v-if="!series.length" class="chart-empty">{{ t('chart.empty') }}</div>
   </div>
 </template>

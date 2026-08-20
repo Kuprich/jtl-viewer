@@ -26,26 +26,29 @@ import {
 import { useRunHeader } from '../composables/useRunHeader'
 import { useTheme, type Theme } from '../composables/useTheme'
 import { useDisplaySettings } from '../composables/useDisplaySettings'
+import { useI18n } from '../i18n'
 
-const EXPORT_PANELS = [
-  { key: 'kpis', label: 'Показатели (KPI)' },
-  { key: 'ops-throughput', label: 'Пропускная способность (по операциям)' },
-  { key: 'all-percentiles', label: 'Время отклика по всем операциям' },
-  { key: 'ops-percentiles', label: 'Время отклика по операциям' },
-  { key: 'frequency', label: 'Частота вызовов' },
-  { key: 'traffic', label: 'Трафик (входящий/исходящий)' },
-] as const
+const { locale, t } = useI18n()
 
-const EXPORT_THROUGHPUT_PANELS = [
-  { key: 'throughput-errors', label: 'Errors/sec', mode: false, title: 'Пропускная способность (Errors/sec)' },
-  { key: 'throughput-rate', label: 'Errors %', mode: true, title: 'Пропускная способность (Errors %)' },
-] as const
+const EXPORT_PANELS = computed(() => [
+  { key: 'kpis', label: t('detail.kpis') },
+  { key: 'ops-throughput', label: t('export.opsThroughput') },
+  { key: 'all-percentiles', label: t('export.allPercentiles') },
+  { key: 'ops-percentiles', label: t('export.opsPercentiles') },
+  { key: 'frequency', label: t('export.frequency') },
+  { key: 'traffic', label: t('export.traffic') },
+])
 
-const EXPORT_STATS_PANELS = [
-  { key: 'stats-label', label: 'Сценарий', groupBy: 'label' },
-  { key: 'stats-responseCode', label: 'Код ответа', groupBy: 'responseCode' },
-  { key: 'stats-errorMessage', label: 'Ошибки', groupBy: 'errorMessage' },
-] as const
+const EXPORT_THROUGHPUT_PANELS = computed(() => [
+  { key: 'throughput-errors', label: t('export.throughputErrors'), mode: false, title: t('export.throughputTitleErrors') },
+  { key: 'throughput-rate', label: t('export.throughputRate'), mode: true, title: t('export.throughputTitleRate') },
+])
+
+const EXPORT_STATS_PANELS = computed(() => [
+  { key: 'stats-label', label: t('export.statsLabel'), groupBy: 'label' },
+  { key: 'stats-responseCode', label: t('export.statsResponseCode'), groupBy: 'responseCode' },
+  { key: 'stats-errorMessage', label: t('export.statsErrorMessage'), groupBy: 'errorMessage' },
+])
 
 const route = useRoute()
 const router = useRouter()
@@ -106,15 +109,15 @@ function saveOps(runId: number, ops: string[]) {
   }
 }
 
-const BUCKET_OPTIONS = [
-  { label: 'Авто', ms: -1 },
+const BUCKET_OPTIONS = computed(() => [
+  { label: t('settings.bucketAuto'), ms: -1 },
   { label: '5s', ms: 5_000 },
   { label: '15s', ms: 15_000 },
   { label: '30s', ms: 30_000 },
   { label: '1m', ms: 60_000 },
   { label: '5m', ms: 300_000 },
   { label: '10m', ms: 600_000 },
-]
+])
 
 const MIN_BUCKET_MS = 100
 const MAX_BUCKET_MS = 60_000
@@ -130,7 +133,7 @@ const autoBucketMs = computed(() => {
 function resolveAutoBucket(): number | null {
   const target = autoBucketMs.value
   if (target == null) return null
-  const presets = BUCKET_OPTIONS.filter((o) => o.ms > 0 && !isBucketDisabled(o.ms))
+  const presets = BUCKET_OPTIONS.value.filter((o) => o.ms > 0 && !isBucketDisabled(o.ms))
   if (!presets.length) return null
   let best = presets[0]
   for (const o of presets) {
@@ -173,7 +176,7 @@ function isBucketDisabled(ms: number): boolean {
   return n <= 10 || n > 2000
 }
 
-const visibleBuckets = computed(() => BUCKET_OPTIONS.filter((o) => !isBucketDisabled(o.ms)))
+const visibleBuckets = computed(() => BUCKET_OPTIONS.value.filter((o) => !isBucketDisabled(o.ms)))
 
 const id = computed(() => Number(route.params.id))
 
@@ -246,7 +249,7 @@ async function loadOpsSeries() {
       else failed.push(ops[i])
     })
     opSeries.value = loaded
-    if (failed.length) opsError.value = `Не удалось загрузить операции: ${failed.join(', ')}`
+    if (failed.length) opsError.value = t('ops.loadFailed', { list: failed.join(', ') })
   } finally {
     opsLoading.value = false
   }
@@ -356,18 +359,18 @@ const duration = computed(() => {
 })
 
 const kpis = computed(() => [
-  { label: 'Запросы', value: run.value ? formatNumber(callsTotal.value) : '—', danger: false },
+  { label: t('detail.requests'), value: run.value ? formatNumber(callsTotal.value) : '—', danger: false },
   { label: 'RPS', value: run.value ? formatRps(rps.value) : '—', danger: false },
-  { label: 'Ошибки', value: run.value ? formatNumber(errorsTotal.value) : '—', danger: errorsTotal.value > 0 },
+  { label: t('detail.errors'), value: run.value ? formatNumber(errorsTotal.value) : '—', danger: errorsTotal.value > 0 },
   { label: 'Error rate', value: run.value ? formatPercent(errorRate.value) : '—', danger: errorRate.value > 0 },
-  { label: 'Длительность', value: duration.value ? formatDuration(duration.value) : '—', danger: false },
+  { label: t('detail.duration'), value: duration.value ? formatDuration(duration.value) : '—', danger: false },
   {
-    label: 'Входящий',
+    label: t('detail.incoming'),
     value: run.value ? formatBytes(trafficTotals.value.bytes) : '—',
     danger: false,
   },
   {
-    label: 'Исходящий',
+    label: t('detail.outgoing'),
     value: run.value ? formatBytes(trafficTotals.value.sent) : '—',
     danger: false,
   },
@@ -412,7 +415,7 @@ async function exportReport() {
     const root = detailRoot.value
     const chartData: { title: string; dataUrl: string }[] = []
 
-    for (const panel of EXPORT_THROUGHPUT_PANELS) {
+    for (const panel of EXPORT_THROUGHPUT_PANELS.value) {
       if (!selected.has(panel.key)) continue
       rateMode.value = panel.mode
       await nextTick()
@@ -422,7 +425,7 @@ async function exportReport() {
       if (canvas) chartData.push({ title: panel.title, dataUrl: canvas.toDataURL('image/png') })
     }
 
-    for (const panel of EXPORT_PANELS) {
+    for (const panel of EXPORT_PANELS.value) {
       if (!selected.has(panel.key)) continue
       const zone = root?.querySelector(`[data-export-panel="${panel.key}"]`)
       const canvas = zone?.querySelector<HTMLCanvasElement>('canvas')
@@ -434,7 +437,7 @@ async function exportReport() {
 
     const w = statsWindow.value
     const tables = await Promise.all(
-      EXPORT_STATS_PANELS.filter((p) => selected.has(p.key)).map(async (p) => ({
+      EXPORT_STATS_PANELS.value.filter((p) => selected.has(p.key)).map(async (p) => ({
         groupBy: p.groupBy as GroupBy,
         title: p.label,
         stats: selectedOps.value.length
@@ -455,7 +458,7 @@ async function exportReport() {
       theme: exportTheme.value,
       includeKpis: selected.has('kpis'),
     })
-    ElMessage.success('Отчёт сохранён в HTML')
+    ElMessage.success(t('detail.exportSaved'))
   } catch (e) {
     ElMessage.error(e instanceof Error ? e.message : String(e))
   } finally {
@@ -472,11 +475,15 @@ function toggleExportPanel(key: string, on: boolean) {
   exportPanels.value = [...next]
 }
 
-watch([run, testRange], () => {
+watch([run, testRange, locale], () => {
   const r = run.value
-  runHeader.state.title = r?.fileName ?? 'Загрузка…'
+  runHeader.state.title = r?.fileName ?? t('detail.loading')
   runHeader.state.meta = testRange.value
-    ? `Тест: ${testRange.value.start} – ${testRange.value.end} (${testRange.value.duration})`
+    ? t('detail.testMeta', {
+        start: testRange.value.start,
+        end: testRange.value.end,
+        duration: testRange.value.duration,
+      })
     : null
 })
 
@@ -500,7 +507,7 @@ onBeforeUnmount(() => runHeader.reset())
       >
         <template #header>
           <div class="settings-header" @click="settingsOpen = !settingsOpen">
-            <span>Выбор операций</span>
+            <span>{{ t('detail.selectOps') }}</span>
             <el-icon class="settings-chevron" :class="{ open: settingsOpen }"><CaretBottom /></el-icon>
           </div>
         </template>
@@ -523,9 +530,9 @@ onBeforeUnmount(() => runHeader.reset())
       <el-card class="zone" shadow="never" data-export-panel="throughput">
         <template #header>
           <div class="zone-header">
-            <span>Пропускная способность</span>
+            <span>{{ t('detail.throughput') }}</span>
             <div class="zone-controls">
-              <el-checkbox v-model="showVuTime" size="small">График VU</el-checkbox>
+              <el-checkbox v-model="showVuTime" size="small">{{ t('detail.showVu') }}</el-checkbox>
               <el-radio-group v-model="rateMode" size="small">
                 <el-radio-button :value="false">Errors/sec</el-radio-button>
                 <el-radio-button :value="true">Errors %</el-radio-button>
@@ -553,9 +560,9 @@ onBeforeUnmount(() => runHeader.reset())
       <el-card class="zone" shadow="never" data-export-panel="ops-throughput">
         <template #header>
           <div class="zone-header">
-            <span>Пропускная способность (по операциям)</span>
+            <span>{{ t('export.opsThroughput') }}</span>
             <div class="zone-controls">
-              <el-checkbox v-model="showVuOpsRate" size="small">График VU</el-checkbox>
+              <el-checkbox v-model="showVuOpsRate" size="small">{{ t('detail.showVu') }}</el-checkbox>
             </div>
           </div>
         </template>
@@ -580,9 +587,9 @@ onBeforeUnmount(() => runHeader.reset())
       <el-card class="zone" shadow="never" data-export-panel="all-percentiles">
         <template #header>
           <div class="zone-header">
-            <span>Время отклика по всем операциям</span>
+            <span>{{ t('export.allPercentiles') }}</span>
             <div class="zone-controls">
-              <el-checkbox v-model="showVuAll" size="small">График VU</el-checkbox>
+              <el-checkbox v-model="showVuAll" size="small">{{ t('detail.showVu') }}</el-checkbox>
             </div>
           </div>
         </template>
@@ -604,9 +611,9 @@ onBeforeUnmount(() => runHeader.reset())
       <el-card class="zone" shadow="never" data-export-panel="ops-percentiles">
         <template #header>
           <div class="zone-header">
-            <span>Время отклика по операциям</span>
+            <span>{{ t('export.opsPercentiles') }}</span>
             <div class="zone-controls">
-              <el-checkbox v-model="showVuOps" size="small">График VU</el-checkbox>
+              <el-checkbox v-model="showVuOps" size="small">{{ t('detail.showVu') }}</el-checkbox>
               <el-select v-model="percentile" size="small" style="width: 110px">
                 <el-option v-for="p in ['p50', 'p90', 'p95', 'p99'] as const" :key="p" :label="p" :value="p" />
               </el-select>
@@ -635,16 +642,11 @@ onBeforeUnmount(() => runHeader.reset())
         <template #header>
           <div class="zone-header">
             <span class="zone-title-group">
-              <span>Частота вызовов</span>
+              <span>{{ t('export.frequency') }}</span>
               <el-tooltip placement="top">
                 <el-icon class="zone-title-tip"><QuestionFilled /></el-icon>
                 <template #content>
-                  <div class="zone-title-tip-content">
-                    Для каждой операции показано общее число вызовов,<br />
-                    разбитое на успешные и ошибки, и доля ошибок в %.<br />
-                    Красным выделена доля ошибок выше порога (сейчас {{ errorThreshold }}%).<br />
-                    Порог настраивается в «Параметрах отображения».
-                  </div>
+                  <div class="zone-title-tip-content" v-html="t('detail.errorThresholdHint', { pct: errorThreshold })" />
                 </template>
               </el-tooltip>
             </span>
@@ -663,21 +665,16 @@ onBeforeUnmount(() => runHeader.reset())
         <template #header>
           <div class="zone-header">
             <span class="zone-title-group">
-              <span>Трафик (входящий/исходящий)</span>
+              <span>{{ t('export.traffic') }}</span>
               <el-tooltip placement="top">
                 <el-icon class="zone-title-tip"><QuestionFilled /></el-icon>
                 <template #content>
-                  <div class="zone-title-tip-content">
-                    Трафик относительно станции нагрузки:<br />
-                    Входящий — ответы, полученные генератором от сервиса;<br />
-                    Исходящий — запросы, отправленные генератором сервису.<br />
-                    Учитывается только прикладная нагрузка (без заголовков, TCP/IP и TLS-оверхедов).
-                  </div>
+                  <div class="zone-title-tip-content" v-html="t('detail.trafficHint')" />
                 </template>
               </el-tooltip>
             </span>
             <div class="zone-controls">
-              <el-checkbox v-model="showVuTraffic" size="small">График VU</el-checkbox>
+              <el-checkbox v-model="showVuTraffic" size="small">{{ t('detail.showVu') }}</el-checkbox>
             </div>
           </div>
         </template>
@@ -707,28 +704,23 @@ onBeforeUnmount(() => runHeader.reset())
       />
     </template>
 
-    <el-drawer v-model="runHeader.state.settingsOpen" direction="rtl" size="360px" title="Параметры отображения">
+    <el-drawer v-model="runHeader.state.settingsOpen" direction="rtl" size="360px" :title="t('settings.title')">
       <div class="visual-body">
         <div class="settings-section">
-          <span class="settings-label">Тема оформления</span>
+          <span class="settings-label">{{ t('settings.theme') }}</span>
           <el-radio-group v-model="theme" size="small">
-            <el-radio-button value="dark">Тёмная</el-radio-button>
-            <el-radio-button value="light">Светлая</el-radio-button>
+            <el-radio-button value="dark">{{ t('settings.dark') }}</el-radio-button>
+            <el-radio-button value="light">{{ t('settings.light') }}</el-radio-button>
           </el-radio-group>
         </div>
         <div class="settings-section">
           <div class="zoom-row">
           <span class="settings-label settings-label-tip">
-            <span>Зум выделением</span>
+            <span>{{ t('settings.zoom') }}</span>
             <el-tooltip placement="top">
               <el-icon class="zone-title-tip"><QuestionFilled /></el-icon>
               <template #content>
-                <div class="zone-title-tip-content">
-                  Выделите участок мышью на любом графике —<br />
-                  графики приблизятся к этому интервалу.<br />
-                  Двойной клик по графику или кнопка «Сбросить зум»<br />
-                  вернут полный интервал.
-                </div>
+                <div class="zone-title-tip-content" v-html="t('settings.zoomHint')" />
               </template>
             </el-tooltip>
           </span>
@@ -740,11 +732,11 @@ onBeforeUnmount(() => runHeader.reset())
             type="button"
             @click="applyZoom(null)"
           >
-            Сбросить зум
+            {{ t('settings.resetZoom') }}
           </button>
         </div>
         <div class="settings-section">
-          <span class="settings-label">Интервал агрегации</span>
+          <span class="settings-label">{{ t('settings.bucket') }}</span>
           <el-radio-group v-model="bucketMs" size="small" @change="onBucketChange">
             <el-radio-button v-for="opt in visibleBuckets" :key="opt.label" :value="opt.ms">
               {{ opt.label }}
@@ -752,7 +744,7 @@ onBeforeUnmount(() => runHeader.reset())
           </el-radio-group>
         </div>
         <div class="settings-section">
-          <span class="settings-label">Толщина линий</span>
+          <span class="settings-label">{{ t('settings.lineWidth') }}</span>
           <el-slider
             v-model="lineWidth"
             class="settings-slider"
@@ -763,7 +755,7 @@ onBeforeUnmount(() => runHeader.reset())
           />
         </div>
         <div class="settings-section">
-          <span class="settings-label">Размер точек</span>
+          <span class="settings-label">{{ t('settings.pointSize') }}</span>
           <el-slider
             v-model="pointSize"
             class="settings-slider"
@@ -774,7 +766,7 @@ onBeforeUnmount(() => runHeader.reset())
           />
         </div>
         <div class="settings-section">
-          <span class="settings-label">Заливка областей</span>
+          <span class="settings-label">{{ t('settings.fill') }}</span>
           <el-slider
             v-model="fillOpacity"
             class="settings-slider"
@@ -785,7 +777,7 @@ onBeforeUnmount(() => runHeader.reset())
           />
         </div>
         <div class="settings-section">
-          <span class="settings-label">Порог ошибок, %</span>
+          <span class="settings-label">{{ t('settings.errorThreshold') }}</span>
           <el-slider
             v-model="errorThreshold"
             class="settings-slider"
@@ -796,7 +788,7 @@ onBeforeUnmount(() => runHeader.reset())
           />
         </div>
         <div class="settings-section">
-          <span class="settings-label">Единицы нагрузки</span>
+          <span class="settings-label">{{ t('settings.rateUnit') }}</span>
           <el-radio-group v-model="rateUnit" size="small">
             <el-radio-button value="rps">RPS</el-radio-button>
             <el-radio-button value="rpm">RPM</el-radio-button>
@@ -806,17 +798,17 @@ onBeforeUnmount(() => runHeader.reset())
       </div>
     </el-drawer>
 
-    <el-dialog v-model="runHeader.state.exportOpen" title="Экспорт отчёта" width="420px" align-center>
+    <el-dialog v-model="runHeader.state.exportOpen" :title="t('export.title')" width="420px" align-center>
       <div class="export-body">
         <div class="export-section">
-          <span class="settings-label">Тема экспорта</span>
+          <span class="settings-label">{{ t('export.theme') }}</span>
           <el-radio-group v-model="exportTheme" size="small">
-            <el-radio-button value="dark">Тёмная</el-radio-button>
-            <el-radio-button value="light">Светлая</el-radio-button>
+            <el-radio-button value="dark">{{ t('settings.dark') }}</el-radio-button>
+            <el-radio-button value="light">{{ t('settings.light') }}</el-radio-button>
           </el-radio-group>
         </div>
         <div class="export-section">
-          <span class="settings-label">Панели</span>
+          <span class="settings-label">{{ t('export.panels') }}</span>
           <div class="export-panels">
             <div v-for="p in EXPORT_PANELS" :key="p.key" class="export-row">
               <span class="export-row-label">{{ p.label }}</span>
@@ -826,7 +818,7 @@ onBeforeUnmount(() => runHeader.reset())
                 @change="(v: boolean) => toggleExportPanel(p.key, v)"
               />
             </div>
-            <span class="export-subtitle">Пропускная способность</span>
+            <span class="export-subtitle">{{ t('export.throughputSubtitle') }}</span>
             <div v-for="p in EXPORT_THROUGHPUT_PANELS" :key="p.key" class="export-row export-subitem">
               <span class="export-row-label">{{ p.label }}</span>
               <el-switch
@@ -835,7 +827,7 @@ onBeforeUnmount(() => runHeader.reset())
                 @change="(v: boolean) => toggleExportPanel(p.key, v)"
               />
             </div>
-            <span class="export-subtitle">Группировка и статистика</span>
+            <span class="export-subtitle">{{ t('export.statsSubtitle') }}</span>
             <div v-for="p in EXPORT_STATS_PANELS" :key="p.key" class="export-row export-subitem">
               <span class="export-row-label">{{ p.label }}</span>
               <el-switch
@@ -848,8 +840,8 @@ onBeforeUnmount(() => runHeader.reset())
         </div>
       </div>
       <template #footer>
-        <el-button @click="runHeader.state.exportOpen = false">Отмена</el-button>
-        <el-button type="primary" :loading="exporting" @click="exportReport">Скачать HTML</el-button>
+        <el-button @click="runHeader.state.exportOpen = false">{{ t('export.cancel') }}</el-button>
+        <el-button type="primary" :loading="exporting" @click="exportReport">{{ t('export.download') }}</el-button>
       </template>
     </el-dialog>
   </div>

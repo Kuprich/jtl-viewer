@@ -1,4 +1,5 @@
 import type { ChartOptions, ScaleOptions } from 'chart.js'
+import { t } from '../i18n'
 
 function cssVar(name: string, fallback: string): string {
   const value = getComputedStyle(document.documentElement).getPropertyValue(name).trim()
@@ -133,7 +134,7 @@ export function buildOptions(r: ChartRender): ChartOptions<'line'> {
       beginAtZero: true,
       grid: { drawOnChartArea: false },
       ticks: { color: chartColors.muted },
-      title: { display: true, text: 'Виртуальные пользователи', color: chartColors.muted },
+      title: { display: true, text: t('chart.vu'), color: chartColors.muted },
     },
   }
   return {

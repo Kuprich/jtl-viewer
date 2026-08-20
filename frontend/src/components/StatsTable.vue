@@ -4,10 +4,13 @@ import { QuestionFilled, Search, Setting } from '@element-plus/icons-vue'
 import type { GroupBy, StatDto } from '../types'
 import { RATE_UNIT_FACTOR, RATE_UNIT_LABEL, type RateUnit } from '../utils/rateUnit'
 import { formatBytes, formatMs, formatNumber, formatPercent, formatRps } from '../utils/format'
+import { useI18n } from '../i18n'
 
-const COLUMNS = [
-  { key: 'calls', label: 'Запросы' },
-  { key: 'errors', label: 'Ошибки' },
+const { t } = useI18n()
+
+const COLUMNS = computed(() => [
+  { key: 'calls', label: t('stats.colRequests') },
+  { key: 'errors', label: t('stats.colErrors') },
   { key: 'errorRate', label: 'Errors %' },
   { key: 'min', label: 'Min' },
   { key: 'avg', label: 'Avg' },
@@ -17,22 +20,22 @@ const COLUMNS = [
   { key: 'p99', label: 'p99' },
   { key: 'max', label: 'Max' },
   { key: 'throughput', label: null },
-  { key: 'avgBytes', label: 'Ср. байт' },
-] as const
+  { key: 'avgBytes', label: t('stats.colAvgBytes') },
+])
 
 const COLS_STORAGE_KEY = 'jtl_stats_columns'
 
 function loadSavedCols(): Set<string> {
   try {
     const raw = localStorage.getItem(COLS_STORAGE_KEY)
-    if (raw === null) return new Set(COLUMNS.map((c) => c.key))
+    if (raw === null) return new Set(COLUMNS.value.map((c) => c.key))
     const parsed = JSON.parse(raw)
-    if (!Array.isArray(parsed)) return new Set(COLUMNS.map((c) => c.key))
-    const known = new Set<string>(COLUMNS.map((c) => c.key))
+    if (!Array.isArray(parsed)) return new Set(COLUMNS.value.map((c) => c.key))
+    const known = new Set<string>(COLUMNS.value.map((c) => c.key))
     const saved = new Set(parsed.filter((k): k is string => typeof k === 'string' && known.has(k)))
-    return saved.size ? saved : new Set(COLUMNS.map((c) => c.key))
+    return saved.size ? saved : new Set(COLUMNS.value.map((c) => c.key))
   } catch {
-    return new Set(COLUMNS.map((c) => c.key))
+    return new Set(COLUMNS.value.map((c) => c.key))
   }
 }
 
@@ -89,8 +92,8 @@ const NO_CODE = '(none)'
 
 const noCodeMeta = computed(() =>
   props.groupBy === 'errorMessage'
-    ? { label: 'без текста' }
-    : { label: 'без кода' },
+    ? { label: t('stats.withoutText') }
+    : { label: t('stats.withoutCode') },
 )
 
 function rowClass(data: { row: StatDto }) {
@@ -103,15 +106,11 @@ function rowClass(data: { row: StatDto }) {
     <template #header>
       <div class="zone-header">
         <span class="zone-title-group">
-          <span>Группировка и статистика</span>
+          <span>{{ t('stats.title') }}</span>
           <el-tooltip placement="top">
             <el-icon class="zone-title-tip"><QuestionFilled /></el-icon>
             <template #content>
-              <div class="zone-title-tip-content">
-                Красным выделены запросы, у которых доля ошибок выше порога<br />
-                (сейчас {{ props.errorThreshold }}%).<br />
-                Порог настраивается в «Параметрах отображения».
-              </div>
+              <div class="zone-title-tip-content" v-html="t('stats.errorHint', { pct: props.errorThreshold })" />
             </template>
           </el-tooltip>
         </span>
@@ -121,7 +120,7 @@ function rowClass(data: { row: StatDto }) {
             size="small"
             clearable
             :prefix-icon="Search"
-            placeholder="Поиск операции"
+            :placeholder="t('stats.search')"
             class="stats-search"
           />
           <el-popover v-if="groupBy === 'label'" placement="bottom-end" :width="200" trigger="click" :persistent="false">
@@ -139,9 +138,9 @@ function rowClass(data: { row: StatDto }) {
             </div>
           </el-popover>
           <el-radio-group v-model="groupBy" size="small">
-            <el-radio-button value="label">Сценарий</el-radio-button>
-            <el-radio-button value="responseCode">Код ответа</el-radio-button>
-            <el-radio-button value="errorMessage">Ошибки</el-radio-button>
+            <el-radio-button value="label">{{ t('stats.groupByLabel') }}</el-radio-button>
+            <el-radio-button value="responseCode">{{ t('stats.groupByResponseCode') }}</el-radio-button>
+            <el-radio-button value="errorMessage">{{ t('stats.groupByErrorMessage') }}</el-radio-button>
           </el-radio-group>
         </div>
       </div>
@@ -153,33 +152,26 @@ function rowClass(data: { row: StatDto }) {
       v-loading="loading"
       :data="filteredStats"
       stripe
-      :empty-text="query.trim() ? 'Ничего не найдено' : 'Нет данных'"
+      :empty-text="query.trim() ? t('stats.noMatches') : t('stats.empty')"
       highlight-current-row
       :row-class-name="rowClass"
     >
-      <el-table-column prop="group" label="Группа" fixed="left" min-width="200" show-overflow-tooltip sortable>
+      <el-table-column prop="group" :label="t('stats.colGroup')" fixed="left" min-width="200" show-overflow-tooltip sortable>
         <template #default="{ row }">
           <el-tooltip v-if="row.group === NO_CODE" placement="top">
             <span class="no-code">{{ noCodeMeta.label }}</span>
             <template #content>
-              <div v-if="groupBy === 'errorMessage'" class="no-code-tip">
-                Упавшие сэмплы без текста ошибки —<br />
-                например Transaction Controller.
-              </div>
-              <div v-else class="no-code-tip">
-                Сэмплы без responseCode — обычно Transaction Controller,<br />
-                агрегирующий вложенные запросы.<br />
-                Детали — во вкладке «Сценарий».
-              </div>
+              <div v-if="groupBy === 'errorMessage'" class="no-code-tip" v-html="t('stats.noCodeErrorHint')" />
+              <div v-else class="no-code-tip" v-html="t('stats.noCodeHint')" />
             </template>
           </el-tooltip>
           <template v-else>{{ row.group }}</template>
         </template>
       </el-table-column>
-      <el-table-column v-if="visibleCols.has('calls')" prop="calls" label="Запросы" sortable align="right" width="90">
+      <el-table-column v-if="visibleCols.has('calls')" prop="calls" :label="t('stats.colRequests')" sortable align="right" width="90">
         <template #default="{ row }">{{ formatNumber(row.calls) }}</template>
       </el-table-column>
-      <el-table-column v-if="visibleCols.has('errors')" prop="errors" label="Ошибки" sortable align="right" width="90">
+      <el-table-column v-if="visibleCols.has('errors')" prop="errors" :label="t('stats.colErrors')" sortable align="right" width="90">
         <template #default="{ row }">
           <span :class="{ 'cell-danger': row.errorRate > props.errorThreshold }">{{ formatNumber(row.errors) }}</span>
         </template>
@@ -220,7 +212,7 @@ function rowClass(data: { row: StatDto }) {
       >
         <template #default="{ row }">{{ formatRps(row.throughput * RATE_UNIT_FACTOR[props.rateUnit]) }}</template>
       </el-table-column>
-      <el-table-column v-if="visibleCols.has('avgBytes')" prop="avgBytes" label="Ср. байт" sortable align="right" width="110">
+      <el-table-column v-if="visibleCols.has('avgBytes')" prop="avgBytes" :label="t('stats.colAvgBytes')" sortable align="right" width="110">
         <template #default="{ row }">{{ formatBytes(row.avgBytes) }}</template>
       </el-table-column>
     </el-table>

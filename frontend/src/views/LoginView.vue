@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { clearAuthToken, setAuthToken } from '../auth'
 import { getRuns } from '../api'
+import { t } from '../i18n'
 
 const route = useRoute()
 const router = useRouter()
@@ -24,7 +25,7 @@ async function submit() {
   } catch (e) {
     clearAuthToken()
     const msg = e instanceof Error ? e.message : String(e)
-    error.value = /401|авторизац/i.test(msg) ? 'Неверный логин или пароль' : msg
+    error.value = /401|авторизац/i.test(msg) ? t('login.badCredentials') : msg
   } finally {
     loading.value = false
   }
@@ -35,12 +36,12 @@ async function submit() {
   <div class="login">
     <form class="login-card" @submit.prevent="submit">
       <h1 class="login-title">jtl-viewer</h1>
-      <p class="login-subtitle">просмотр JTL-запусков</p>
-      <el-input v-model="username" placeholder="Логин" size="large" autofocus />
+      <p class="login-subtitle">{{ t('login.subtitle') }}</p>
+      <el-input v-model="username" :placeholder="t('login.username')" size="large" autofocus />
       <el-input
         v-model="password"
         type="password"
-        placeholder="Пароль"
+        :placeholder="t('login.password')"
         size="large"
         show-password
       />
@@ -52,7 +53,7 @@ async function submit() {
         :loading="loading"
         native-type="submit"
       >
-        Войти
+        {{ t('login.submit') }}
       </el-button>
     </form>
   </div>

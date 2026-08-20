@@ -3,10 +3,12 @@ import { computed, ref } from 'vue'
 import type { TimeSeriesPoint } from '../types'
 import { useLineChart, type ZoomRange } from '../composables/useLineChart'
 import { useTheme } from '../composables/useTheme'
+import { useI18n } from '../i18n'
 import { chartColors, hexToRgba, makeTooltipLabel, makeVuDataset } from '../utils/chartTheme'
 import { formatBits } from '../utils/format'
 
 const { theme } = useTheme()
+const { locale, t } = useI18n()
 
 const props = withDefaults(
   defineProps<{
@@ -49,13 +51,14 @@ const { selection } = useLineChart({
     props.zoomEnabled,
     props.visibleRange,
     theme.value,
+    locale.value,
   ],
   render: () => {
     const alpha = props.fillOpacity / 100
     const sec = bucketSec.value
     const datasets: unknown[] = [
       {
-        label: 'Входящий',
+        label: t('chart.incoming'),
         data: props.series.map((p) => (p.totalBytes > 0 ? p.totalBytes / sec : null)),
         borderColor: chartColors.rps,
         backgroundColor: alpha > 0 ? hexToRgba(chartColors.rps, alpha) : 'transparent',
@@ -68,7 +71,7 @@ const { selection } = useLineChart({
         fill: alpha > 0,
       },
       {
-        label: 'Исходящий',
+        label: t('chart.outgoing'),
         data: props.series.map((p) => (p.sentBytes > 0 ? p.sentBytes / sec : null)),
         borderColor: chartColors.vusers,
         backgroundColor: alpha > 0 ? hexToRgba(chartColors.vusers, alpha) : 'transparent',
@@ -89,9 +92,9 @@ const { selection } = useLineChart({
     return {
       labels: labels.value,
       datasets,
-      yTitle: 'Трафик',
-      formatTick: (v: number) => `${formatBits(v)}/с`,
-      tooltipLabel: makeTooltipLabel((v) => formatBits(v), '/с'),
+      yTitle: t('chart.traffic'),
+      formatTick: (v: number) => `${formatBits(v)}${t('format.perSec')}`,
+      tooltipLabel: makeTooltipLabel((v) => formatBits(v), t('format.perSec')),
       scales,
     }
   },
@@ -114,6 +117,6 @@ const bandStyle = computed(() => {
   <div class="canvas-wrap" style="--chart-height: 320px">
     <canvas ref="canvas" />
     <div v-if="selection" class="zoom-band" :style="bandStyle" />
-    <div v-if="!series.length" class="chart-empty">Нет данных</div>
+    <div v-if="!series.length" class="chart-empty">{{ t('chart.empty') }}</div>
   </div>
 </template>
