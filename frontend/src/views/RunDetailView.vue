@@ -13,7 +13,7 @@ import StatsTable from '../components/StatsTable.vue'
 import TrafficChart from '../components/TrafficChart.vue'
 import { ApiError, getLabels, getRun, getStats, getTimeseries } from '../api'
 import { RUNS_CHANGED_EVENT } from '../events'
-import { downloadReportHtml } from '../utils/exportReport'
+import { downloadReportHtml, STAT_COLUMNS } from '../utils/exportReport'
 import type { GroupBy, RunDetail, StatDto, TimeSeriesPoint } from '../types'
 import {
   formatBytes,
@@ -393,11 +393,14 @@ const testRange = computed(() => {
 function loadVisibleCols(): Set<string> {
   try {
     const raw = localStorage.getItem('jtl_stats_columns')
-    if (raw === null) return new Set()
+    if (raw === null) return new Set(STAT_COLUMNS.map((c) => c.key))
     const parsed = JSON.parse(raw)
-    return Array.isArray(parsed) ? new Set(parsed.filter((k): k is string => typeof k === 'string')) : new Set()
+    if (!Array.isArray(parsed)) return new Set(STAT_COLUMNS.map((c) => c.key))
+    const known = new Set<string>(STAT_COLUMNS.map((c) => c.key))
+    const saved = new Set(parsed.filter((k): k is string => typeof k === 'string' && known.has(k)))
+    return saved.size ? saved : new Set(STAT_COLUMNS.map((c) => c.key))
   } catch {
-    return new Set()
+    return new Set(STAT_COLUMNS.map((c) => c.key))
   }
 }
 

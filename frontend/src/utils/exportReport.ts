@@ -33,7 +33,7 @@ export interface ExportReportData {
   includeKpis: boolean
 }
 
-const STAT_COLUMNS = [
+export const STAT_COLUMNS = [
   { key: 'calls', label: () => t('stats.colRequests'), format: (s: StatDto) => formatNumber(s.calls) },
   { key: 'errors', label: () => t('stats.colErrors'), format: (s: StatDto) => formatNumber(s.errors) },
   { key: 'errorRate', label: () => 'Errors %', format: (s: StatDto) => formatPercent(s.errorRate) },

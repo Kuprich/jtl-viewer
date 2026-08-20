@@ -1,5 +1,7 @@
 # jtl-viewer
 
+[English](README.md) | [Русский](README.ru.md)
+
 Web application for uploading JMeter JTL files and visualizing load test results: response times, throughput, errors, traffic — with HTML report export and a multilingual (RU/EN) interface.
 
 ## Features
@@ -24,16 +26,18 @@ Web application for uploading JMeter JTL files and visualizing load test results
 
 ## Screenshots
 
-Dark Theme:
 ![Dark Theme](./docs/screenshots/dark.png)
 
-White Theme:
 ![White Theme](./docs/screenshots/white.png)
 
 <p>
   <img src="./docs/screenshots/display_settings.png" alt="Display Settings" width="48%">
   <img src="./docs/screenshots/export.png" alt="Export parameters" width="48%">
 </p>
+
+## Example report
+
+Open the exported HTML report to see what you get: **[HTML Report](./examples/jtl_report.html)** — click, and it renders in the browser.
 
 ## Tech stack
 
@@ -55,7 +59,7 @@ Open http://localhost:8080 — a single container serves both the frontend and t
 
 Default credentials: `admin` / `admin` (see [Configuration](#configuration)).
 
-Try it: upload the example file `examples/fakestore_v2.jtl` via the interface (drag & drop in the run list panel).
+Try it: upload the example file [`examples/fakestore_v2.jtl`](./examples/fakestore_v2.jtl) via the interface (drag & drop in the run list panel).
 
 To stop and wipe all data:
 
@@ -175,7 +179,3 @@ Run:
 ```
 
 `JtlwebApplicationTests` requires a running PostgreSQL (`docker compose up -d postgres`).
-
-## Roadmap
-
-- `GET /api/runs/{id}/samples` — run rows (pagination, core columns)
