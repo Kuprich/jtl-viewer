@@ -13,6 +13,11 @@ Web app to upload JMeter JTL files and visualize load test results: response tim
   <img src="./docs/screenshots/white.png" alt="White Theme" width="48%">
 </p>
 
+<p>
+  <img src="./docs/screenshots/display_settings.png" alt="Display Settings" width="48%">
+  <img src="./docs/screenshots/export.png" alt="Export parameters" width="48%">
+</p>
+
 ## Features
 
 - Upload JTL via drag & drop — auto-detects separator (tab/comma), batch DB writes

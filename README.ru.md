@@ -13,6 +13,11 @@
   <img src="./docs/screenshots/white.png" alt="Светлая тема" width="48%">
 </p>
 
+<p>
+  <img src="./docs/screenshots/display_settings.png" alt="Настройки отображения" width="48%">
+  <img src="./docs/screenshots/export.png" alt="Параметры экспорта" width="48%">
+</p>
+
 ## Возможности
 
 - Загрузка JTL перетаскиванием — автоопределение разделителя (таб/запятая), пакетная запись в БД
