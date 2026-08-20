@@ -1,77 +1,173 @@
 # jtl-viewer
 
-Веб-приложение для загрузки JMeter JTL-файлов и хранения результатов нагрузочных тестов.
+Web application for uploading JMeter JTL files and visualizing load test results: response times, throughput, errors, traffic — with HTML report export and a multilingual (RU/EN) interface.
 
-## Реализовано
+## Features
 
-### API
+- **Upload JTL files** via drag & drop — auto-detects the separator (tab/comma), CSV tokenization handles quoted fields, data is written to the database in batched transactions.
+- **Run dashboard** — KPI cards: requests, RPS, errors, error rate, duration, incoming/outgoing traffic.
+- **Charts**:
+  - Response time percentiles (p50/p90/p95/p99) across all operations and per operation
+  - Throughput (RPS/RPM/RPH) and errors (Errors/sec / Errors %)
+  - Call frequency by operation
+  - Traffic in bits/sec (incoming/outgoing)
+  - Virtual users (VU) overlay
+- **Operations filter** — dual-list picker with drag & drop and multi-select; the selection is saved per run.
+- **Statistics grouping** — by scenario / response code / error message, with configurable table columns.
+- **Zoom by selection** on any chart — double-click to reset.
+- **Display settings** — dark/light theme, aggregation interval (including auto), line width, point size, area fill, error threshold, load units.
+- **HTML report export** — pick the panels to include (KPI, charts, grouping tables), export theme, everything rendered as a standalone HTML file.
+- **RU/EN interface** — English by default, the choice is persisted in `localStorage`.
+- **HTTP Basic auth** with a custom login form.
 
-- `POST /api/runs` — загрузка JTL-файла (multipart `file`). Парсит файл, сохраняет строки в БД и возвращает общую статистику запуска: `{ id, fileName, uploadedAt, rows, errors }`.
-- `GET /api/runs` — список запусков (от новых к старым).
-- `GET /api/runs/{id}` — информация о запуске.
-- `GET /api/runs/{id}/labels` — список операций (label) запуска.
-- `GET /api/runs/{id}/stats` — статистика по группам (`groupBy=label|responseCode|errorMessage`): счётчики, ошибки, перцентили, RPS, объём ответов. Фильтр по операциям — повторяемый параметр `labels`.
-- `GET /api/runs/{id}/timeseries` — временной ряд (бакеты, метрики в каждом бакете). Параметры `bucketMs`, `label`, `labels`.
+## Screenshots
 
-Все эндпоинты `/api/**` защищены HTTP Basic auth (см. «Авторизация»).
+> TODO: add screenshots — place them in `docs/screenshots/` and reference here.
 
-Примеры запросов и ответов: [docs/api-examples.md](docs/api-examples.md).
+- ![Dashboard](docs/screenshots/dashboard.png)
+- ![Export report](docs/screenshots/export.png)
 
-## Авторизация
+## Tech stack
 
-API защищено HTTP Basic auth. Один административный пользователь задаётся переменными окружения Spring:
+**Frontend**: Vue 3, TypeScript, Vite, Element Plus, Chart.js
 
-- `JTL_ADMIN_USERNAME` — логин (по умолчанию `admin`)
-- `JTL_ADMIN_PASSWORD` — пароль (по умолчанию `admin`)
+**Backend**: Java 21, Spring Boot 4.1 (Spring MVC, Data JPA, Security)
 
-Пароль можно указать в виде префикс-закодированного значения (рекомендуется для прод-деплоя, например bcrypt):
+**Database**: PostgreSQL 17, Apache Commons CSV, Lombok
+
+**Deployment**: Docker (multi-stage build)
+
+## Quick start (Docker)
+
+```bash
+docker compose up -d
+```
+
+Open http://localhost:8080 — a single container serves both the frontend and the `/api/**` endpoints.
+
+Default credentials: `admin` / `admin` (see [Configuration](#configuration)).
+
+Try it: upload the example file `examples/fakestore_v2.jtl` via the interface (drag & drop in the run list panel).
+
+To stop and wipe all data:
+
+```bash
+docker compose down -v
+```
+
+## Configuration
+
+The application is configured via environment variables:
+
+| Variable | Description | Default |
+| --- | --- | --- |
+| `JTL_ADMIN_USERNAME` | Admin username | `admin` |
+| `JTL_ADMIN_PASSWORD` | Admin password (plain or `{bcrypt}$2a$12$...`) | `admin` |
+| `SPRING_DATASOURCE_URL` | JDBC URL of PostgreSQL | `jdbc:postgresql://localhost:5432/jtlweb` |
+| `SPRING_DATASOURCE_USERNAME` | DB user | `postgres` |
+| `SPRING_DATASOURCE_PASSWORD` | DB password | `postgres` |
+
+For production, it is recommended to set the admin password as a prefixed-encoded value, e.g. bcrypt:
 
 ```bash
 JTL_ADMIN_PASSWORD='{bcrypt}$2a$12$...'
 ```
 
-или в открытом виде (удобно локально). Изменения применяются при перезапуске приложения.
+Changes take effect on the next application start.
 
-Проверка: `curl -u admin:admin http://localhost:8080/api/runs`.
+Multipart upload limits: `max-file-size` and `max-request-size` are set to 100 MB.
 
-### Что происходит при загрузке
+Check that the API works:
 
-- Проверка обязательной шапки (нет → `400`); разделитель определяется автоматически (таб/запятая).
-- CSV-токенизация через Apache Commons CSV (корректно с кавычками и запятыми внутри полей).
-- Маппинг колонок по имени (порядок/отсутствие колонок не критичны).
-- Данные записываются в БД чанками по 2000 строк в одной транзакции (ошибка → полный rollback).
-- Ошибки считаются по колонке `success`.
+```bash
+curl -u admin:admin http://localhost:8080/api/runs
+```
 
-### Стек
+## Local development
 
-- Java 21, Spring Boot 4.1, Spring MVC + Spring Data JPA
-- PostgreSQL 17 (Docker), Apache Commons CSV, Lombok
+1. Start PostgreSQL:
 
-### Модель данных
+   ```bash
+   docker compose up -d postgres
+   ```
 
-- `jtl_run` — запуски (fileName, uploadedAt, rows, errors)
-- `jtl_sample` — строки JTL (17 колонок: timeStamp, elapsed, label, success, responseCode, threadName и т.д.), индексы по label/success/responseCode/threadName/timeStamp
+2. Run the backend (from `backend/jtlweb`):
 
-### Ошибки
+   ```bash
+   ./mvnw spring-boot:run
+   ```
 
-- Нет файла / битый файл / пустой файл без шапки → `400` с текстом причины
-- Прочие → `500`
+   By default it connects to `localhost:5432/jtlweb`.
 
-## Запуск
+3. Run the frontend (from `frontend`):
 
-1. `docker compose up -d` (Postgres 17 на `:5432`, БД `jtlweb`)
-2. Запустить `JtlwebApplication` (IDEA или `./mvnw spring-boot:run`)
-3. Загрузить файл: `curl -F "file=@results.jtl" http://localhost:8080/api/runs`
+   ```bash
+   npm install
+   npm run dev
+   ```
 
-## Тесты
+   Vite dev server proxies `/api/**` requests to `http://localhost:8080`.
 
-- `JtlParserTest` — unit-тесты парсера (валидный/таб/кавычки/success/ошибки шапки)
-- `RunStatsControllerTest` — WebMvcTest статистики (мок сервиса)
-- `SecurityConfigTest` — WebMvcTest авторизации (401 без кредов / 200 с `admin:admin` / 401 при неверном пароле)
-- `JtlwebApplicationTests` — поднятие контекста
+## API
 
-Запуск: `./mvnw test` (для `JtlwebApplicationTests` нужен запущенный Postgres: `docker compose up -d`).
+All `/api/**` endpoints are protected by HTTP Basic auth.
+
+| Method | Path | Description |
+| --- | --- | --- |
+| `POST` | `/api/runs` | Upload a JTL file (multipart `file`). Parses the file, stores rows, returns `{ id, fileName, uploadedAt, rows, errors }`. |
+| `GET` | `/api/runs` | List of runs (newest first). |
+| `GET` | `/api/runs/{id}` | Run info. |
+| `GET` | `/api/runs/{id}/labels` | Operation labels of the run. |
+| `GET` | `/api/runs/{id}/stats` | Stats grouped by `groupBy=label\|responseCode\|errorMessage`: counters, errors, percentiles, RPS, response volume. Filter by operations with repeatable `labels` param. |
+| `GET` | `/api/runs/{id}/timeseries` | Time series (buckets with per-bucket metrics). Params: `bucketMs`, `label`, `labels`. |
+
+Examples of requests and responses: [docs/api-examples.md](docs/api-examples.md).
+
+### Upload behavior
+
+- Mandatory header is checked (missing → `400`); the separator is auto-detected (tab/comma).
+- Columns are mapped by name — order or missing columns are not critical.
+- Data is written in chunks of 2000 rows in a single transaction (failure → full rollback).
+- Errors are counted from the `success` column.
+
+### Data model
+
+- `jtl_run` — runs (fileName, uploadedAt, rows, errors)
+- `jtl_sample` — JTL rows (17 columns: timeStamp, elapsed, label, success, responseCode, threadName, etc.), indexed by label/success/responseCode/threadName/timeStamp
+
+### Errors
+
+- Missing file / corrupted file / empty file without a header → `400` with a reason
+- Everything else → `500`
+
+## Project structure
+
+```
+.
+├── backend/jtlweb     # Spring Boot application
+├── frontend           # Vue 3 + Vite application
+├── examples/          # sample JTL files
+├── docs/              # documentation (API examples)
+├── Dockerfile         # multi-stage build (frontend → backend → runtime)
+└── docker-compose.yml # postgres + app
+```
+
+## Tests
+
+- `JtlParserTest` — parser unit tests (valid / tab / quotes / success / header errors)
+- `StatsServiceTest` — stats aggregation tests
+- `RunStatsControllerTest` — WebMvcTest of stats (mocked service)
+- `SecurityConfigTest` — WebMvcTest of auth (401 without credentials / 200 with `admin:admin` / 401 with wrong password)
+- `JtlwebApplicationTests` — context startup
+
+Run:
+
+```bash
+./mvnw test
+```
+
+`JtlwebApplicationTests` requires a running PostgreSQL (`docker compose up -d postgres`).
 
 ## Roadmap
 
-- `GET /api/runs/{id}/samples` — строки запуска (пагинация, основные колонки)
+- `GET /api/runs/{id}/samples` — run rows (pagination, core columns)

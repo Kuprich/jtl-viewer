@@ -1,0 +1,28 @@
+.git
+.sentry-native
+
+# frontend
+frontend/node_modules
+frontend/dist
+frontend/dist-ssr
+
+# backend
+backend/jtlweb/target
+
+# jmeter artifacts
+jmeter
+jmeter.log
+jmeter/jmeter.log
+*.jtl
+
+# planning docs
+docs
+plan.md
+frontend_plan.md
+upload_jtl_plan.md
+
+# editor / os
+.idea
+.vscode
+*.iml
+.DS_Store

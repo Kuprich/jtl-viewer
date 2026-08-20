@@ -12,9 +12,9 @@ const dicts: Record<Locale, Record<string, string>> = { ru, en }
 function readInitial(): Locale {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
-    return raw === 'en' || raw === 'ru' ? raw : 'ru'
+    return raw === 'en' || raw === 'ru' ? raw : 'en'
   } catch {
-    return 'ru'
+    return 'en'
   }
 }
 
