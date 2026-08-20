@@ -20,12 +20,20 @@ Web application for uploading JMeter JTL files and visualizing load test results
 - **RU/EN interface** — English by default, the choice is persisted in `localStorage`.
 - **HTTP Basic auth** with a custom login form.
 
+<video src="./docs/preview.mp4" controls width="100%"></video>
+
 ## Screenshots
 
-> TODO: add screenshots — place them in `docs/screenshots/` and reference here.
+Dark Theme:
+![Dark Theme](./docs/screenshots/dark.png)
 
-- ![Dashboard](docs/screenshots/dashboard.png)
-- ![Export report](docs/screenshots/export.png)
+White Theme:
+![White Theme](./docs/screenshots/white.png)
+
+<p>
+  <img src="./docs/screenshots/display_settings.png" alt="Display Settings" width="48%">
+  <img src="./docs/screenshots/export.png" alt="Export parameters" width="48%">
+</p>
 
 ## Tech stack
 
