@@ -22,7 +22,7 @@
 - **Интерфейс RU/EN** — по умолчанию английский, выбор сохраняется в `localStorage`.
 - **HTTP Basic auth** с кастомной формой входа.
 
-<video src="./docs/preview.mp4" controls width="100%"></video>
+<video src="https://github.com/user-attachments/assets/678af7a8-b066-4d9d-96dc-6d6970d55f15" controls width="100%"></video>
 
 ## Скриншоты
 
