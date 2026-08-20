@@ -20,7 +20,9 @@ Web application for uploading JMeter JTL files and visualizing load test results
 - **RU/EN interface** — English by default, the choice is persisted in `localStorage`.
 - **HTTP Basic auth** with a custom login form.
 
-<video src="./docs/preview.mp4" controls width="100%"></video>
+<video src="
+https://github.com/user-attachments/assets/678af7a8-b066-4d9d-96dc-6d6970d55f15
+" controls width="100%"></video>
 
 ## Screenshots
 
